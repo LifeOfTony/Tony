@@ -41,6 +41,10 @@ namespace Tony
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+
+            Texture2D image = Content.Load<Texture2D>("testimage/City");
+
+
         }
 
         /// <summary>
@@ -75,7 +79,13 @@ namespace Tony
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+
+            spriteBatch.Begin(SpriteSortMode.FrontToBack);
+
+            foreach (Drawable drawable in ObjectManager.Objects)
+                drawable.Draw(spriteBatch);
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }

@@ -12,8 +12,8 @@ namespace Tony
     {
         private String requirement;
 
-        public InteractableObject(String name, Vector2 position, float depth, Texture2D texture, String requirement) :
-            base(name, position, depth, texture)
+        public InteractableObject(Vector2 position, Vector2 size, String requirement) :
+            base(position, size)
         {
             this.requirement = requirement;
         }
