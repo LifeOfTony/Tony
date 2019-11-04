@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Xml.Linq;
 
 namespace Tony
 {
@@ -15,66 +16,53 @@ namespace Tony
         private int height;
         private int tileWidth;
         private int tileHeight;
-        private XmlReader reader;
+        private XDocument reader;
         private List<String[]> tileNumbers;
+        private List<String> tileset;
+        private List<XElement> objectElements;
 
         public LevelReader(String filePath)
         {
-            reader = XmlReader.Create(filePath);
-            while(reader.Read())
+            reader = XDocument.Load(filePath);
+            XElement map = reader.Element("map");
+            if (map.Attribute("orientation").Value != "orthogonal")
             {
-                if((reader.NodeType == XmlNodeType.Element) && (reader.Name == "map"))
-                {
-                    if(reader.GetAttribute("orientation") != "orthogonal")
-                    {
-                        //return exception level file invalid
-                        break;
-                    }
-                    else
-                    {
-                        this.width = Int32.Parse(reader.GetAttribute("width"));
-                        this.height = Int32.Parse(reader.GetAttribute("height"));
-                        this.tileWidth = Int32.Parse(reader.GetAttribute("tilewidth"));
-                        this.tileHeight = Int32.Parse(reader.GetAttribute("tileheight"));
-                    }
-                }
-                else if ((reader.NodeType == XmlNodeType.Element) && (reader.Name == "tileset"))
-                {
-                    XmlReader tileReader = XmlReader.Create(reader.GetAttribute("source"));
-                    while(tileReader.Read())
-                    {
-                        if((tileReader.NodeType == XmlNodeType.Element) && (tileReader.Name == "tile"))
-                        {
-                            tileReader.Read();
-                            Texture2D newTexture = Content.Load<Texture2D>("testimage/City");
-                        }
-                    }
-                }
-                else if ((reader.NodeType == XmlNodeType.Element) && Int32.Parse(reader.GetAttribute("id")) == 1)
-                {
-                    reader.Read();
-                    tileNumbers = tileSplitter();
-
-                }
-                else if ((reader.NodeType == XmlNodeType.Element) && Int32.Parse(reader.GetAttribute("id")) == 2)
-                {
-                    reader.Read();
-                    while(reader.Name == "Object")
-                    {
-                        if(reader.GetAttribute("drawable") != null)
-                        {
-                            Vector2 position = new Vector2(Int32.Parse(reader.GetAttribute("x")), Int32.Parse(reader.GetAttribute("y")));
-                            Vector2 size = new Vector2(Int32.Parse(reader.GetAttribute("width")), Int32.Parse(reader.GetAttribute("height")));
-                            // TODO: write object generation.
-                        }
-                    }
-                }
+                //return exception level file invalid
             }
+            else
+            {
+                this.width = Int32.Parse(map.Attribute("width").Value);
+                this.height = Int32.Parse(map.Attribute("height").Value);
+                this.tileWidth = Int32.Parse(map.Attribute("tileWidth").Value);
+                this.tileHeight = Int32.Parse(map.Attribute("tileHeight").Value);
+            }
+
+            XElement tileset = reader.Element("tileset");
+            XmlReader tileReader = XmlReader.Create(tileset.Attribute("source").Value);
+            while (tileReader.Read())
+            {
+                if ((tileReader.NodeType == XmlNodeType.Element) && (tileReader.Name == "tile"))
+                {
+                    tileReader.Read();
+                    tileset.Add(tileReader.GetAttribute("source"));
+                }
+                tileReader.Read();
+            }
+
+            tileNumbers = tileSplitter();
+
+            XElement objectLayer = reader.Element("objectgroup");
+            foreach (XElement currentObject in objectLayer.Elements())
+            {
+                objectElements.Add(currentObject);
+            }
+
         }
 
         public List<String[]> tileSplitter()
         {
-            String tiledata = reader.Value;
+            XElement tilelayer = reader.Element("layer");
+            String tiledata = tilelayer.Element("data").Value;
             String[] alltiles = tiledata.Split(',');
             List<String[]> rows = new List<string[]>();
             for (int i = 0; i < alltiles.Length; i += this.width)
