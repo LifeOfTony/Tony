@@ -1,6 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
+using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace Tony
 {
@@ -11,11 +14,12 @@ namespace Tony
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        
+        private List<Texture2D> tileset;
         public GameManager()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            this.tileset = new List<Texture2D>();
         }
 
         /// <summary>
@@ -41,8 +45,36 @@ namespace Tony
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            LevelReader currentLevel = new LevelReader(@"C:\Users\Jiynto\Documents\CS-secondyear-Project\testmap.tmx");
+            foreach(string tiletexture in currentLevel.tileset)
+            {
+                Texture2D currentTexture = Content.Load<Texture2D>(tiletexture);
+                this.tileset.Add(currentTexture);
+            }
+            for(int y = 0; y < currentLevel.tileNumbers.Count; y++)
+            {
+                string[] currentRow = currentLevel.tileNumbers[y];
+                for(int x = 0; x < currentRow.Length; x++)
+                {
+                    Vector2 position = new Vector2(x * currentLevel.tileWidth, y * currentLevel.tileHeight);
+                    Vector2 size = new Vector2(currentLevel.tileWidth, currentLevel.tileHeight);
+                    Tile currentTile = new Tile(position, size, tileset[Int32.Parse(currentRow[x])]);
+                    ObjectManager.addObject(currentTile);
+                }
+            }
 
-            Texture2D image = Content.Load<Texture2D>("testimage/City");
+            foreach(XElement objectdata in currentLevel.objectElements)
+            {
+                Vector2 position = new Vector2(Int32.Parse(objectdata.Attribute("x").Value), Int32.Parse(objectdata.Attribute("y").Value));
+                Vector2 size = new Vector2(Int32.Parse(objectdata.Attribute("width").Value), Int32.Parse(objectdata.Attribute("height").Value));
+                if (objectdata.Attribute("drawable") != null)
+                {
+                    Sprite currentObject = new Sprite(position, size, 0, new Vector2(0), 1, tileset[Int32.Parse(objectdata.Attribute("gid").Value)]);
+                    ObjectManager.addObject(currentObject);
+                }
+            }
+
+            
 
 
         }
