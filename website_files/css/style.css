@@ -1,0 +1,33 @@
+html{
+  margin:0;
+  padding: 0;
+}
+body{
+  margin-top: 0px;
+  padding: 0;
+}
+header{
+  text-align: center;
+}
+section{
+  margin-top: 40px;
+  text-align: center;
+}
+button{
+  margin: 20px;
+}
+.navlink{
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.bg-city{
+  background-image: url("../img/city.png");
+  background-position: center;
+  background-size: cover;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+.bg-tony{
+  background-color: #E7642F;
+  color: #FFF;
+}
