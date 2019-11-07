@@ -31,3 +31,11 @@ button{
   background-color: #E7642F;
   color: #FFF;
 }
+.support{
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.profile{
+  border-radius: 50%;
+}
