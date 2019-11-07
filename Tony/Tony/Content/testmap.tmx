@@ -18,22 +18,26 @@
  <objectgroup id="2" name="Object Layer 1">
   <object id="1" gid="480" x="192" y="160" width="32" height="32">
    <properties>
-    <property name="Drawable" type="bool" value="true"/>
-    <property name="Gives" value="stick"/>
-    <property name="Interactable" type="bool" value="true"/>
+    <property name="Drawable"/>
+    <property name="Interactable">
+	 <requirement value="none"/>
+	 <gives value="stick"/>
+	</property>
    </properties>
   </object>
   <object id="2" gid="575" x="128" y="192" width="32" height="32">
    <properties>
-    <property name="Drawable" type="bool" value="true"/>
-    <property name="Player" type="bool" value="true"/>
+    <property name="Drawable"/>
+    <property name="Player"/>
    </properties>
   </object>
   <object id="3" gid="382" x="128" y="128" width="32" height="32">
    <properties>
-    <property name="Drawable" type="bool" value="true"/>
-    <property name="Interactable" type="bool" value="true"/>
-    <property name="requirement" value="stick"/>
+    <property name="Drawable"/>
+    <property name="Interactable">
+	 <requirement value="stick"/>
+	 <gives value="hat"/>
+	</property>
    </properties>
   </object>
  </objectgroup>

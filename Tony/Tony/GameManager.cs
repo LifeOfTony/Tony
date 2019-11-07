@@ -76,6 +76,18 @@ namespace Tony
                         Sprite currentObject = new Sprite(position, size, 0, new Vector2(0), 1, tileset[Int32.Parse(objectdata.Attribute("gid").Value) - 1]);
                         ObjectManager.addObject(currentObject);
                     }
+                    if(property.Attribute("name").Value == "Player")
+                    {
+                        Player player = new Player(position, size, 0, new Vector2(0), 1);
+                        ObjectManager.addObject(player);
+                    }
+                    if (property.Attribute("name").Value == "Interactable")
+                    {
+                        string requirement = property.Element("requirement").Value;
+                        string gives = property.Element("gives").Value;
+                        InteractableObject currentObject = new InteractableObject(position, size, requirement, gives);
+                        ObjectManager.addObject(currentObject);
+                    }
  
                 }
             }
