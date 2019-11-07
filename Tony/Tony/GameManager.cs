@@ -45,12 +45,12 @@ namespace Tony
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            LevelReader currentLevel = new LevelReader(@"C:\Users\Jiynto\Documents\CS-secondyear-Project\testmap.tmx");
-            foreach(string tiletexture in currentLevel.tileset)
+            LevelReader currentLevel = new LevelReader(@"C:\Users\Jiynto\Source\Repos\charlieheslington\Tony\Tony\Tony\Content\testmap.tmx");
+            foreach(string currentTexture in currentLevel.tileset)
             {
-                Texture2D currentTexture = Content.Load<Texture2D>(tiletexture);
-                this.tileset.Add(currentTexture);
+                this.tileset.Add(Content.Load<Texture2D>(currentTexture));
             }
+
             for(int y = 0; y < currentLevel.tileNumbers.Count; y++)
             {
                 string[] currentRow = currentLevel.tileNumbers[y];
@@ -58,19 +58,25 @@ namespace Tony
                 {
                     Vector2 position = new Vector2(x * currentLevel.tileWidth, y * currentLevel.tileHeight);
                     Vector2 size = new Vector2(currentLevel.tileWidth, currentLevel.tileHeight);
-                    Tile currentTile = new Tile(position, size, tileset[Int32.Parse(currentRow[x])]);
+                    Tile currentTile = new Tile(position, size, tileset[Int32.Parse(currentRow[x]) - 1]);
                     ObjectManager.addObject(currentTile);
                 }
             }
 
             foreach(XElement objectdata in currentLevel.objectElements)
             {
+                IEnumerable<XElement> properties = objectdata.Element("properties").Elements();
                 Vector2 position = new Vector2(Int32.Parse(objectdata.Attribute("x").Value), Int32.Parse(objectdata.Attribute("y").Value));
                 Vector2 size = new Vector2(Int32.Parse(objectdata.Attribute("width").Value), Int32.Parse(objectdata.Attribute("height").Value));
-                if (objectdata.Attribute("drawable") != null)
+
+                foreach( XElement property in properties)
                 {
-                    Sprite currentObject = new Sprite(position, size, 0, new Vector2(0), 1, tileset[Int32.Parse(objectdata.Attribute("gid").Value)]);
-                    ObjectManager.addObject(currentObject);
+                    if (property.Attribute("name").Value == "Drawable")
+                    {
+                        Sprite currentObject = new Sprite(position, size, 0, new Vector2(0), 1, tileset[Int32.Parse(objectdata.Attribute("gid").Value) - 1]);
+                        ObjectManager.addObject(currentObject);
+                    }
+ 
                 }
             }
 
@@ -78,6 +84,8 @@ namespace Tony
 
 
         }
+
+
 
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload

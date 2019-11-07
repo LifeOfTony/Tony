@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="4">
+ <tileset firstgid="1" source="tempset.tsx"/>
+ <layer id="1" name="Tile Layer 1" width="10" height="10">
+  <data encoding="csv">
+119,119,119,119,119,119,119,119,119,119,
+119,119,119,119,119,119,119,119,119,119,
+119,119,119,119,119,119,119,119,119,119,
+119,119,119,453,453,453,453,119,119,119,
+119,119,119,453,453,453,453,119,119,119,
+119,119,119,453,453,453,453,119,119,119,
+119,119,119,453,453,453,453,119,119,119,
+119,119,119,119,119,119,119,119,119,119,
+119,119,119,119,119,119,119,119,119,119,
+119,119,119,119,119,119,119,119,119,119
+</data>
+ </layer>
+ <objectgroup id="2" name="Object Layer 1">
+  <object id="1" gid="480" x="192" y="160" width="32" height="32">
+   <properties>
+    <property name="Drawable" type="bool" value="true"/>
+    <property name="Gives" value="stick"/>
+    <property name="Interactable" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="2" gid="575" x="128" y="192" width="32" height="32">
+   <properties>
+    <property name="Drawable" type="bool" value="true"/>
+    <property name="Player" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="3" gid="382" x="128" y="128" width="32" height="32">
+   <properties>
+    <property name="Drawable" type="bool" value="true"/>
+    <property name="Interactable" type="bool" value="true"/>
+    <property name="requirement" value="stick"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

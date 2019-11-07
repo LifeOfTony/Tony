@@ -64,6 +64,7 @@ namespace Tony
                 }
                 tileReader.Read();
             }
+            
 
             //sets the tilenumbers instance variable to the list returned by tileSplitter.
             tileNumbers = tileSplitter();
