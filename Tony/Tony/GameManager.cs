@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using System.IO;
 
 namespace Tony
 {
@@ -45,13 +46,13 @@ namespace Tony
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            LevelReader currentLevel = new LevelReader(@"C:\Users\Jiynto\Source\Repos\charlieheslington\Tony\Tony\Tony\Content\testmap.tmx");
+            LevelReader currentLevel = new LevelReader(@"Content\testmap.xml");
             foreach(string currentTexture in currentLevel.tileset)
             {
                 this.tileset.Add(Content.Load<Texture2D>(currentTexture));
             }
 
-            for(int y = 0; y < currentLevel.tileNumbers.Count; y++)
+            for (int y = 0; y < currentLevel.tileNumbers.Count; y++)
             {
                 string[] currentRow = currentLevel.tileNumbers[y];
                 for(int x = 0; x < currentRow.Length; x++)

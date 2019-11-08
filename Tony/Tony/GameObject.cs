@@ -22,6 +22,7 @@ namespace Tony
             this.size = size;
             this.rotation = rotation;
             this.rotationOrigin = rotationOrigin;
+            this.collidable = collidable;
         }
 
         public GameObject(Vector2 position, Vector2 size, bool collidable) : this(position, size, collidable, 0, new Vector2(0))
@@ -37,6 +38,16 @@ namespace Tony
         public bool getCollidable()
         {
             return this.collidable;
+        }
+
+        public Vector2 getPosition()
+        {
+            return this.position;
+        }
+
+        public Vector2 getSize()
+        {
+            return this.size;
         }
  
         

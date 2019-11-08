@@ -27,23 +27,32 @@ namespace Tony
 
         public void move(string key)
         {
-
-            switch (key)
+            foreach(GameObject currentObject in ObjectManager.Objects)
             {
-                case "A":
-                    this.position.X -= 5;
-                    break;
-                case "W":
-                    this.position.Y -= 5;
-                    break;
-                case "S":
-                    this.position.Y += 5;
-                    break;
-                case "D":
-                    this.position.X += 5;
-                    break;
+                Vector2 objectPosition = currentObject.getPosition();
+                Vector2 objectSize = currentObject.getSize();
+                switch (key)
+                {
+                    case "A":
+                        if (currentObject.getCollidable() == true && (this.position.X -= 5) <= (objectPosition.X + objectSize.X)) break;
+                        else
+                        {
+                            this.position.X -= 5;
+                            break;
+                        }
+                    case "W":
+                        this.position.Y -= 5;
+                        break;
+                    case "S":
+                        this.position.Y += 5;
+                        break;
+                    case "D":
+                        this.position.X += 5;
+                        break;
 
+                }
             }
+            
         }
 
         public void Draw(SpriteBatch spriteBatch)
