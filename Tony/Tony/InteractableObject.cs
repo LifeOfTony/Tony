@@ -10,10 +10,11 @@ namespace Tony
 {
     class InteractableObject : GameObject
     {
-        private String requirement;
+        private string requirement;
+        private string gives;
 
-        public InteractableObject(String name, Vector2 position, float depth, Texture2D texture, String requirement) :
-            base(name, position, depth, texture)
+        public InteractableObject(Vector2 position, Vector2 size, bool collidable, string requirement, string gives) :
+            base(position, size, collidable)
         {
             this.requirement = requirement;
         }

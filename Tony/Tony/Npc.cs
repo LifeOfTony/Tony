@@ -10,8 +10,8 @@ namespace Tony
 {
     class Npc : InteractableObject
     {
-        public Npc(String name, Vector2 position, float depth, Texture2D texture, String requirement) :
-            base(name, position, depth, texture, requirement)
+        public Npc(Vector2 position, Vector2 size, bool collidable, string requirement, string gives) :
+            base(position, size, collidable, requirement, gives)
         {
 
         }

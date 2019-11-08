@@ -8,15 +8,18 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Tony
 {
-    class Tile
+    class Tile : GameObject, Drawable
     {
-        private Vector2 position;
         private Texture2D texture;
-        private float depth;
 
-        public Tile()
+        public Tile(Vector2 position, Vector2 size, Texture2D texture) : base(position, size)
         {
+            this.texture = texture;
+        }
 
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(texture, new Rectangle(position.ToPoint(), size.ToPoint()), Color.White);
         }
     }
 }
