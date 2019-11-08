@@ -14,8 +14,9 @@ namespace Tony
         protected Vector2 size;
         protected float rotation;
         protected Vector2 rotationOrigin;
+        protected bool collidable;
 
-        public GameObject(Vector2 position, Vector2 size, float rotation, Vector2 rotationOrigin)
+        public GameObject(Vector2 position, Vector2 size, bool collidable, float rotation, Vector2 rotationOrigin)
         {
             this.position = position;
             this.size = size;
@@ -23,9 +24,14 @@ namespace Tony
             this.rotationOrigin = rotationOrigin;
         }
 
-        public GameObject(Vector2 position, Vector2 size) : this(position, size, 0, new Vector2(0))
+        public GameObject(Vector2 position, Vector2 size, bool collidable) : this(position, size, collidable, 0, new Vector2(0))
         {
 
+        }
+
+        public bool getCollidable()
+        {
+            return this.collidable;
         }
  
         

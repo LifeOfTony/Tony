@@ -13,8 +13,8 @@ namespace Tony
         float depth;
         Texture2D texture;
 
-        public Sprite(Vector2 position, Vector2 size, float rotation, Vector2 rotationOrigin, float depth, Texture2D texture) :
-            base(position, size, rotation, rotationOrigin)
+        public Sprite(Vector2 position, Vector2 size, bool collidable, float depth, Texture2D texture) :
+            base(position, size, collidable)
         {
             this.depth = depth;
             this.texture = texture;

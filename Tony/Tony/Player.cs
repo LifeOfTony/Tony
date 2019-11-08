@@ -5,22 +5,59 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Tony
 {
-    class Player : GameObject
+    class Player : GameObject, Drawable
     {
         private int age;
+        private float depth;
+        private Texture2D texture;
 
-        public Player(Vector2 position, Vector2 size, float rotation, Vector2 rotationOrigin, int age) :
-            base(position, size, rotation, rotationOrigin)
+
+        public Player(Vector2 position, Vector2 size, bool collidable, int age, float depth, Texture2D texture) :
+            base(position, size, collidable)
         {
-            age = 3;
+            this.age = age;
+            this.depth = depth;
+            this.texture = texture;
+
         }
 
-        public void move()
+        public void move(string key)
         {
 
+            switch (key)
+            {
+                case "A":
+                    this.position.X -= 5;
+                    break;
+                case "W":
+                    this.position.Y -= 5;
+                    break;
+                case "S":
+                    this.position.Y += 5;
+                    break;
+                case "D":
+                    this.position.X += 5;
+                    break;
+
+            }
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(
+                texture: texture,
+                position: position,
+                sourceRectangle: null,
+                color: Color.White,
+                rotation: rotation,
+                origin: rotationOrigin,
+                scale: 1f,
+                effects: SpriteEffects.None,
+                layerDepth: depth);
         }
     }
 }

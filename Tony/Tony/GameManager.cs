@@ -65,27 +65,28 @@ namespace Tony
 
             foreach(XElement objectdata in currentLevel.objectElements)
             {
+                bool collidable = bool.Parse(objectdata.Attribute("collidable").Value);
                 IEnumerable<XElement> properties = objectdata.Element("properties").Elements();
                 Vector2 position = new Vector2(Int32.Parse(objectdata.Attribute("x").Value), Int32.Parse(objectdata.Attribute("y").Value));
                 Vector2 size = new Vector2(Int32.Parse(objectdata.Attribute("width").Value), Int32.Parse(objectdata.Attribute("height").Value));
-
+                
                 foreach( XElement property in properties)
                 {
                     if (property.Attribute("name").Value == "Drawable")
                     {
-                        Sprite currentObject = new Sprite(position, size, 0, new Vector2(0), 1, tileset[Int32.Parse(objectdata.Attribute("gid").Value) - 1]);
+                        Sprite currentObject = new Sprite(position, size, collidable, 1, tileset[Int32.Parse(objectdata.Attribute("gid").Value) - 1]);
                         ObjectManager.addObject(currentObject);
                     }
                     if(property.Attribute("name").Value == "Player")
                     {
-                        Player player = new Player(position, size, 0, new Vector2(0), 1);
+                        Player player = new Player(position, size, collidable, 1, 1, tileset[Int32.Parse(objectdata.Attribute("gid").Value) - 1]);
                         ObjectManager.addObject(player);
                     }
                     if (property.Attribute("name").Value == "Interactable")
                     {
                         string requirement = property.Element("requirement").Value;
                         string gives = property.Element("gives").Value;
-                        InteractableObject currentObject = new InteractableObject(position, size, requirement, gives);
+                        InteractableObject currentObject = new InteractableObject(position, size, collidable, requirement, gives);
                         ObjectManager.addObject(currentObject);
                     }
  
@@ -118,7 +119,21 @@ namespace Tony
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            // Poll for current keyboard state
+            KeyboardState state = Keyboard.GetState();
+            foreach(GameObject p in ObjectManager.Objects)
+            {
+                if(p is Player)
+                {
+                    Player player = (Player)p;
+                    if (state.IsKeyDown(Keys.A)) player.move("A");
+                    if (state.IsKeyDown(Keys.W)) player.move("W");
+                    if (state.IsKeyDown(Keys.S)) player.move("S");
+                    if (state.IsKeyDown(Keys.D)) player.move("D");
+                }
+            }
+           
+
 
             base.Update(gameTime);
         }
@@ -134,7 +149,7 @@ namespace Tony
 
             spriteBatch.Begin(SpriteSortMode.FrontToBack);
 
-            foreach (Drawable drawable in ObjectManager.Objects)
+            foreach (Drawable drawable in ObjectManager.Drawables)
                 drawable.Draw(spriteBatch);
 
             spriteBatch.End();

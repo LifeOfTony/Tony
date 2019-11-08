@@ -16,7 +16,7 @@
 </data>
  </layer>
  <objectgroup id="2" name="Object Layer 1">
-  <object id="1" gid="480" x="192" y="160" width="32" height="32">
+  <object id="1" gid="480" x="192" y="160" width="32" height="32" collidable="true">
    <properties>
     <property name="Drawable"/>
     <property name="Interactable">
@@ -25,13 +25,12 @@
 	</property>
    </properties>
   </object>
-  <object id="2" gid="575" x="128" y="192" width="32" height="32">
+  <object id="2" gid="575" x="128" y="192" width="32" height="32" collidable="true">
    <properties>
-    <property name="Drawable"/>
     <property name="Player"/>
    </properties>
   </object>
-  <object id="3" gid="382" x="128" y="128" width="32" height="32">
+  <object id="3" gid="382" x="128" y="128" width="32" height="32" collidable="true">
    <properties>
     <property name="Drawable"/>
     <property name="Interactable">

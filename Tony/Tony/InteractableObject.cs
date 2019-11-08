@@ -13,8 +13,8 @@ namespace Tony
         private string requirement;
         private string gives;
 
-        public InteractableObject(Vector2 position, Vector2 size, string requirement, string gives) :
-            base(position, size)
+        public InteractableObject(Vector2 position, Vector2 size, bool collidable, string requirement, string gives) :
+            base(position, size, collidable)
         {
             this.requirement = requirement;
         }
