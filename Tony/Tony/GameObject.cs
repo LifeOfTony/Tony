@@ -29,6 +29,11 @@ namespace Tony
 
         }
 
+        public GameObject(Vector2 position, Vector2 size) : this(position, size, true, 0, new Vector2(0))
+        {
+
+        }
+
         public bool getCollidable()
         {
             return this.collidable;
