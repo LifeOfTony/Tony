@@ -14,6 +14,8 @@ namespace Tony
         private int age;
         private float depth;
         private Texture2D texture;
+        private int moveSpeed;
+        private Vector2 velocity;
 
 
         public Player(Vector2 position, Vector2 size, bool collidable, int age, float depth, Texture2D texture) :
@@ -22,37 +24,51 @@ namespace Tony
             this.age = age;
             this.depth = depth;
             this.texture = texture;
+            this.moveSpeed = 1;
+            velocity = Vector2.Zero;
 
         }
 
         public void move(string key)
         {
-            foreach(GameObject currentObject in ObjectManager.Objects)
+            setVelocity(key);
+            Vector2 newPosition = this.position + velocity;
+            foreach(GameObject currentObject in ObjectManager.Collidables)
             {
-                Vector2 objectPosition = currentObject.getPosition();
-                Vector2 objectSize = currentObject.getSize();
-                switch (key)
-                {
-                    case "A":
-                        if (currentObject.getCollidable() == true && (this.position.X -= 5) <= (objectPosition.X + objectSize.X)) break;
-                        else
-                        {
-                            this.position.X -= 5;
-                            break;
-                        }
-                    case "W":
-                        this.position.Y -= 5;
-                        break;
-                    case "S":
-                        this.position.Y += 5;
-                        break;
-                    case "D":
-                        this.position.X += 5;
-                        break;
+                if (currentObject == this)
+                    continue;
 
-                }
+                Collisions collider = new Collisions(currentObject.getPosition(), currentObject.getSize(), newPosition, this.size);
+
+                if ((velocity.X > 0 && collider.IsTouchingLeft()) || (velocity.X < 0 && collider.IsTouchingRight())) velocity.X = 0;
+
+                if ((velocity.Y > 0 && collider.IsTouchingTop()) || (velocity.Y < 0 && collider.IsTouchingBottom())) velocity.Y = 0;
             }
+
+            this.position += velocity;
+
+            velocity = Vector2.Zero;
             
+            
+        }
+
+        public void setVelocity(string key)
+        {
+            switch(key)
+            {
+                case "A":
+                    velocity.X = -moveSpeed;
+                    break;
+                case "D":
+                    velocity.X = moveSpeed;
+                    break;
+                case "W":
+                    velocity.Y = -moveSpeed;
+                    break;
+                case "S":
+                    velocity.Y = moveSpeed;
+                    break;
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)

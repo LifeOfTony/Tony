@@ -10,21 +10,17 @@ namespace Tony
 {
     class Collisions
     {
-        //object edge data.
         private float objectLeft;
         private float objectRight;
         private float objectTop;
         private float objectBottom;
 
-        //player edge data.
         private float playerLeft;
         private float playerRight;
         private float playerTop;
         private float playerBottom;
 
-        private int moveSpeed;
-
-        public Collisions(Vector2 objectPosition, Vector2 objectSize, Vector2 playerPosition, Vector2 playerSize, int moveSpeed)
+        public Collisions(Vector2 objectPosition, Vector2 objectSize, Vector2 playerPosition, Vector2 playerSize)
         {
             this.objectLeft = objectPosition.X;
             this.objectRight = objectPosition.X + objectSize.X;
@@ -36,15 +32,36 @@ namespace Tony
             this.playerTop = playerPosition.Y;
             this.playerBottom = playerPosition.Y + playerSize.Y;
 
-            this.moveSpeed = moveSpeed;
-
-
+        }
+        public bool IsTouchingLeft()
+        {
+            return playerRight > objectLeft &&
+                   playerLeft < objectLeft &&
+                   playerBottom > objectTop &&
+                   playerTop < objectBottom;
         }
 
-        //public bool DetectCollision(string keyPressed)
-      //  {
-        //    if(playerLeft + moveSpeed)
-         //   return false;
-       // }
+        public bool IsTouchingRight()
+        {
+            return playerRight > objectRight &&
+                   playerLeft < objectRight &&
+                   playerBottom > objectTop &&
+                   playerTop < objectBottom;
+        }
+
+        public bool IsTouchingTop()
+        {
+            return playerRight > objectLeft &&
+                   playerLeft < objectRight &&
+                   playerBottom > objectTop &&
+                   playerTop < objectTop;
+        }
+        public bool IsTouchingBottom()
+        {
+            return playerRight > objectLeft &&
+                   playerLeft < objectRight &&
+                   playerBottom > objectBottom &&
+                   playerTop < objectBottom;
+        }
     }
 }

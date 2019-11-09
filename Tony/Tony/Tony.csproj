@@ -119,7 +119,9 @@
     <None Include="app.manifest" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\tempset.xml" />
+    <Content Include="Content\tempset.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\testmap.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
