@@ -30,11 +30,14 @@ namespace Tony
         {
             Objects.Add(newObject);
             
+
+            // Adds to Drawables if drawable.
             if (newObject is Drawable drawable)
             {
                 Drawables.Add(drawable);
             }
 
+            // Adds to Collidables if collidable.
             if (newObject.getCollidable())
             {
                 Collidables.Add(newObject);

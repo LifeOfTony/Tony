@@ -33,7 +33,7 @@ namespace Tony
         /// It then reads the xml file found and sets the instance variables to the value of certain information in the file.
         /// </summary>
         /// <param name="filePath"></param>
-        public LevelReader(String filePath)
+        public LevelReader(string filePath)
         {
             reader = XDocument.Load(filePath);
             this.map = reader.Element("map");

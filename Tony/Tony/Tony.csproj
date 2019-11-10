@@ -47,7 +47,9 @@
     <Compile Include="GameManager.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="InteractableObject.cs" />
+    <Compile Include="Interactor.cs" />
     <Compile Include="Item.cs" />
+    <Compile Include="ItemReader.cs" />
     <Compile Include="LevelReader.cs" />
     <Compile Include="Npc.cs" />
     <Compile Include="ObjectManager.cs" />
@@ -119,6 +121,9 @@
     <None Include="app.manifest" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Items.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\tempset.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

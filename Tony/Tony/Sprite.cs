@@ -13,6 +13,15 @@ namespace Tony
         float depth;
         Texture2D texture;
 
+        /// <summary>
+        /// A sprite represents any drawn object that is not the player character or a tile.
+        /// Sprites are simply GameObjects with a texture.
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="size"></param>
+        /// <param name="collidable"></param>
+        /// <param name="depth"></param>
+        /// <param name="texture"></param>
         public Sprite(Vector2 position, Vector2 size, bool collidable, float depth, Texture2D texture) :
             base(position, size, collidable)
         {
@@ -20,6 +29,10 @@ namespace Tony
             this.texture = texture;
         }
 
+        /// <summary>
+        /// The draw method to allow the sprite to be crawn by the spriteBatch.
+        /// </summary>
+        /// <param name="spriteBatch"></param>
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(

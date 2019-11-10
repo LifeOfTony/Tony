@@ -15,12 +15,23 @@ namespace Tony
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
+        //A list holding the tileset textures.
         private List<Texture2D> tileset;
+
+        //A SpriteFont for displaying text.
+        private SpriteFont font;
+
+        //The text to be displayed.
+        public static string textOutput;
         public GameManager()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             this.tileset = new List<Texture2D>();
+            textOutput = "";
+
+            
         }
 
         /// <summary>
@@ -31,8 +42,11 @@ namespace Tony
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
+            //These four lines set up the screen to fit the users monitor.
+            graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
+            graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
+            graphics.IsFullScreen = true;
+            graphics.ApplyChanges();
             base.Initialize();
         }
 
@@ -45,13 +59,22 @@ namespace Tony
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            // Loads the SpriteFont 'textFont' from Content.
+            font = Content.Load<SpriteFont>("textFont");
+
+            // Creates a new ItemReader for the Items.xml file.
+            ItemReader itemList = new ItemReader(@"Content\Items.xml");
+
+            // Creates a new LevelReader for the testmap.xml file. 
             LevelReader currentLevel = new LevelReader(@"Content\testmap.xml");
+
+            // Creates all of the textures from the tileset.
             foreach(string currentTexture in currentLevel.tileset)
             {
                 this.tileset.Add(Content.Load<Texture2D>(currentTexture));
             }
 
+            // Creates all instances of Tile objects from the tileNumbers list.
             for (int y = 0; y < currentLevel.tileNumbers.Count; y++)
             {
                 string[] currentRow = currentLevel.tileNumbers[y];
@@ -64,29 +87,39 @@ namespace Tony
                 }
             }
 
+            // Loops through all the Elements held by the objectElements list.
             foreach(XElement objectdata in currentLevel.objectElements)
             {
+                // Data taken from the object element.
                 bool collidable = bool.Parse(objectdata.Attribute("collidable").Value);
-                IEnumerable<XElement> properties = objectdata.Element("properties").Elements();
                 Vector2 position = new Vector2(Int32.Parse(objectdata.Attribute("x").Value), Int32.Parse(objectdata.Attribute("y").Value));
                 Vector2 size = new Vector2(Int32.Parse(objectdata.Attribute("width").Value), Int32.Parse(objectdata.Attribute("height").Value));
+
+                // Creates a list of property elements.
+                IEnumerable<XElement> properties = objectdata.Element("properties").Elements();
                 
+                // Creates the GameObject based on its properties.
                 foreach( XElement property in properties)
                 {
+                    // Creates a Drawable object.
                     if (property.Attribute("name").Value == "Drawable")
                     {
                         Sprite currentObject = new Sprite(position, size, collidable, 1, tileset[Int32.Parse(objectdata.Attribute("gid").Value) - 1]);
                         ObjectManager.addObject(currentObject);
                     }
+
+                    // Creates a Player object.
                     if(property.Attribute("name").Value == "Player")
                     {
                         Player player = new Player(position, size, collidable, 1, 1, tileset[Int32.Parse(objectdata.Attribute("gid").Value) - 1]);
                         ObjectManager.addObject(player);
                     }
+
+                    // Creates an Interactable object.
                     if (property.Attribute("name").Value == "Interactable")
                     {
-                        string requirement = property.Element("requirement").Value;
-                        string gives = property.Element("gives").Value;
+                        string requirement = property.Element("requirement").Attribute("value").Value;
+                        string gives = property.Element("gives").Attribute("value").Value;
                         InteractableObject currentObject = new InteractableObject(position, size, collidable, requirement, gives);
                         ObjectManager.addObject(currentObject);
                     }
@@ -107,7 +140,7 @@ namespace Tony
         /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
+
         }
 
         /// <summary>
@@ -120,20 +153,26 @@ namespace Tony
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            // Clears the displayed text.
+            textOutput = "";
+
             // Poll for current keyboard state
             KeyboardState state = Keyboard.GetState();
+
+            // Finds the Player object from the Objects list.
             foreach(GameObject p in ObjectManager.Objects)
             {
                 if(p is Player)
                 {
+                    // Calls any Player methods based on the Keyboard state.
                     Player player = (Player)p;
                     if (state.IsKeyDown(Keys.A)) player.move("A");
                     if (state.IsKeyDown(Keys.W)) player.move("W");
                     if (state.IsKeyDown(Keys.S)) player.move("S");
                     if (state.IsKeyDown(Keys.D)) player.move("D");
+                    if (state.IsKeyDown(Keys.E)) player.interact();
                 }
             }
-           
 
 
             base.Update(gameTime);
@@ -147,12 +186,17 @@ namespace Tony
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-
+            // Begins the spriteBatch.
             spriteBatch.Begin(SpriteSortMode.FrontToBack);
 
+            // Draws some text based on the textOutput variable.
+            spriteBatch.DrawString(font, textOutput, new Vector2(750, 200), Color.Black);
+
+            // Draws all Drawable objects.
             foreach (Drawable drawable in ObjectManager.Drawables)
                 drawable.Draw(spriteBatch);
 
+            // Ends the spriteBatch.
             spriteBatch.End();
 
             base.Draw(gameTime);
