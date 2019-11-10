@@ -15,6 +15,9 @@ namespace Tony
 
         //static list of all drawable objects.
         public static List<Drawable> Drawables = new List<Drawable>();
+
+        //static list of collidable objects.
+        public static List<GameObject> Collidables = new List<GameObject>();
         
         //static list of all Items in the current game.
         public static List<Item> Items = new List<Item>();
@@ -27,9 +30,17 @@ namespace Tony
         {
             Objects.Add(newObject);
             
+
+            // Adds to Drawables if drawable.
             if (newObject is Drawable drawable)
             {
                 Drawables.Add(drawable);
+            }
+
+            // Adds to Collidables if collidable.
+            if (newObject.getCollidable())
+            {
+                Collidables.Add(newObject);
             }
         }
 
