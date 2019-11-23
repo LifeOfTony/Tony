@@ -23,12 +23,11 @@ namespace Tony
         /// </summary>
         /// <param name="position"></param>
         /// <param name="size"></param>
-        /// <param name="collidable"></param>
         /// <param name="age"></param>
         /// <param name="depth"></param>
         /// <param name="texture"></param>
-        public Player(Vector2 position, Vector2 size, bool collidable, int age, float depth, Texture2D texture) :
-            base(position, size, collidable)
+        public Player(Vector2 position, Vector2 size, int age, float depth, Texture2D texture) :
+            base(position, size)
         {
             this.age = age;
             this.depth = depth;

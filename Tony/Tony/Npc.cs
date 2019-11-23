@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Tony
 {
-    class Npc : InteractableObject
+    class Npc : InteractableObject, Drawable
     {
         /// <summary>
         /// An Npc is a moving interactable object.

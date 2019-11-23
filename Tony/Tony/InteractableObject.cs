@@ -21,11 +21,10 @@ namespace Tony
         /// </summary>
         /// <param name="position"></param>
         /// <param name="size"></param>
-        /// <param name="collidable"></param>
         /// <param name="requirement"></param>
         /// <param name="gives"></param>
-        public InteractableObject(Vector2 position, Vector2 size, bool collidable, string requirement, string gives) :
-            base(position, size, collidable)
+        public InteractableObject(Vector2 position, Vector2 size, string requirement, string gives) :
+            base(position, size)
         {
             this.requirement = requirement;
             this.gives = gives;

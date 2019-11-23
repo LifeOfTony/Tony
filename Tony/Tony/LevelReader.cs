@@ -13,18 +13,20 @@ namespace Tony
     class LevelReader
     {
         //width, height, tilewidth and tileheight represent basic map information.
-        private int width;
-        private int height;
-        public int tileWidth;
-        public int tileHeight;
+        public int width { get; set; }
+        public int height { get; set; }
+        public int tileWidth { get; set; }
+        public int tileHeight { get; set; }
 
         //reader stores the content of an Xml file in memory.
         private XDocument reader;
 
         //tileNumbers, tileset and objectElements store the information taken from the Xml file.
-        public List<String[]> tileNumbers;
-        public List<String> tileset;
-        public List<XElement> objectElements;
+        public List<string> layers { get; set; }
+        public List<String> tileset { get; set; }
+        public List<XElement> interactors;
+        public List<XElement> colliders;
+        public XElement player;
         private XElement map;
 
 
@@ -35,9 +37,11 @@ namespace Tony
         /// <param name="filePath"></param>
         public LevelReader(string filePath)
         {
+            #region Setting up basic map data.
             reader = XDocument.Load(filePath);
             this.map = reader.Element("map");
-            this.objectElements = new List<XElement>();
+            this.interactors = new List<XElement>();
+            this.colliders = new List<XElement>();
             this.tileset = new List<string>();
             if (map.Attribute("orientation").Value != "orthogonal")
             {
@@ -51,7 +55,9 @@ namespace Tony
                 this.tileWidth = Int32.Parse(map.Attribute("tilewidth").Value);
                 this.tileHeight = Int32.Parse(map.Attribute("tileheight").Value);
             }
+            #endregion
 
+            #region Fetching the tileset data.
             //finds the element called tileset from the map file and uses it to create a new xmlreader for the tileset file.
             XElement tilesetNode = map.Element("tileset");
             XmlReader tileReader = XmlReader.Create(tilesetNode.Attribute("source").Value);
@@ -64,40 +70,58 @@ namespace Tony
                 }
                 tileReader.Read();
             }
-            
+            #endregion
 
-            //sets the tilenumbers instance variable to the list returned by tileSplitter.
-            tileNumbers = tileSplitter();
-
-            //finds the objectLayer element and adds each of its child elements to the objectElements list.
-            XElement objectLayer = map.Element("objectgroup");
-            foreach (XElement currentObject in objectLayer.Elements())
+            #region Fetching tile data.
+            IEnumerable<XElement> tileLayers = map.Elements("layer");
+            foreach(XElement currentLayer in tileLayers)
             {
-                objectElements.Add(currentObject);
+                string tiledata = currentLayer.Element("data").Value;
+                this.layers.Add(tiledata);
             }
+            #endregion
+
+            #region Fetching object data.
+            //finds the objectLayer element and adds each of its child elements to the objectElements list.
+            foreach (XElement objectLayer in map.Elements("objectgroup"))
+            {
+                IEnumerable<XElement> objects = objectLayer.Elements();
+                switch (objectLayer.Attribute("name").Value)
+                {
+                    case "Interactable Layer":
+                        foreach (XElement objectData in objects) interactors.Add(objectData);
+                        break;
+                    case "Collision Layer":
+                        foreach (XElement objectData in objects) colliders.Add(objectData);
+                        break;
+                    case "Player":
+                        this.player = objects.First();
+                        break;
+                }
+            }
+
+            #endregion
 
         }
         /// <summary>
-        /// tileSpitter is used to take the tile data saved in teh map file and split it into sets based on the rows and columns of the map.
+        /// tileSpitter is used to take the tile data saved in the map file and split it into sets based on the rows and columns of the map.
         /// </summary>
         /// <returns></returns>
-        public List<String[]> tileSplitter()
+        public List<string[]> tileSplitter(string layerData)
         {
-            //finds the tilelayer, and splits it into individual tile strings.
-            XElement tilelayer = map.Element("layer");
-            String tiledata = tilelayer.Element("data").Value;
-            String[] alltiles = tiledata.Split(',');
+            string[] alltiles = layerData.Split(',');
 
 
             //runs through the tile data and splits it into equal groups based on the current maps row length.
             List<string[]> rows = new List<string[]>();
             for (int i = 0; i < alltiles.Length; i += this.width)
             {
-                String[] slice = new String[this.width];
+                string[] slice = new string[this.width];
                 Array.Copy(alltiles, i, slice, 0, this.width);
                 rows.Add(slice);
             }
             return rows;
         }
+ 
     }
 }

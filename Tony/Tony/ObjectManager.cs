@@ -38,7 +38,7 @@ namespace Tony
             }
 
             // Adds to Collidables if collidable.
-            if (newObject.getCollidable())
+            if (newObject is Collider)
             {
                 Collidables.Add(newObject);
             }
