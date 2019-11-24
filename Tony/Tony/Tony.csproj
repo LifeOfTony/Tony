@@ -43,12 +43,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Collider.cs" />
-    <Compile Include="Collisions.cs" />
+    <Compile Include="Detector.cs" />
     <Compile Include="Drawable.cs" />
     <Compile Include="GameManager.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="InteractableObject.cs" />
-    <Compile Include="Interactor.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="ItemReader.cs" />
     <Compile Include="LevelReader.cs" />
