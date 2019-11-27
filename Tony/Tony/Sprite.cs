@@ -10,8 +10,8 @@ namespace Tony
 {
     class Sprite : GameObject, Drawable
     {
-        float depth;
-        Texture2D texture;
+        protected Texture2D texture;
+        protected float depth;
 
         /// <summary>
         /// A sprite represents any drawn object that is not the player character or a tile.
@@ -19,11 +19,10 @@ namespace Tony
         /// </summary>
         /// <param name="position"></param>
         /// <param name="size"></param>
-        /// <param name="collidable"></param>
         /// <param name="depth"></param>
         /// <param name="texture"></param>
-        public Sprite(Vector2 position, Vector2 size, bool collidable, float depth, Texture2D texture) :
-            base(position, size, collidable)
+        public Sprite(Vector2 position, Vector2 size, float depth, Texture2D texture) :
+            base(position, size)
         {
             this.depth = depth;
             this.texture = texture;

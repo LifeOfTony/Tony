@@ -14,45 +14,29 @@ namespace Tony
         protected Vector2 size;
         protected float rotation;
         protected Vector2 rotationOrigin;
-        protected bool collidable;
 
         /// <summary>
         /// GameObjects are anything that has a location and size in the game.
-        /// These are taken as parameters, along with a bool to represent whether
-        /// the object has collision.
+        /// These are taken as parameters.
         /// </summary>
         /// <param name="position"></param>
         /// <param name="size"></param>
-        /// <param name="collidable"></param>
         /// <param name="rotation"></param>
         /// <param name="rotationOrigin"></param>
-        public GameObject(Vector2 position, Vector2 size, bool collidable, float rotation, Vector2 rotationOrigin)
+        public GameObject(Vector2 position, Vector2 size, float rotation, Vector2 rotationOrigin)
         {
             this.position = position;
             this.size = size;
             this.rotation = rotation;
             this.rotationOrigin = rotationOrigin;
-            this.collidable = collidable;
+
+
         }
 
         // Constructor overrides are used for objects types that do not specify details.
-        public GameObject(Vector2 position, Vector2 size, bool collidable) : this(position, size, collidable, 0, new Vector2(0))
+        public GameObject(Vector2 position, Vector2 size) : this(position, size, 0, new Vector2(0))
         {
 
-        }
-
-        public GameObject(Vector2 position, Vector2 size) : this(position, size, false, 0, new Vector2(0))
-        {
-
-        }
-
-        /// <summary>
-        /// returns whether the object is collidable.
-        /// </summary>
-        /// <returns></returns>
-        public bool getCollidable()
-        {
-            return this.collidable;
         }
 
         /// <summary>

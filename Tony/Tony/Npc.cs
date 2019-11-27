@@ -18,10 +18,12 @@ namespace Tony
         /// <param name="collidable"></param>
         /// <param name="requirement"></param>
         /// <param name="gives"></param>
-        public Npc(Vector2 position, Vector2 size, bool collidable, string requirement, string gives) :
-            base(position, size, collidable, requirement, gives)
+        public Npc(Vector2 position, Vector2 size, string requirement, string gives, float depth, Texture2D texture) :
+            base(position, size, requirement, gives, depth, texture)
         {
-
         }
+
     }
+
+   
 }

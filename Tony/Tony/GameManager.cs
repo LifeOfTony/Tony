@@ -22,6 +22,9 @@ namespace Tony
         //A SpriteFont for displaying text.
         private SpriteFont font;
 
+        //The current level number.
+        int level = 0;
+
         //The text to be displayed.
         public static string textOutput;
         public GameManager()
@@ -66,7 +69,7 @@ namespace Tony
             ItemReader itemList = new ItemReader(@"Content\Items.xml");
 
             // Creates a new LevelReader for the testmap.xml file. 
-            LevelReader currentLevel = new LevelReader(@"Content\testmap.xml");
+            LevelReader currentLevel = new LevelReader(@"Content\newtestmap.tmx");
 
             // Creates all of the textures from the tileset.
             foreach(string currentTexture in currentLevel.tileset)
@@ -74,63 +77,92 @@ namespace Tony
                 this.tileset.Add(Content.Load<Texture2D>(currentTexture));
             }
 
+            int tileLayerNum = currentLevel.layers.Count;
+
+            #region Tile creation
+
             // Creates all instances of Tile objects from the tileNumbers list.
-            for (int y = 0; y < currentLevel.tileNumbers.Count; y++)
+            for (int i = 0; i < tileLayerNum; i++)
             {
-                string[] currentRow = currentLevel.tileNumbers[y];
-                for(int x = 0; x < currentRow.Length; x++)
+                string layer = currentLevel.layers[i];
+                List<string[]> currentLayer = currentLevel.tileSplitter(layer);
+                for (int y = 0; y < currentLayer.Count; y++)
                 {
-                    Vector2 position = new Vector2(x * currentLevel.tileWidth, y * currentLevel.tileHeight);
-                    Vector2 size = new Vector2(currentLevel.tileWidth, currentLevel.tileHeight);
-                    Tile currentTile = new Tile(position, size, tileset[Int32.Parse(currentRow[x]) - 1]);
-                    ObjectManager.addObject(currentTile);
+                    string[] currentRow = currentLayer[y];
+                    for (int x = 0; x < currentRow.Length; x++)
+                    {
+                        int textureNumber = Int32.Parse(currentRow[x]);
+                        if (textureNumber == 0) break;
+                        Vector2 position = new Vector2(x * currentLevel.tileWidth, y * currentLevel.tileHeight);
+                        Vector2 size = new Vector2(currentLevel.tileWidth, currentLevel.tileHeight);
+                        Sprite currentTile = new Sprite(position, size, i, tileset[textureNumber - 1]);
+                        ObjectManager.addObject(currentTile);
+                    }
                 }
+
             }
 
-            // Loops through all the Elements held by the objectElements list.
-            foreach(XElement objectdata in currentLevel.objectElements)
+            #endregion
+
+
+            #region Object creation
+
+
+
+            // Loops through the collider list to make colliders.
+            foreach (XElement objectData in currentLevel.colliders)
             {
                 // Data taken from the object element.
-                bool collidable = bool.Parse(objectdata.Attribute("collidable").Value);
-                Vector2 position = new Vector2(Int32.Parse(objectdata.Attribute("x").Value), Int32.Parse(objectdata.Attribute("y").Value));
-                Vector2 size = new Vector2(Int32.Parse(objectdata.Attribute("width").Value), Int32.Parse(objectdata.Attribute("height").Value));
+                Vector2 position = new Vector2(Int32.Parse(objectData.Attribute("x").Value), Int32.Parse(objectData.Attribute("y").Value));
+                Vector2 size = new Vector2(Int32.Parse(objectData.Attribute("width").Value), Int32.Parse(objectData.Attribute("height").Value));
 
-                // Creates a list of property elements.
-                IEnumerable<XElement> properties = objectdata.Element("properties").Elements();
-                
-                // Creates the GameObject based on its properties.
-                foreach( XElement property in properties)
-                {
-                    // Creates a Drawable object.
-                    if (property.Attribute("name").Value == "Drawable")
-                    {
-                        Sprite currentObject = new Sprite(position, size, collidable, 1, tileset[Int32.Parse(objectdata.Attribute("gid").Value) - 1]);
-                        ObjectManager.addObject(currentObject);
-                    }
-
-                    // Creates a Player object.
-                    if(property.Attribute("name").Value == "Player")
-                    {
-                        Player player = new Player(position, size, collidable, 1, 1, tileset[Int32.Parse(objectdata.Attribute("gid").Value) - 1]);
-                        ObjectManager.addObject(player);
-                    }
-
-                    // Creates an Interactable object.
-                    if (property.Attribute("name").Value == "Interactable")
-                    {
-                        string requirement = property.Element("requirement").Attribute("value").Value;
-                        string gives = property.Element("gives").Attribute("value").Value;
-                        InteractableObject currentObject = new InteractableObject(position, size, collidable, requirement, gives);
-                        ObjectManager.addObject(currentObject);
-                    }
- 
-                }
+                // creates a new collider.
+                Collider currentCollider = new Collider(position, size);
+                ObjectManager.addObject(currentCollider);
             }
 
-            
+            // Loops through the interactors list to make interacable objects.
+            foreach (XElement objectData in currentLevel.interactors)
+            {
+                // Data taken from the object element.
+                Vector2 position = new Vector2(Int32.Parse(objectData.Attribute("x").Value), Int32.Parse(objectData.Attribute("y").Value));
+                Vector2 size = new Vector2(Int32.Parse(objectData.Attribute("width").Value), Int32.Parse(objectData.Attribute("height").Value));
+                string requires = "none";
+                string gives= "none";
+
+                // Uses the property element of the objectData to assign requires and gives.
+                IEnumerable<XElement> properties = objectData.Element("properties").Elements();
+                foreach (XElement property in properties)
+                {
+                    if (property.Attribute("name").Value == "Requires") requires = property.Attribute("value").Value;
+                    if (property.Attribute("name").Value == "Gives") gives = property.Attribute("value").Value;
+                }
+
+                // Creates a standard InteractableObject and associated Sprite.
+                if(objectData.Attribute("type").Value == "Interactable")
+                {
+
+                    InteractableObject currentObject = new InteractableObject(position, size, requires, gives, 1, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1]);
+                    ObjectManager.addObject(currentObject);
+                }
+
+
+            }
+
+            XElement playerData = currentLevel.player;
+            {
+                Vector2 position = new Vector2(Int32.Parse(playerData.Attribute("x").Value), Int32.Parse(playerData.Attribute("y").Value));
+                Vector2 size = new Vector2(Int32.Parse(playerData.Attribute("width").Value), Int32.Parse(playerData.Attribute("height").Value));
+                Player player = new Player(position, size, 1, tileset[Int32.Parse(playerData.Attribute("gid").Value) - 1], 1);
+                ObjectManager.addObject(player);
+            }
+
+            #endregion
+
 
 
         }
+
 
 
 

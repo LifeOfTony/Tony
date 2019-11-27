@@ -9,12 +9,11 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Tony
 {
-    class Player : GameObject, Drawable
+    class Player : Sprite
     {
         private int age;
-        private float depth;
-        private Texture2D texture;
         private int moveSpeed;
+        private int range;
         private Vector2 velocity;
 
         /// <summary>
@@ -23,17 +22,15 @@ namespace Tony
         /// </summary>
         /// <param name="position"></param>
         /// <param name="size"></param>
-        /// <param name="collidable"></param>
         /// <param name="age"></param>
         /// <param name="depth"></param>
         /// <param name="texture"></param>
-        public Player(Vector2 position, Vector2 size, bool collidable, int age, float depth, Texture2D texture) :
-            base(position, size, collidable)
+        public Player(Vector2 position, Vector2 size, int age, Texture2D texture, float depth) :
+            base(position, size, depth, texture)
         {
             this.age = age;
-            this.depth = depth;
-            this.texture = texture;
             this.moveSpeed = 1;
+            this.range = 1;
             velocity = Vector2.Zero;
 
         }
@@ -48,8 +45,6 @@ namespace Tony
             // setVelocity sets the values of velocity based on teh key given.
             setVelocity(key);
 
-            // newPisition is the possible future position of the player.
-            Vector2 newPosition = this.position + velocity;
 
             // Compares the player position to all collidable objects.
             foreach(GameObject currentObject in ObjectManager.Collidables)
@@ -58,15 +53,15 @@ namespace Tony
                     continue;
 
                 // an instance of Collisions is created using the current object and the newPosition variable
-                Collisions collider = new Collisions(currentObject.getPosition(), currentObject.getSize(), newPosition, this.size);
+                Detector detector = new Detector(currentObject.getPosition(), currentObject.getSize(), this.position, this.size, this.moveSpeed);
 
                 // conditions for horizontal movement.
                 //if not met, the horezontal velocity is set to 0.
-                if ((velocity.X > 0 && collider.IsTouchingLeft()) || (velocity.X < 0 && collider.IsTouchingRight())) velocity.X = 0;
+                if ((velocity.X > 0 && detector.IsTouchingLeft()) || (velocity.X < 0 && detector.IsTouchingRight())) velocity.X = 0;
 
                 // conditions for vertical movement.
                 //if not met, the vertical velocity is set to 0.
-                if ((velocity.Y > 0 && collider.IsTouchingTop()) || (velocity.Y < 0 && collider.IsTouchingBottom())) velocity.Y = 0;
+                if ((velocity.Y > 0 && detector.IsTouchingTop()) || (velocity.Y < 0 && detector.IsTouchingBottom())) velocity.Y = 0;
             }
 
             // updates the player position based on velocity and resets velocity.
@@ -113,34 +108,17 @@ namespace Tony
                     InteractableObject currentObject = (InteractableObject)i;
 
                     // an Interactor is created from teh current object and the player to test interaction logic.
-                    Interactor interaction = new Interactor(currentObject.getPosition(), currentObject.getSize(), this.position, this.size);
+                    Detector interaction = new Detector(currentObject.getPosition(), currentObject.getSize(), this.position, this.size, this.range);
 
                     //conditions of interaction.
                     //if met and interaction is triggered.
                     if(interaction.IsTouchingBottom() || interaction.IsTouchingTop() || interaction.IsTouchingLeft() || interaction.IsTouchingRight())
                     {
-                        currentObject.interact();
+                        currentObject.Interact();
                     }
                 }
             }
         }
 
-        /// <summary>
-        /// the Draw function for the Player sprite.
-        /// </summary>
-        /// <param name="spriteBatch"></param>
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(
-                texture: texture,
-                position: position,
-                sourceRectangle: null,
-                color: Color.White,
-                rotation: rotation,
-                origin: rotationOrigin,
-                scale: 1f,
-                effects: SpriteEffects.None,
-                layerDepth: depth);
-        }
     }
 }
