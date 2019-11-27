@@ -8,11 +8,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Tony
 {
-    class InteractableObject : GameObject
+    class InteractableObject : Sprite, Interactable
     {
         private string requirement;
         private string gives;
-        private SpriteFont font;
 
         /// <summary>
         /// InteractableObjects are any object that can be interacted with by the player.
@@ -23,17 +22,17 @@ namespace Tony
         /// <param name="size"></param>
         /// <param name="requirement"></param>
         /// <param name="gives"></param>
-        public InteractableObject(Vector2 position, Vector2 size, string requirement, string gives) :
-            base(position, size)
+        public InteractableObject(Vector2 position, Vector2 size, string requirement, string gives, float depth, Texture2D texture) :
+            base(position, size, depth, texture)
         {
             this.requirement = requirement;
             this.gives = gives;
         }
 
         /// <summary>
-        /// The interact method handles when the player triggers this object in game.
+        /// The Interact method handles when the player triggers this object in game.
         /// </summary>
-        public void interact()
+        public void Interact()
         {
             // an object can have no requirement, in which case the interaction moves on.
             if(requirement.Equals("none"))

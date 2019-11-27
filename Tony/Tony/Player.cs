@@ -9,11 +9,9 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Tony
 {
-    class Player : GameObject, Drawable
+    class Player : Sprite
     {
         private int age;
-        private float depth;
-        private Texture2D texture;
         private int moveSpeed;
         private int range;
         private Vector2 velocity;
@@ -27,12 +25,10 @@ namespace Tony
         /// <param name="age"></param>
         /// <param name="depth"></param>
         /// <param name="texture"></param>
-        public Player(Vector2 position, Vector2 size, int age, float depth, Texture2D texture) :
-            base(position, size)
+        public Player(Vector2 position, Vector2 size, int age, Texture2D texture, float depth) :
+            base(position, size, depth, texture)
         {
             this.age = age;
-            this.depth = depth;
-            this.texture = texture;
             this.moveSpeed = 1;
             this.range = 1;
             velocity = Vector2.Zero;
@@ -118,28 +114,11 @@ namespace Tony
                     //if met and interaction is triggered.
                     if(interaction.IsTouchingBottom() || interaction.IsTouchingTop() || interaction.IsTouchingLeft() || interaction.IsTouchingRight())
                     {
-                        currentObject.interact();
+                        currentObject.Interact();
                     }
                 }
             }
         }
 
-        /// <summary>
-        /// the Draw function for the Player sprite.
-        /// </summary>
-        /// <param name="spriteBatch"></param>
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(
-                texture: texture,
-                position: position,
-                sourceRectangle: null,
-                color: Color.White,
-                rotation: rotation,
-                origin: rotationOrigin,
-                scale: 1f,
-                effects: SpriteEffects.None,
-                layerDepth: depth);
-        }
     }
 }

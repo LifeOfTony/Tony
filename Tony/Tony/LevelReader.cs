@@ -13,17 +13,17 @@ namespace Tony
     class LevelReader
     {
         //width, height, tilewidth and tileheight represent basic map information.
-        public int width { get; set; }
-        public int height { get; set; }
-        public int tileWidth { get; set; }
-        public int tileHeight { get; set; }
+        public int width;
+        public int height;
+        public int tileWidth;
+        public int tileHeight;
 
         //reader stores the content of an Xml file in memory.
         private XDocument reader;
 
         //tileNumbers, tileset and objectElements store the information taken from the Xml file.
-        public List<string> layers { get; set; }
-        public List<String> tileset { get; set; }
+        public List<string> layers;
+        public List<String> tileset;
         public List<XElement> interactors;
         public List<XElement> colliders;
         public XElement player;
@@ -43,6 +43,7 @@ namespace Tony
             this.interactors = new List<XElement>();
             this.colliders = new List<XElement>();
             this.tileset = new List<string>();
+            this.layers = new List<string>();
             if (map.Attribute("orientation").Value != "orthogonal")
             {
                 //return exception level file invalid.

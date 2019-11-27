@@ -30,6 +30,7 @@ namespace Tony
             this.rotation = rotation;
             this.rotationOrigin = rotationOrigin;
 
+
         }
 
         // Constructor overrides are used for objects types that do not specify details.
