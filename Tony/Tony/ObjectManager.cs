@@ -22,6 +22,8 @@ namespace Tony
         //static list of all Items in the current game.
         public static List<Item> Items = new List<Item>();
 
+        public static Player player;
+
 
         /// <summary>
         /// addObject is called to add a new GameObject to the Objects list.
@@ -41,6 +43,11 @@ namespace Tony
             if (newObject is Collider)
             {
                 Collidables.Add(newObject);
+            }
+
+            if (newObject is Player)
+            {
+                player = (Player)newObject;
             }
         }
 
@@ -69,6 +76,8 @@ namespace Tony
         {
             Items.Remove(oldItem);
         }
+
+
 
     }
 }
