@@ -253,9 +253,11 @@ namespace Tony
             {
 
                 float scale = 4f;
-                int maskWidth = lightMask.Width/2 * (int)scale;
-                int maskHeight = lightMask.Height/2 * (int)scale;
-                lightPosition = new Vector2(mapWidth / 2 - maskWidth, mapHeight / 2 - maskHeight);
+
+                float maskRadius = lightMask.Width / 2 * scale;
+                Vector2 playerLocation = ObjectManager.player.getPosition();
+
+                lightPosition = new Vector2(playerLocation.X - maskRadius, playerLocation.X - maskRadius);
 
                 GraphicsDevice.SetRenderTarget(lightsTarget);
                 GraphicsDevice.Clear(Color.Black);
