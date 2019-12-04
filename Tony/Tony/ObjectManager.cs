@@ -22,17 +22,19 @@ namespace Tony
         //static list of all Items in the current game.
         public static List<Item> Items = new List<Item>();
 
-        private static ObjectManager ObjectManagerinstance;
+        private static ObjectManager ObjectManagerinstance = null;
         /// <summary>
         /// addObject is called to add a new GameObject to the Objects list.
         /// </summary>
         /// 
         private ObjectManager()
         {
+            
             if (ObjectManagerinstance == null)
             {
                 ObjectManagerinstance = new ObjectManager();
             }
+
         }
 
         public static void addObject(GameObject newObject)
@@ -80,7 +82,11 @@ namespace Tony
         }
 
         public ObjectManager getObjectManager()
-        {
+        {   
+            if (ObjectManagerinstance == null)
+            {
+                ObjectManagerinstance = new ObjectManager();
+            }
             return ObjectManagerinstance;
         }
 

@@ -6,6 +6,9 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using System.IO;
 
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Xml.Serialization;
+
 namespace Tony
 {
     /// <summary>
@@ -15,7 +18,7 @@ namespace Tony
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
+        SaveItem saveItem = new SaveItem(); 
         //A list holding the tileset textures.
         private List<Texture2D> tileset;
 
@@ -203,6 +206,9 @@ namespace Tony
                     if (state.IsKeyDown(Keys.S)) player.move("S");
                     if (state.IsKeyDown(Keys.D)) player.move("D");
                     if (state.IsKeyDown(Keys.E)) player.interact();
+                    //testing
+                    if (state.IsKeyDown(Keys.L)) saveItem.Save(@"D:\VS CM\SLS\ItemSave.xml");
+
                 }
             }
 

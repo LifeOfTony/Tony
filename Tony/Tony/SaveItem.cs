@@ -7,27 +7,42 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml.Serialization;
 
-namespace SLSystem
+namespace Tony
 {
     public class SaveItem
     {
-        private ObjectManager OM;
+         ObjectManager OM;
+         
         public SaveItem()
         {
-            OM = OM.getObjectManager();
+          
+
+           string testItem = "testItem";
+            Item x = new Item(testItem, 1);
+            ObjectManager.addItem(x);
+
+            string testItemB = "testItemB";
+            Item y = new Item(testItemB, 2);
+            ObjectManager.addItem(y);
         }
 
         public void Save(string filepath)
         {
-
-            FileStream stream = new FileStream(filepath, FileMode.Create);
-
+            
+           // FileStream stream = new FileStream(filepath, FileMode.Create);
+            
+            
 
             XmlSerializer serializer = new XmlSerializer(typeof(List<Item>));
-            List<Item> ListOfItem = OM.getItems();
-            StreamWriter writer = new StreamWriter(stream);
+            
+            StreamWriter writer = new StreamWriter(filepath);
 
-            serializer.Serialize(writer, ListOfItem);
+            OM = OM.getObjectManager();
+            List<Item> ItemList = OM.getItems();
+
+            serializer.Serialize(writer, ItemList);
+            writer.Close();
+           
 
         }
 
