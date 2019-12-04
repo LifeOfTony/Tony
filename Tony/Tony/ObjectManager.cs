@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tony
 {
-    static class ObjectManager
+     class ObjectManager
     {
 
 
@@ -22,10 +22,19 @@ namespace Tony
         //static list of all Items in the current game.
         public static List<Item> Items = new List<Item>();
 
-
+        private static ObjectManager ObjectManagerinstance;
         /// <summary>
         /// addObject is called to add a new GameObject to the Objects list.
         /// </summary>
+        /// 
+        private ObjectManager()
+        {
+            if (ObjectManagerinstance == null)
+            {
+                ObjectManagerinstance = new ObjectManager();
+            }
+        }
+
         public static void addObject(GameObject newObject)
         {
             Objects.Add(newObject);
@@ -70,5 +79,14 @@ namespace Tony
             Items.Remove(oldItem);
         }
 
+        public ObjectManager getObjectManager()
+        {
+            return ObjectManagerinstance;
+        }
+
+        public List<Item> getItems()
+        {
+            return Items;
+        }
     }
 }
