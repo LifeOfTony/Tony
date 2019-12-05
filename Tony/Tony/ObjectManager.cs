@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 
 namespace Tony
 {
@@ -21,6 +22,12 @@ namespace Tony
         
         //static list of all Items in the current game.
         public static List<Item> Items = new List<Item>();
+
+        public static Player player;
+
+        private static float mentalState;
+        private static float countDuration = 3f;
+        private static float currentTime = 0f;
 
 
         /// <summary>
@@ -42,7 +49,26 @@ namespace Tony
             {
                 Collidables.Add(newObject);
             }
+
+            if (newObject is Player)
+            {
+                player = (Player)newObject;
+            }
         }
+
+
+        public static void MentalDecay(GameTime gameTime)
+        {
+            currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds; //Time passed since last Update() 
+
+            if (currentTime >= countDuration)
+            {
+                currentTime -= countDuration;
+                mentalState--;
+            }
+        }
+
+
 
         /// <summary>
         /// removeObject is called to remove a GameObject from the Objects list.
@@ -69,6 +95,8 @@ namespace Tony
         {
             Items.Remove(oldItem);
         }
+
+
 
     }
 }

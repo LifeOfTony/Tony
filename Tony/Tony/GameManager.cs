@@ -16,6 +16,18 @@ namespace Tony
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+
+        public static Texture2D lightMask;
+        public static Effect effect1;
+        RenderTarget2D lightsTarget;
+        RenderTarget2D mainTarget;
+
+        Vector2 lightPosition;
+        int mapHeight;
+        int mapWidth;
+
+
+
         //A list holding the tileset textures.
         private List<Texture2D> tileset;
 
@@ -23,7 +35,9 @@ namespace Tony
         private SpriteFont font;
 
         //The current level number.
-        int level = 0;
+        private int level;
+
+        private double mentalState;
 
         //The text to be displayed.
         public static string textOutput;
@@ -31,10 +45,10 @@ namespace Tony
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            this.tileset = new List<Texture2D>();
+            tileset = new List<Texture2D>();
             textOutput = "";
-
-            
+            level = 0;
+            mentalState = 100;
         }
 
         /// <summary>
@@ -62,6 +76,20 @@ namespace Tony
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+
+
+            lightMask = Content.Load<Texture2D>("lightMask");
+            effect1 = Content.Load<Effect>("lighteffect");
+            var pp = GraphicsDevice.PresentationParameters;
+            lightsTarget = new RenderTarget2D(
+            GraphicsDevice, pp.BackBufferWidth, pp.BackBufferHeight);
+            mainTarget = new RenderTarget2D(
+            GraphicsDevice, pp.BackBufferWidth, pp.BackBufferHeight);
+
+
+
+
+
             // Loads the SpriteFont 'textFont' from Content.
             font = Content.Load<SpriteFont>("textFont");
 
@@ -70,6 +98,10 @@ namespace Tony
 
             // Creates a new LevelReader for the testmap.xml file. 
             LevelReader currentLevel = new LevelReader(@"Content\newtestmap.tmx");
+
+            mapWidth = currentLevel.width * currentLevel.tileWidth;
+            mapHeight = currentLevel.height * currentLevel.tileHeight;
+            
 
             // Creates all of the textures from the tileset.
             foreach(string currentTexture in currentLevel.tileset)
@@ -185,6 +217,8 @@ namespace Tony
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+
+
             // Clears the displayed text.
             textOutput = "";
 
@@ -216,20 +250,54 @@ namespace Tony
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // Begins the spriteBatch.
-            spriteBatch.Begin(SpriteSortMode.FrontToBack);
+            //Create lightsTarget RenderTarget.
+            {
 
-            // Draws some text based on the textOutput variable.
-            spriteBatch.DrawString(font, textOutput, new Vector2(750, 200), Color.Black);
+                float scale = 4f;
 
-            // Draws all Drawable objects.
-            foreach (Drawable drawable in ObjectManager.Drawables)
-                drawable.Draw(spriteBatch);
+                float maskRadius = lightMask.Width / 2 * scale;
+                Vector2 playerLocation = ObjectManager.player.getPosition();
 
-            // Ends the spriteBatch.
-            spriteBatch.End();
+                lightPosition = new Vector2(playerLocation.X - maskRadius, playerLocation.X - maskRadius);
+
+                GraphicsDevice.SetRenderTarget(lightsTarget);
+                GraphicsDevice.Clear(Color.Black);
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive);
+                spriteBatch.Draw(lightMask, lightPosition, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
+                spriteBatch.End();
+            }
+
+            //Create mainTarget RenderTarget.
+            {
+                GraphicsDevice.SetRenderTarget(mainTarget);
+                GraphicsDevice.Clear(Color.Transparent);
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+
+                // Draws some text based on the textOutput variable.
+                spriteBatch.DrawString(font, textOutput, new Vector2(750, 200), Color.White);
+
+                // Draws all Drawable objects.
+                foreach (Drawable drawable in ObjectManager.Drawables)
+                    drawable.Draw(spriteBatch);
+
+                // Ends the spriteBatch.
+                spriteBatch.End();
+            }
+
+            //Blend RenderTargets.
+            {
+                GraphicsDevice.SetRenderTarget(null);
+                GraphicsDevice.Clear(Color.Black);
+
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+
+                effect1.Parameters["lightMask"].SetValue(lightsTarget);
+                effect1.CurrentTechnique.Passes[0].Apply();
+                spriteBatch.Draw(mainTarget, Vector2.Zero, Color.White);
+                spriteBatch.End();
+            }
+            
 
             base.Draw(gameTime);
         }
