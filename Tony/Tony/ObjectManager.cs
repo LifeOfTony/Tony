@@ -6,38 +6,92 @@ using System.Threading.Tasks;
 
 namespace Tony
 {
-     class ObjectManager
+    public sealed class ObjectManager
     {
 
 
         //static list of all objects in the current game.
-        public static List<GameObject> Objects = new List<GameObject>();
+        private static List<GameObject> _Objects = new List<GameObject>();
 
         //static list of all drawable objects.
-        public static List<Drawable> Drawables = new List<Drawable>();
+        private static List<Drawable> _Drawables = new List<Drawable>();
 
         //static list of collidable objects.
-        public static List<GameObject> Collidables = new List<GameObject>();
+        private static List<GameObject> _Collidables = new List<GameObject>();
         
         //static list of all Items in the current game.
-        public static List<Item> Items = new List<Item>();
+        private static List<Item> _Items = new List<Item>();
 
         private static ObjectManager ObjectManagerinstance = null;
-        /// <summary>
-        /// addObject is called to add a new GameObject to the Objects list.
-        /// </summary>
-        /// 
+ 
         private ObjectManager()
         {
-            
-            if (ObjectManagerinstance == null)
-            {
-                ObjectManagerinstance = new ObjectManager();
-            }
-
         }
 
-        public static void addObject(GameObject newObject)
+        public static ObjectManager Instance
+        {
+            get
+            {
+                if (ObjectManagerinstance == null)
+                {
+                    ObjectManagerinstance = new ObjectManager();
+                }
+                return ObjectManagerinstance;
+            }
+        }
+
+
+
+        public List<GameObject> Objects
+        {
+            get
+            {
+                return _Objects;
+            }
+        }
+
+        public List<Drawable> Drawables
+        {
+            get
+            {
+                return _Drawables;
+            }
+        }
+
+        public List<GameObject> Collidables
+        {
+            get
+            {
+                return _Collidables;
+            }
+        }
+
+        public List<Item> Items
+        {
+            get
+            {
+                return _Items;
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /// <summary>
+        /// AddObject is called to add a new GameObject to the Objects list.
+        /// </summary>
+        ///
+        public void AddObject(GameObject newObject)
         {
             Objects.Add(newObject);
             
@@ -56,43 +110,29 @@ namespace Tony
         }
 
         /// <summary>
-        /// removeObject is called to remove a GameObject from the Objects list.
+        /// RemoveObject is called to remove a GameObject from the Objects list.
         /// </summary>
-        public static void removeObject(GameObject oldObject)
+        public void RemoveObject(GameObject oldObject)
         {
             Objects.Remove(oldObject);
         }
 
-
         /// <summary>
-        /// addItem is called to add a new Item to the Items list.
+        /// AddItem is called to add a new Item to the Items list.
         /// </summary>
-        public static void addItem(Item newItem)
+        public void AddItem(Item newItem)
         {
             Items.Add(newItem);
         }
 
-
         /// <summary>
-        /// removeItem is called to remove an Item from the Items list.
+        /// RemoveItem is called to remove an Item from the Items list.
         /// </summary>
-        public static void removeItem(Item oldItem)
+        public void RemoveItem(Item oldItem)
         {
             Items.Remove(oldItem);
         }
 
-        public ObjectManager getObjectManager()
-        {   
-            if (ObjectManagerinstance == null)
-            {
-                ObjectManagerinstance = new ObjectManager();
-            }
-            return ObjectManagerinstance;
-        }
 
-        public List<Item> getItems()
-        {
-            return Items;
-        }
     }
 }

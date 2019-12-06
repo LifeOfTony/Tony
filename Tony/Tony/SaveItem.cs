@@ -19,11 +19,11 @@ namespace Tony
 
            string testItem = "testItem";
             Item x = new Item(testItem, 1);
-            ObjectManager.addItem(x);
+            ObjectManager.AddItem(x);
 
             string testItemB = "testItemB";
             Item y = new Item(testItemB, 2);
-            ObjectManager.addItem(y);
+            ObjectManager.AddItem(y);
         }
 
         public void Save(string filepath)

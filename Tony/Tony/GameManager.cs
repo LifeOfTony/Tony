@@ -99,7 +99,7 @@ namespace Tony
                         Vector2 position = new Vector2(x * currentLevel.tileWidth, y * currentLevel.tileHeight);
                         Vector2 size = new Vector2(currentLevel.tileWidth, currentLevel.tileHeight);
                         Sprite currentTile = new Sprite(position, size, i, tileset[textureNumber - 1]);
-                        ObjectManager.addObject(currentTile);
+                        ObjectManager.AddObject(currentTile);
                     }
                 }
 
@@ -121,7 +121,7 @@ namespace Tony
 
                 // creates a new collider.
                 Collider currentCollider = new Collider(position, size);
-                ObjectManager.addObject(currentCollider);
+                ObjectManager.AddObject(currentCollider);
             }
 
             // Loops through the interactors list to make interacable objects.
@@ -146,7 +146,7 @@ namespace Tony
                 {
 
                     InteractableObject currentObject = new InteractableObject(position, size, requires, gives, 1, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1]);
-                    ObjectManager.addObject(currentObject);
+                    ObjectManager.AddObject(currentObject);
                 }
 
 
@@ -157,7 +157,7 @@ namespace Tony
                 Vector2 position = new Vector2(Int32.Parse(playerData.Attribute("x").Value), Int32.Parse(playerData.Attribute("y").Value));
                 Vector2 size = new Vector2(Int32.Parse(playerData.Attribute("width").Value), Int32.Parse(playerData.Attribute("height").Value));
                 Player player = new Player(position, size, 1, tileset[Int32.Parse(playerData.Attribute("gid").Value) - 1], 1);
-                ObjectManager.addObject(player);
+                ObjectManager.AddObject(player);
             }
 
             #endregion
