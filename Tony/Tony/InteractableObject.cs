@@ -42,7 +42,7 @@ namespace Tony
             else
             {
                 // checks to see if the player has got the required item to trigger the interaction.
-                foreach (Item currentItem in ObjectManager.Items)
+                foreach (Item currentItem in ObjectManager.Instance.Items)
                 {
                     // if an item is used, text feedback is given.
                     if (currentItem.GetName().Equals(requirement) && currentItem.IsCollected())
@@ -59,7 +59,7 @@ namespace Tony
         public void Collect()
         {
             // finds the correct item and sets it to collected.
-            foreach (Item currentItem in ObjectManager.Items)
+            foreach (Item currentItem in ObjectManager.Instance.Items)
             {
                 // text feedback is given when the item is gained.
                 if (currentItem.GetName().Equals(gives))

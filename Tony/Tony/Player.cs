@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Tony
 {
-    class Player : Sprite
+    public class Player : Sprite
     {
         private int age;
         private int moveSpeed;
@@ -47,7 +47,7 @@ namespace Tony
 
 
             // Compares the player position to all collidable objects.
-            foreach(GameObject currentObject in ObjectManager.Collidables)
+            foreach(GameObject currentObject in ObjectManager.Instance.Collidables)
             {
                 if (currentObject == this)
                     continue;
@@ -101,7 +101,7 @@ namespace Tony
         /// </summary>
         public void interact()
         {
-            foreach(GameObject i in ObjectManager.Objects)
+            foreach(GameObject i in ObjectManager.Instance.Objects)
             {
                 if (i is InteractableObject)
                 {

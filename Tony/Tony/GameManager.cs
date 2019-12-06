@@ -128,7 +128,7 @@ namespace Tony
                         Vector2 position = new Vector2(x * currentLevel.tileWidth, y * currentLevel.tileHeight);
                         Vector2 size = new Vector2(currentLevel.tileWidth, currentLevel.tileHeight);
                         Sprite currentTile = new Sprite(position, size, i, tileset[textureNumber - 1]);
-                        ObjectManager.addObject(currentTile);
+                        ObjectManager.Instance.AddObject(currentTile);
                     }
                 }
 
@@ -150,7 +150,7 @@ namespace Tony
 
                 // creates a new collider.
                 Collider currentCollider = new Collider(position, size);
-                ObjectManager.addObject(currentCollider);
+                ObjectManager.Instance.AddObject(currentCollider);
             }
 
             // Loops through the interactors list to make interacable objects.
@@ -175,7 +175,7 @@ namespace Tony
                 {
 
                     InteractableObject currentObject = new InteractableObject(position, size, requires, gives, 1, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1]);
-                    ObjectManager.addObject(currentObject);
+                    ObjectManager.Instance.AddObject(currentObject);
                 }
 
 
@@ -186,7 +186,7 @@ namespace Tony
                 Vector2 position = new Vector2(Int32.Parse(playerData.Attribute("x").Value), Int32.Parse(playerData.Attribute("y").Value));
                 Vector2 size = new Vector2(Int32.Parse(playerData.Attribute("width").Value), Int32.Parse(playerData.Attribute("height").Value));
                 Player player = new Player(position, size, 1, tileset[Int32.Parse(playerData.Attribute("gid").Value) - 1], 1);
-                ObjectManager.addObject(player);
+                ObjectManager.Instance.AddObject(player);
             }
 
             #endregion
@@ -225,21 +225,15 @@ namespace Tony
             // Poll for current keyboard state
             KeyboardState state = Keyboard.GetState();
 
-            // Finds the Player object from the Objects list.
-            foreach(GameObject p in ObjectManager.Objects)
-            {
-                if(p is Player)
-                {
-                    // Calls any Player methods based on the Keyboard state.
-                    Player player = (Player)p;
-                    if (state.IsKeyDown(Keys.A)) player.move("A");
-                    if (state.IsKeyDown(Keys.W)) player.move("W");
-                    if (state.IsKeyDown(Keys.S)) player.move("S");
-                    if (state.IsKeyDown(Keys.D)) player.move("D");
-                    if (state.IsKeyDown(Keys.E)) player.interact();
-                }
-            }
-
+            // Calls any Player methods based on the Keyboard state.
+            Player player = ObjectManager.Instance.Player;
+            if (state.IsKeyDown(Keys.A)) player.move("A");
+            if (state.IsKeyDown(Keys.W)) player.move("W");
+            if (state.IsKeyDown(Keys.S)) player.move("S");
+            if (state.IsKeyDown(Keys.D)) player.move("D");
+            if (state.IsKeyDown(Keys.E)) player.interact();
+           
+    
 
             base.Update(gameTime);
         }
@@ -257,7 +251,7 @@ namespace Tony
                 float scale = 4f;
 
                 float maskRadius = lightMask.Width / 2 * scale;
-                Vector2 playerLocation = ObjectManager.player.getPosition();
+                Vector2 playerLocation = ObjectManager.Instance.Player.getPosition();
 
                 lightPosition = new Vector2(playerLocation.X - maskRadius, playerLocation.X - maskRadius);
 
@@ -278,7 +272,7 @@ namespace Tony
                 spriteBatch.DrawString(font, textOutput, new Vector2(750, 200), Color.White);
 
                 // Draws all Drawable objects.
-                foreach (Drawable drawable in ObjectManager.Drawables)
+                foreach (Drawable drawable in ObjectManager.Instance.Drawables)
                     drawable.Draw(spriteBatch);
 
                 // Ends the spriteBatch.

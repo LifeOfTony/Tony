@@ -11,7 +11,6 @@ namespace Tony
 {
     public class SaveItem
     {
-         ObjectManager OM;
          
         public SaveItem()
         {
@@ -19,11 +18,11 @@ namespace Tony
 
            string testItem = "testItem";
             Item x = new Item(testItem, 1);
-            ObjectManager.AddItem(x);
+            ObjectManager.Instance.AddItem(x);
 
             string testItemB = "testItemB";
             Item y = new Item(testItemB, 2);
-            ObjectManager.AddItem(y);
+            ObjectManager.Instance.AddItem(y);
         }
 
         public void Save(string filepath)
@@ -36,9 +35,7 @@ namespace Tony
             XmlSerializer serializer = new XmlSerializer(typeof(List<Item>));
             
             StreamWriter writer = new StreamWriter(filepath);
-
-            OM = OM.getObjectManager();
-            List<Item> ItemList = OM.getItems();
+            List<Item> ItemList = ObjectManager.Instance.Items;
 
             serializer.Serialize(writer, ItemList);
             writer.Close();

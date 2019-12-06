@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Tony
 {
-    class Sprite : GameObject, Drawable
+    public class Sprite : GameObject, Drawable
     {
         protected Texture2D texture;
         protected float depth;

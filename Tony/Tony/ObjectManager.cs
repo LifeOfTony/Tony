@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 
 namespace Tony
 {
@@ -23,7 +24,15 @@ namespace Tony
         private static List<Item> _Items = new List<Item>();
 
         private static ObjectManager ObjectManagerinstance = null;
- 
+
+
+        private static Player _player;
+
+        private static float mentalState;
+        private static float countDuration = 3f;
+        private static float currentTime = 0f;
+
+
         private ObjectManager()
         {
         }
@@ -74,17 +83,13 @@ namespace Tony
             }
         }
 
-
-
-
-
-
-
-
-
-
-
-
+        public Player Player
+        {
+            get
+            {
+                return _player;
+            }
+        }
 
 
         /// <summary>
@@ -107,7 +112,28 @@ namespace Tony
             {
                 Collidables.Add(newObject);
             }
+
+            if (newObject is Player)
+            {
+                _player = (Player)newObject;
+            }
         }
+
+        public void MentalDecay(GameTime gameTime)
+        {
+            currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds; //Time passed since last Update() 
+
+            if (currentTime >= countDuration)
+            {
+                currentTime -= countDuration;
+                mentalState--;
+            }
+        }
+
+
+
+
+
 
         /// <summary>
         /// RemoveObject is called to remove a GameObject from the Objects list.

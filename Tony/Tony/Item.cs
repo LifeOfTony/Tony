@@ -9,7 +9,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Tony
 {
-    class Item
+    public class Item
     {
         private int modifier;
         private string name;
