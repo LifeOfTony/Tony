@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Tony
 {
-    abstract class GameObject
+    public abstract class GameObject
     {
         protected Vector2 position;
         protected Vector2 size;

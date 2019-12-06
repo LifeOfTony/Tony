@@ -7,33 +7,96 @@ using Microsoft.Xna.Framework;
 
 namespace Tony
 {
-    static class ObjectManager
+    public sealed class ObjectManager
     {
 
 
         //static list of all objects in the current game.
-        public static List<GameObject> Objects = new List<GameObject>();
+        private static List<GameObject> _Objects = new List<GameObject>();
 
         //static list of all drawable objects.
-        public static List<Drawable> Drawables = new List<Drawable>();
+        private static List<Drawable> _Drawables = new List<Drawable>();
 
         //static list of collidable objects.
-        public static List<GameObject> Collidables = new List<GameObject>();
+        private static List<GameObject> _Collidables = new List<GameObject>();
         
         //static list of all Items in the current game.
-        public static List<Item> Items = new List<Item>();
+        private static List<Item> _Items = new List<Item>();
 
-        public static Player player;
+        private static ObjectManager ObjectManagerinstance = null;
+
+
+        private static Player _player;
 
         private static float mentalState;
         private static float countDuration = 3f;
         private static float currentTime = 0f;
 
 
+        private ObjectManager()
+        {
+        }
+
+        public static ObjectManager Instance
+        {
+            get
+            {
+                if (ObjectManagerinstance == null)
+                {
+                    ObjectManagerinstance = new ObjectManager();
+                }
+                return ObjectManagerinstance;
+            }
+        }
+
+
+
+        public List<GameObject> Objects
+        {
+            get
+            {
+                return _Objects;
+            }
+        }
+
+        public List<Drawable> Drawables
+        {
+            get
+            {
+                return _Drawables;
+            }
+        }
+
+        public List<GameObject> Collidables
+        {
+            get
+            {
+                return _Collidables;
+            }
+        }
+
+        public List<Item> Items
+        {
+            get
+            {
+                return _Items;
+            }
+        }
+
+        public Player Player
+        {
+            get
+            {
+                return _player;
+            }
+        }
+
+
         /// <summary>
-        /// addObject is called to add a new GameObject to the Objects list.
+        /// AddObject is called to add a new GameObject to the Objects list.
         /// </summary>
-        public static void addObject(GameObject newObject)
+        ///
+        public void AddObject(GameObject newObject)
         {
             Objects.Add(newObject);
             
@@ -52,12 +115,11 @@ namespace Tony
 
             if (newObject is Player)
             {
-                player = (Player)newObject;
+                _player = (Player)newObject;
             }
         }
 
-
-        public static void MentalDecay(GameTime gameTime)
+        public void MentalDecay(GameTime gameTime)
         {
             currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds; //Time passed since last Update() 
 
@@ -70,32 +132,32 @@ namespace Tony
 
 
 
+
+
+
         /// <summary>
-        /// removeObject is called to remove a GameObject from the Objects list.
+        /// RemoveObject is called to remove a GameObject from the Objects list.
         /// </summary>
-        public static void removeObject(GameObject oldObject)
+        public void RemoveObject(GameObject oldObject)
         {
             Objects.Remove(oldObject);
         }
 
-
         /// <summary>
-        /// addItem is called to add a new Item to the Items list.
+        /// AddItem is called to add a new Item to the Items list.
         /// </summary>
-        public static void addItem(Item newItem)
+        public void AddItem(Item newItem)
         {
             Items.Add(newItem);
         }
 
-
         /// <summary>
-        /// removeItem is called to remove an Item from the Items list.
+        /// RemoveItem is called to remove an Item from the Items list.
         /// </summary>
-        public static void removeItem(Item oldItem)
+        public void RemoveItem(Item oldItem)
         {
             Items.Remove(oldItem);
         }
-
 
 
     }

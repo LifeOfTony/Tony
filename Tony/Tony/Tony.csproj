@@ -42,6 +42,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="SaveItem.cs" />
     <Compile Include="Collider.cs" />
     <Compile Include="Detector.cs" />
     <Compile Include="Drawable.cs" />
@@ -136,9 +137,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="Content\newtestset.tsx">
+    <None Include="Content\newtestset.tsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </TypeScriptCompile>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />

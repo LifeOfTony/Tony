@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+
 namespace Tony
 {
-    class Item
+    public class Item
     {
         private int modifier;
         private string name;
