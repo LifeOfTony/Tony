@@ -28,7 +28,7 @@ namespace Tony
 
         private static Player _player;
 
-        private static float mentalState;
+        private static float mentalState = 100;
         private static float countDuration = 3f;
         private static float currentTime = 0f;
 
@@ -88,6 +88,14 @@ namespace Tony
             get
             {
                 return _player;
+            }
+        }
+
+        public float MentalState
+        {
+            get
+            {
+                return mentalState;
             }
         }
 
