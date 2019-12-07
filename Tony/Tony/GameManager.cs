@@ -232,7 +232,9 @@ namespace Tony
             if (state.IsKeyDown(Keys.S)) player.move("S");
             if (state.IsKeyDown(Keys.D)) player.move("D");
             if (state.IsKeyDown(Keys.E)) player.interact();
-           
+
+            ObjectManager.Instance.MentalDecay(gameTime);
+
     
 
             base.Update(gameTime);
@@ -248,12 +250,16 @@ namespace Tony
             //Create lightsTarget RenderTarget.
             {
 
-                float scale = 4f;
+                float scale = 0.04f * ObjectManager.Instance.MentalState;
+                if (scale < 1)
+                {
+                    scale = 1f;
+                }
 
                 float maskRadius = lightMask.Width / 2 * scale;
                 Vector2 playerLocation = ObjectManager.Instance.Player.getPosition();
 
-                lightPosition = new Vector2(playerLocation.X - maskRadius, playerLocation.X - maskRadius);
+                lightPosition = new Vector2(playerLocation.X - maskRadius, playerLocation.Y - maskRadius);
 
                 GraphicsDevice.SetRenderTarget(lightsTarget);
                 GraphicsDevice.Clear(Color.Black);
@@ -291,7 +297,13 @@ namespace Tony
                 spriteBatch.Draw(mainTarget, Vector2.Zero, Color.White);
                 spriteBatch.End();
             }
-            
+
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive);
+            // Draws some text based on the textOutput variable.
+            string text = "" + ObjectManager.Instance.MentalState;
+            spriteBatch.DrawString(font, text , new Vector2(200, 200), Color.White);
+            spriteBatch.End();
+
 
             base.Draw(gameTime);
         }
