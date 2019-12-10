@@ -101,7 +101,9 @@ namespace Tony
                         foreach (XElement objectData in objects) colliders.Add(objectData);
                         break;
                     case "Player":
-                        this.player = objects.First();
+                        XElement playerData = objects.First();
+                        playerData.Attribute("y").Value = "" + (Int32.Parse(playerData.Attribute("y").Value) - 32);
+                        this.player = playerData;
                         break;
                 }
             }
