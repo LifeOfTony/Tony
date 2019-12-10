@@ -5,6 +5,7 @@ html{
 body{
   margin-top: 0px;
   padding: 0;
+  padding-bottom: 10px;
 }
 header{
   text-align: center;
