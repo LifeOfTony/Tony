@@ -67,7 +67,7 @@
   <Class Name="Tony.ObjectManager" Collapsed="true">
     <Position X="11" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAQAAAAAACAAEAACEACAAAAAAAAEBgAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAASAAABEACAAAAAAAGAAAhQAAACGEwAAgAQEEEAA=</HashCode>
       <FileName>ObjectManager.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -83,6 +83,13 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
       <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Tony.SaveItem" Collapsed="true">
+    <Position X="9.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SaveItem.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Tony.Sprite" Collapsed="true">
