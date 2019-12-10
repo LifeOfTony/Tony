@@ -37,7 +37,6 @@ namespace Tony
         //The current level number.
         private int level;
 
-        private double mentalState;
 
         //The text to be displayed.
         public static string textOutput;
@@ -48,7 +47,7 @@ namespace Tony
             tileset = new List<Texture2D>();
             textOutput = "";
             level = 0;
-            mentalState = 100;
+
         }
 
         /// <summary>
@@ -140,7 +139,7 @@ namespace Tony
             #region Object creation
 
 
-
+            #region Colliders
             // Loops through the collider list to make colliders.
             foreach (XElement objectData in currentLevel.colliders)
             {
@@ -152,15 +151,20 @@ namespace Tony
                 Collider currentCollider = new Collider(position, size);
                 ObjectManager.Instance.AddObject(currentCollider);
             }
+            #endregion
 
+
+            #region Interactors
             // Loops through the interactors list to make interacable objects.
             foreach (XElement objectData in currentLevel.interactors)
             {
                 // Data taken from the object element.
                 Vector2 position = new Vector2(Int32.Parse(objectData.Attribute("x").Value), Int32.Parse(objectData.Attribute("y").Value));
                 Vector2 size = new Vector2(Int32.Parse(objectData.Attribute("width").Value), Int32.Parse(objectData.Attribute("height").Value));
-                string requires = "none";
-                string gives= "none";
+                bool complex = false;
+                string requires = null;
+                string gives= null;
+                string basic = null;
 
                 // Uses the property element of the objectData to assign requires and gives.
                 IEnumerable<XElement> properties = objectData.Element("properties").Elements();
@@ -168,19 +172,23 @@ namespace Tony
                 {
                     if (property.Attribute("name").Value == "Requires") requires = property.Attribute("value").Value;
                     if (property.Attribute("name").Value == "Gives") gives = property.Attribute("value").Value;
+                    if (property.Attribute("name").Value == "Basic") basic = property.Attribute("value").Value;
+                    if (property.Attribute("name").Value == "Complex") complex = bool.Parse(property.Attribute("value").Value);
                 }
 
                 // Creates a standard InteractableObject and associated Sprite.
                 if(objectData.Attribute("type").Value == "Interactable")
                 {
 
-                    InteractableObject currentObject = new InteractableObject(position, size, requires, gives, 1, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1]);
+                    InteractableObject currentObject = new InteractableObject(position, size, complex, requires, gives, basic, 1, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1]);
                     ObjectManager.Instance.AddObject(currentObject);
                 }
 
 
             }
+            #endregion
 
+            #region Player
             XElement playerData = currentLevel.player;
             {
                 Vector2 position = new Vector2(Int32.Parse(playerData.Attribute("x").Value), Int32.Parse(playerData.Attribute("y").Value));
@@ -188,6 +196,7 @@ namespace Tony
                 Player player = new Player(position, size, 1, tileset[Int32.Parse(playerData.Attribute("gid").Value) - 1], 1);
                 ObjectManager.Instance.AddObject(player);
             }
+            #endregion
 
             #endregion
 
@@ -250,7 +259,7 @@ namespace Tony
             //Create lightsTarget RenderTarget.
             {
 
-                float scale = 0.04f * ObjectManager.Instance.MentalState;
+                float scale = 0.1f * ObjectManager.Instance.MentalState;
                 if (scale < 1)
                 {
                     scale = 1f;
