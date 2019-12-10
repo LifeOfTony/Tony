@@ -90,16 +90,17 @@ namespace Tony
                 switch (objectLayer.Attribute("name").Value)
                 {
                     case "Interactable Layer":
-
                         foreach (XElement objectData in objects)
                         {
                             objectData.Attribute("y").Value = "" + (Int32.Parse(objectData.Attribute("y").Value) - 32);
                             interactors.Add(objectData);
                         } 
                         break;
+
                     case "Collision Layer":
                         foreach (XElement objectData in objects) colliders.Add(objectData);
                         break;
+
                     case "Player":
                         XElement playerData = objects.First();
                         playerData.Attribute("y").Value = "" + (Int32.Parse(playerData.Attribute("y").Value) - 32);
