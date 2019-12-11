@@ -11,12 +11,12 @@ namespace Tony
     class GridNode
     {
 
-        private bool isStart = false;
         private Vector2 position;
         private float gNumber;
         private float hNumber;
         private float fNumber;
         private List<GridNode> connections;
+        private GridNode parent;
 
 
         public float GNumber
@@ -45,6 +45,10 @@ namespace Tony
             {
                 return fNumber;
             }
+            set
+            {
+                fNumber = value;
+            }
         }
 
         public Vector2 Position
@@ -55,16 +59,30 @@ namespace Tony
             }
         }
 
-        public GridNode(Vector2 position, bool isStart)
+        public GridNode Parent
         {
-            this.position = position;
-            this.isStart = isStart;
-            connections = new List<GridNode>();
+            get
+            {
+                return parent;
+            }
+            set
+            {
+                parent = value;
+            }
         }
 
-        public GridNode(Vector2 position) : this(position, false)
+        public List<GridNode> Connections
         {
+            get
+            {
+                return connections;
+            }
+        }
 
+        public GridNode(Vector2 position)
+        {
+            this.position = position;
+            connections = new List<GridNode>();
         }
 
 
@@ -74,25 +92,18 @@ namespace Tony
         }
 
 
-
         public void FindHNumber(Vector2 endPosition)
         {
             hNumber = (float)Math.Sqrt(Math.Pow((endPosition.X - position.X), 2) + Math.Pow((endPosition.Y - position.Y), 2));
         }
 
 
-
-        public void FindGNumber(Vector2 startPosition)
+        public float FindGNumber(GridNode node)
         {
-            gNumber = (float)Math.Sqrt(Math.Pow((startPosition.X - position.X), 2) + Math.Pow((startPosition.Y - position.Y), 2));
+            float newGNumber = node.GNumber + (float)Math.Sqrt(Math.Pow((node.position.X - position.X), 2) + Math.Pow((node.position.Y - position.Y), 2));
+            return newGNumber;
         }
 
-
-
-        public void FindFNumber()
-        {
-            fNumber = gNumber + hNumber;
-        }
 
     }
 }

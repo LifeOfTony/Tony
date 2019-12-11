@@ -16,7 +16,10 @@ namespace Tony
         private static Vector2 finalPosition;
         private static int[,] grid;
         private static List<GridNode> allNodes;
+        private static List<GridNode> closedList;
         private static GridNode startNode;
+        private static GridNode endNode;
+
 
         public static Queue<Vector2> FindPath(Vector2 startPostition, Vector2 endPosition)
         {
@@ -26,28 +29,71 @@ namespace Tony
             mapHeight = ObjectManager.Instance.MapHeight;
             allNodes = new List<GridNode>();
             CreateGrid();
-            var shortestpath = new Queue<Vector2>();
+            FindConnections();
+            AStarSearch();
+            var shortestpath = new List<GridNode>();
+            shortestpath.Add(endNode);
+            BuildShortestPath(shortestpath, endNode);
+            return convertToPoints(shortestpath);
+
         }
 
-        private static void BuildShortestPath(Queue<Vector2>)
-        {
 
+        private static Queue<Vector2> convertToPoints(List<GridNode> path)
+        {
+            Queue<Vector2> pathPoints = new Queue<Vector2>(); 
+            foreach (GridNode node in path)
+            {
+                pathPoints.Enqueue(node.Position);
+            }
+            return pathPoints;
+        }
+
+
+
+
+
+        private static void BuildShortestPath(List<GridNode> path, GridNode node)
+        {
+            if (node.Parent == startNode) return;
+            path.Add(node.Parent);
+            BuildShortestPath(path, node.Parent);
         }
 
         private static void AStarSearch()
         {
             startNode.GNumber = 0;
-            var prioQueue = new List<GridNode>();
-            prioQueue.Add(startNode);
+            var openList = new List<GridNode>();
+            closedList = new List<GridNode>();
+            openList.Add(startNode);
+            do
             {
-                do
+                openList = openList.OrderBy(x => (x.GNumber + x.HNumber)).ToList();
+                var node = openList.First();
+                openList.Remove(node);
+                closedList.Add(node);
+                if (node == endNode) return; 
+                foreach (var neighbour in node.Connections)
                 {
+                    if(!closedList.Contains(neighbour))
+                    {
+                        float newFNumber = neighbour.HNumber + neighbour.FindGNumber(node);
+                        if (!openList.Contains(neighbour))
+                        {
+                            neighbour.Parent = node;
+                            neighbour.FNumber = newFNumber;
+                            openList.Add(neighbour);
+                        }
+                        else if (neighbour.FNumber > newFNumber)
+                        {
+                            neighbour.Parent = node;
+                            neighbour.FNumber = newFNumber;
+                        }
+                    }
+                }
+                
 
-
-
-                } while (prioQueue.Any());
-            }
-
+            } while (openList.Any());
         }
 
 
@@ -84,14 +130,14 @@ namespace Tony
                 {
                     Vector2 currentPosition = new Vector2(i, j);
                     GridNode currentNode;
+                    currentNode = new GridNode(currentPosition);
                     if (i == startPosition.X && j == startPosition.Y)
                     {
-                        currentNode = new GridNode(currentPosition, true);
                         startNode = currentNode;
                     }
-                    else
+                    else if (i == finalPosition.X && j == finalPosition.Y)
                     {
-                        currentNode = new GridNode(currentPosition);
+                        endNode = currentNode;
                     }
                     currentNode.FindHNumber(finalPosition);
                     allNodes.Add(currentNode);
