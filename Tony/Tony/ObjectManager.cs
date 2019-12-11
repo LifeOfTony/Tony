@@ -32,6 +32,9 @@ namespace Tony
         private static float countDuration = 3f;
         private static float currentTime = 0f;
 
+        private static int mapHeight;
+        private static int mapWidth;
+
 
         private ObjectManager()
         {
@@ -96,6 +99,31 @@ namespace Tony
             get
             {
                 return mentalState;
+            }
+        }
+
+        public int MapWidth
+        {
+            get
+            {
+                return mapWidth;
+            }
+            set
+            {
+                mapWidth = value;
+            }
+
+        }
+
+        public int MapHeight
+        {
+            get
+            {
+                return mapHeight;
+            }
+            set
+            {
+                mapHeight = value;
             }
         }
 

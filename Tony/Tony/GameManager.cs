@@ -23,8 +23,7 @@ namespace Tony
         RenderTarget2D mainTarget;
 
         Vector2 lightPosition;
-        int mapHeight;
-        int mapWidth;
+
 
 
 
@@ -49,6 +48,8 @@ namespace Tony
             level = 0;
 
         }
+
+       
 
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
@@ -98,8 +99,8 @@ namespace Tony
             // Creates a new LevelReader for the testmap.xml file. 
             LevelReader currentLevel = new LevelReader(@"Content\newtestmap.tmx");
 
-            mapWidth = currentLevel.width * currentLevel.tileWidth;
-            mapHeight = currentLevel.height * currentLevel.tileHeight;
+            ObjectManager.Instance.MapWidth = currentLevel.width;
+            ObjectManager.Instance.MapHeight = currentLevel.height;
             
 
             // Creates all of the textures from the tileset.
@@ -165,6 +166,7 @@ namespace Tony
                 string requires = null;
                 string gives= null;
                 string basic = null;
+                string route = null;
 
                 // Uses the property element of the objectData to assign requires and gives.
                 IEnumerable<XElement> properties = objectData.Element("properties").Elements();
@@ -174,6 +176,12 @@ namespace Tony
                     if (property.Attribute("name").Value == "Gives") gives = property.Attribute("value").Value;
                     if (property.Attribute("name").Value == "Basic") basic = property.Attribute("value").Value;
                     if (property.Attribute("name").Value == "Complex") complex = bool.Parse(property.Attribute("value").Value);
+                    if (property.Attribute("name").Value == "Route")
+                    {
+                        route = property.Attribute("value").Value;
+
+                    }
+                    
                 }
 
                 // Creates a standard InteractableObject and associated Sprite.
@@ -181,6 +189,11 @@ namespace Tony
                 {
 
                     InteractableObject currentObject = new InteractableObject(position, size, complex, requires, gives, basic, 1, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1]);
+                    ObjectManager.Instance.AddObject(currentObject);
+                }
+                if(objectData.Attribute("type").Value == "NPC")
+                {
+                    Npc currentObject = new Npc(position, size, complex, requires, gives, basic, route, 1, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1]);
                     ObjectManager.Instance.AddObject(currentObject);
                 }
 
