@@ -43,6 +43,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="GridNode.cs" />
+    <Compile Include="MainMenu.cs" />
     <Compile Include="Pathfinder.cs" />
     <Compile Include="SaveItem.cs" />
     <Compile Include="Collider.cs" />

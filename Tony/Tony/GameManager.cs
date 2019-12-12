@@ -29,7 +29,12 @@ namespace Tony
         Vector2 lightPosition;
 
 
+        enum GameState {mainmenu, playing}
+        GameState gameState;
 
+        MainMenu mainMenu;
+
+        Texture2D logo;
 
         //A list holding the tileset textures.
         private List<Texture2D> tileset;
@@ -49,7 +54,9 @@ namespace Tony
             Content.RootDirectory = "Content";
             tileset = new List<Texture2D>();
             textOutput = "";
-            level = 0;
+            level = 1;
+
+            gameState = GameState.mainmenu;
 
         }
 
@@ -64,7 +71,7 @@ namespace Tony
         protected override void Initialize()
         {
 
-            UserInterface.Initialize(Content, BuiltinThemes.hd);
+            UserInterface.Initialize(Content, BuiltinThemes.editor);
 
             //These four lines set up the screen to fit the users monitor.
             graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
@@ -80,19 +87,19 @@ namespace Tony
         /// </summary>
         protected override void LoadContent()
         {
+
+            ObjectManager.Instance.Clear();
+
+
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-
+            
 
             lightMask = Content.Load<Texture2D>("lightMask");
             effect1 = Content.Load<Effect>("lighteffect");
-            var pp = GraphicsDevice.PresentationParameters;
-            lightsTarget = new RenderTarget2D(
-            GraphicsDevice, pp.BackBufferWidth, pp.BackBufferHeight);
-            mainTarget = new RenderTarget2D(
-            GraphicsDevice, pp.BackBufferWidth, pp.BackBufferHeight);
-
+            logo = Content.Load<Texture2D>("tony_logo");
+            mainMenu= new MainMenu(logo);
 
 
 
@@ -108,10 +115,17 @@ namespace Tony
 
             ObjectManager.Instance.MapWidth = currentLevel.width;
             ObjectManager.Instance.MapHeight = currentLevel.height;
-            
+
+            lightsTarget = new RenderTarget2D(
+            GraphicsDevice, ObjectManager.Instance.MapWidth*32, ObjectManager.Instance.MapHeight*32);
+            mainTarget = new RenderTarget2D(
+            GraphicsDevice, ObjectManager.Instance.MapWidth * 32, ObjectManager.Instance.MapHeight * 32);
+
+
+
 
             // Creates all of the textures from the tileset.
-            foreach(string currentTexture in currentLevel.tileset)
+            foreach (string currentTexture in currentLevel.tileset)
             {
                 this.tileset.Add(Content.Load<Texture2D>(currentTexture));
             }
@@ -271,11 +285,56 @@ namespace Tony
                 npc.Move();
             }
 
-
+            ProcessButtons();
+            ShowMainMenu();
             
 
             base.Update(gameTime);
         }
+
+        public void ShowMainMenu()
+        {
+            if (gameState == GameState.mainmenu)
+            {
+                mainMenu.Menu.Visible = true;
+            }
+            else mainMenu.Menu.Visible = false;
+        }
+
+        public void ShowLevels()
+        {
+            mainMenu.LevelSetOne.Visible = true;
+            mainMenu.LevelSetTwo.Visible = true;
+        }
+
+        public void HideLevels()
+        {
+            mainMenu.LevelSetOne.Visible = false;
+            mainMenu.LevelSetTwo.Visible = false;
+        }
+
+
+        public void ProcessButtons()
+        {
+            mainMenu.MainToGame.OnClick = (Entity button) => { gameState = GameState.playing;};
+
+            mainMenu.MainToLevels.OnClick = (Entity button) => { ShowLevels(); };
+
+            mainMenu.MainToQuit.OnClick = (Entity button) => Exit();
+
+            mainMenu.LevelSetOne.OnClick = (Entity button) =>
+            {
+                level = 1;
+                HideLevels();
+            };
+
+            mainMenu.LevelSetTwo.OnClick = (Entity button) =>
+            {
+                level = 2;
+                HideLevels();
+            };
+        }
+
 
         /// <summary>
         /// This is called when the game should draw itself.
@@ -322,6 +381,8 @@ namespace Tony
                 spriteBatch.End();
             }
 
+
+
             //Blend RenderTargets.
             {
                 GraphicsDevice.SetRenderTarget(null);
@@ -331,7 +392,9 @@ namespace Tony
 
                 effect1.Parameters["lightMask"].SetValue(lightsTarget);
                 effect1.CurrentTechnique.Passes[0].Apply();
-                spriteBatch.Draw(mainTarget, Vector2.Zero, Color.White);
+                Vector2 screenCentre = new Vector2(GraphicsDevice.PresentationParameters.BackBufferWidth / 2, GraphicsDevice.PresentationParameters.BackBufferHeight / 2);
+                Vector2 levelOffset = new Vector2(screenCentre.X - (mainTarget.Width/2), screenCentre.Y - (mainTarget.Height/2));
+                spriteBatch.Draw(mainTarget, levelOffset, Color.White);
                 spriteBatch.End();
             }
 

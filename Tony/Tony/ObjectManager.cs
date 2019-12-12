@@ -182,7 +182,14 @@ namespace Tony
             }
         }
 
-
+        public void Clear()
+        {
+            _Objects.Clear();
+            _Drawables.Clear();
+            _Collidables.Clear();
+            _Npcs.Clear();
+            _player = null;
+        }
 
 
 
