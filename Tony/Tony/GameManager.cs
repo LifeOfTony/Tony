@@ -5,6 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using System.IO;
+// using GeonBit UI elements
+using GeonBit.UI;
+using GeonBit.UI.Entities;
+
 
 namespace Tony
 {
@@ -59,6 +63,9 @@ namespace Tony
         /// </summary>
         protected override void Initialize()
         {
+
+            UserInterface.Initialize(Content, BuiltinThemes.hd);
+
             //These four lines set up the screen to fit the users monitor.
             graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
             graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
@@ -239,6 +246,8 @@ namespace Tony
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            // GeonBit.UIL update UI manager
+            UserInterface.Active.Update(gameTime);
 
 
             // Clears the displayed text.
@@ -261,7 +270,9 @@ namespace Tony
             {
                 npc.Move();
             }
-    
+
+
+            
 
             base.Update(gameTime);
         }
@@ -329,6 +340,10 @@ namespace Tony
             string text = "" + ObjectManager.Instance.MentalState;
             spriteBatch.DrawString(font, text , new Vector2(200, 200), Color.White);
             spriteBatch.End();
+
+            // GeonBit.UI: draw UI using the spriteBatch you created above
+            UserInterface.Active.Draw(spriteBatch);
+
 
 
             base.Draw(gameTime);
