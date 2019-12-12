@@ -42,7 +42,10 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="EndObject.cs" />
     <Compile Include="GridNode.cs" />
+    <Compile Include="Level.cs" />
+    <Compile Include="LevelUI.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="Pathfinder.cs" />
     <Compile Include="SaveItem.cs" />
@@ -141,6 +144,10 @@
     <None Include="Content\GeonBit.UI\themes\lowres\fonts\Regular.spritefont" />
     <None Include="Content\newtestmap.tmx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Content\testEnvironment.tmx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
@@ -735,6 +742,11 @@
   <ItemGroup>
     <None Include="Content\newtestset.tsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\OpenSourceTextureSet.tsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

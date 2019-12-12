@@ -24,8 +24,8 @@ namespace Tony
         {
             startPosition = new Vector2((position.X/32), (position.Y/32));
             finalPosition = new Vector2((endPosition.X / 32), (endPosition.Y / 32));
-            mapWidth = ObjectManager.Instance.MapWidth;
-            mapHeight = ObjectManager.Instance.MapHeight;
+            mapWidth = ObjectManager.Instance.CurrentLevel.MapWidth;
+            mapHeight = ObjectManager.Instance.CurrentLevel.MapHeight;
             allNodes = new List<GridNode>();
             CreateGrid();
             FindConnections();
@@ -130,19 +130,28 @@ namespace Tony
                 for(int j = 0; j < mapHeight; j++)
                 {
                     Vector2 currentPosition = new Vector2(i, j);
-                    GridNode currentNode;
-                    currentNode = new GridNode(currentPosition);
-                    if (currentPosition == startPosition)
+                    bool colliding = false;
+                    foreach(Collider c in ObjectManager.Instance.CurrentLevel.Collidables)
                     {
-                        startNode = currentNode;
+                        Vector2 cPosition = new Vector2(c.getPosition().X / 32, c.getPosition().Y / 32);
+                        if (currentPosition == cPosition) colliding = true;
                     }
-                    else if (currentPosition == finalPosition)
+                    if (!colliding)
                     {
-                        endNode = currentNode;
+                        GridNode currentNode;
+                        currentNode = new GridNode(currentPosition);
+                        if (currentPosition == startPosition)
+                        {
+                            startNode = currentNode;
+                        }
+                        else if (currentPosition == finalPosition)
+                        {
+                            endNode = currentNode;
+                        }
+                        currentNode.FindHNumber(finalPosition);
+                        allNodes.Add(currentNode);
                     }
-                    currentNode.FindHNumber(finalPosition);
-                    allNodes.Add(currentNode);
-                }
+                } 
             }
 
         }

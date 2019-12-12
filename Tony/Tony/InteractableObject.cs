@@ -84,7 +84,7 @@ namespace Tony
 
         public virtual void BasicInteract()
         {
-            GameManager.textOutput += basic;
+            GameManager.textOutput += (basic + "\n\r");
         }
     }
 }
