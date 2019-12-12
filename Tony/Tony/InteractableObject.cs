@@ -8,12 +8,12 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Tony
 {
-    class InteractableObject : Sprite, Interactable
+    public class InteractableObject : Sprite, Interactable
     {
-        private string requirement;
-        private string gives;
-        private string basic;
-        private bool complex;
+        protected string requirement;
+        protected string gives;
+        protected string basic;
+        protected bool complex;
 
         /// <summary>
         /// InteractableObjects are any object that can be interacted with by the player.
@@ -65,55 +65,10 @@ namespace Tony
             {
                 BasicInteract();
             }
-
-            #region oldstuff
-            /*
-            // an object can have no requirement, in which case the interaction moves on.
-            if(requirement.Equals("none"))
-            {
-                Collect();
-            }
-            else
-            {
-                // checks to see if the player has got the required item to trigger the interaction.
-                foreach (Item currentItem in ObjectManager.Instance.Items)
-                {
-                    // if an item is used, text feedback is given.
-                    if (currentItem.GetName().Equals(requirement) && currentItem.IsCollected())
-                    {
-                        GameManager.textOutput += "used " + requirement + "\n\r";
-                        Collect();
-                    }
-                }
-            }
-            */
-            #endregion
         }
 
-        // The Collect method collects the item given by this object.
-        // this method will become redundant once more complex interactions are created.
-        /*public void Collect()
-        {
-            if(gives.Equals(null))
-            {
-                GameManager.textOutput += "none";
-            }
-            // finds the correct item and sets it to collected.
-            foreach (Item currentItem in ObjectManager.Instance.Items)
-            {
-                // text feedback is given when the item is gained.
-                if (currentItem.GetName().Equals(gives))
-                {
-                    currentItem.Collect();
-                    GameManager.textOutput += "gained " + gives + "\n\r";
-                }
-            }
-        }
-        */
 
-
-
-        public void ComplexInteract()
+        public virtual void ComplexInteract()
         {
             // finds the correct item and sets it to collected.
             foreach (Item currentItem in ObjectManager.Instance.Items)
@@ -127,7 +82,7 @@ namespace Tony
             }
         }
 
-        public void BasicInteract()
+        public virtual void BasicInteract()
         {
             GameManager.textOutput += basic;
         }

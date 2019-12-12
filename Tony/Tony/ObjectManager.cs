@@ -23,6 +23,8 @@ namespace Tony
         //static list of all Items in the current game.
         private static List<Item> _Items = new List<Item>();
 
+        private static List<GameObject> _Npcs = new List<GameObject>();
+
         private static ObjectManager ObjectManagerinstance = null;
 
 
@@ -49,6 +51,15 @@ namespace Tony
                     ObjectManagerinstance = new ObjectManager();
                 }
                 return ObjectManagerinstance;
+            }
+        }
+
+
+        public List<GameObject> Npcs
+        {
+            get
+            {
+                return _Npcs;
             }
         }
 
@@ -152,6 +163,11 @@ namespace Tony
             if (newObject is Player)
             {
                 _player = (Player)newObject;
+            }
+
+            if (newObject is Npc)
+            {
+                Npcs.Add(newObject);
             }
         }
 

@@ -62,7 +62,7 @@ namespace Tony
             //These four lines set up the screen to fit the users monitor.
             graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
             graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
-            graphics.IsFullScreen = true;
+            graphics.IsFullScreen = false;
             graphics.ApplyChanges();
             base.Initialize();
         }
@@ -257,6 +257,10 @@ namespace Tony
 
             ObjectManager.Instance.MentalDecay(gameTime);
 
+            foreach(Npc npc in ObjectManager.Instance.Npcs)
+            {
+                npc.Move();
+            }
     
 
             base.Update(gameTime);

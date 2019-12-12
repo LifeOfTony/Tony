@@ -14,17 +14,16 @@ namespace Tony
         private static int mapHeight;
         private static Vector2 startPosition;
         private static Vector2 finalPosition;
-        private static int[,] grid;
         private static List<GridNode> allNodes;
         private static List<GridNode> closedList;
         private static GridNode startNode;
         private static GridNode endNode;
 
 
-        public static Queue<Vector2> FindPath(Vector2 startPostition, Vector2 endPosition)
+        public static Queue<Vector2> FindPath(Vector2 position, Vector2 endPosition)
         {
-            startPosition = startPostition;
-            finalPosition = endPosition;
+            startPosition = new Vector2((position.X/32), (position.Y/32));
+            finalPosition = new Vector2((endPosition.X / 32), (endPosition.Y / 32));
             mapWidth = ObjectManager.Instance.MapWidth;
             mapHeight = ObjectManager.Instance.MapHeight;
             allNodes = new List<GridNode>();
@@ -34,6 +33,7 @@ namespace Tony
             var shortestpath = new List<GridNode>();
             shortestpath.Add(endNode);
             BuildShortestPath(shortestpath, endNode);
+            shortestpath.Reverse();
             return convertToPoints(shortestpath);
 
         }
@@ -44,8 +44,9 @@ namespace Tony
             Queue<Vector2> pathPoints = new Queue<Vector2>(); 
             foreach (GridNode node in path)
             {
-                pathPoints.Enqueue(node.Position);
-            }
+                Vector2 nextPosition = new Vector2((node.Position.X * 32), (node.Position.Y * 32));
+                pathPoints.Enqueue(nextPosition);
+            }  
             return pathPoints;
         }
 
@@ -131,11 +132,11 @@ namespace Tony
                     Vector2 currentPosition = new Vector2(i, j);
                     GridNode currentNode;
                     currentNode = new GridNode(currentPosition);
-                    if (i == startPosition.X && j == startPosition.Y)
+                    if (currentPosition == startPosition)
                     {
                         startNode = currentNode;
                     }
-                    else if (i == finalPosition.X && j == finalPosition.Y)
+                    else if (currentPosition == finalPosition)
                     {
                         endNode = currentNode;
                     }
