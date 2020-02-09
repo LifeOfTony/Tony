@@ -63,6 +63,7 @@ namespace Tony
                 {
                     currentItem.Collect();
                     move = true;
+                    GameManager.textOutput = "";
                     GameManager.textOutput += "gained " + gives + "\n\r";
                 }
             }
@@ -71,6 +72,7 @@ namespace Tony
         public override void BasicInteract()
         {
             move = true;
+            GameManager.textOutput = "";
             GameManager.textOutput += basic;
         }
 

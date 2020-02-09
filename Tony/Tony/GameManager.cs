@@ -123,7 +123,7 @@ namespace Tony
             {
 
                 // Creates a new LevelReader for the testmap.xml file. 
-                LevelReader currentLevel = new LevelReader(@"Content\testEnvironment.tmx");
+                LevelReader currentLevel = new LevelReader(@"Content\TestEnvironment1.tmx");
 
                 int mapWidth = currentLevel.width;
                 int mapHeight = currentLevel.height;
@@ -294,9 +294,9 @@ namespace Tony
                 currentTime -= countDuration;
                 // Clears the displayed text.
                 textOutput = "";
-
             }
         }
+
 
 
 
@@ -432,7 +432,7 @@ namespace Tony
             {
                 GraphicsDevice.SetRenderTarget(mainTarget);
                 GraphicsDevice.Clear(Color.Transparent);
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+                spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend);
 
                 
                 // Draws all Drawable objects.

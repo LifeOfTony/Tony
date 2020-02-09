@@ -142,13 +142,13 @@ namespace Tony
             // Adds to Drawables if drawable.
             if (newObject is Drawable drawable)
             {
-                Drawables.Add(drawable);
+                _Drawables.Add(drawable);
             }
 
             // Adds to Collidables if collidable.
             if (newObject is Collider)
             {
-                Collidables.Add(newObject);
+                _Collidables.Add(newObject);
             }
 
             if (newObject is Player)
@@ -158,7 +158,7 @@ namespace Tony
 
             if (newObject is Npc)
             {
-                Npcs.Add(newObject);
+                _Npcs.Add(newObject);
             }
 
             if (newObject is EndObject)
