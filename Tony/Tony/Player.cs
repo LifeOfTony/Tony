@@ -47,7 +47,7 @@ namespace Tony
 
 
             // Compares the player position to all collidable objects.
-            foreach(GameObject currentObject in ObjectManager.Instance.Collidables)
+            foreach(GameObject currentObject in ObjectManager.Instance.CurrentLevel.Collidables)
             {
                 if (currentObject == this)
                     continue;
@@ -101,7 +101,7 @@ namespace Tony
         /// </summary>
         public void interact()
         {
-            foreach(GameObject i in ObjectManager.Instance.Objects)
+            foreach(GameObject i in ObjectManager.Instance.CurrentLevel.Objects)
             {
                 if (i is InteractableObject)
                 {

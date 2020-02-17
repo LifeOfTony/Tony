@@ -6,5 +6,10 @@
  <item name = "big-ol-rock" modifier="10"/>
  <item name = "thing" modifier="10"/>
  <item name = "thingy" modifier="10"/>
-  <item name = "keytotherock" modifier="10"/>
+ <item name = "keytotherock" modifier="10"/>
+  <item name = "snacks" modifier="10"/>
+  <item name = "THE_PAPERS" modifier="10"/>
+  <item name = "workPapers" modifier="10"/>
+  <item name = "helpful_personality" modifier="10"/>
+  
 </items>

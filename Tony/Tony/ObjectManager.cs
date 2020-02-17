@@ -11,26 +11,19 @@ namespace Tony
     {
 
 
-        //static list of all objects in the current game.
-        private static List<GameObject> _Objects = new List<GameObject>();
-
-        //static list of all drawable objects.
-        private static List<Drawable> _Drawables = new List<Drawable>();
-
-        //static list of collidable objects.
-        private static List<GameObject> _Collidables = new List<GameObject>();
-        
-        //static list of all Items in the current game.
-        private static List<Item> _Items = new List<Item>();
 
         private static ObjectManager ObjectManagerinstance = null;
 
+        private static List<Level> levels = new List<Level>();
 
-        private static Player _player;
+        private static Level currentLevel;
 
         private static float mentalState = 100;
-        private static float countDuration = 3f;
+        private static float countDuration = 2f;
         private static float currentTime = 0f;
+
+        //static list of all Items in the current game.
+        private List<Item> _Items = new List<Item>();
 
 
         private ObjectManager()
@@ -50,28 +43,33 @@ namespace Tony
         }
 
 
-
-        public List<GameObject> Objects
+        public void AddLevel(Level newLevel)
         {
-            get
-            {
-                return _Objects;
-            }
+            levels.Add(newLevel);
         }
 
-        public List<Drawable> Drawables
+
+
+        public Level CurrentLevel
         {
             get
             {
-                return _Drawables;
+                return currentLevel;
             }
+            set
+            {
+                currentLevel = value;
+            }
+            
         }
 
-        public List<GameObject> Collidables
+        
+
+        public float MentalState
         {
             get
             {
-                return _Collidables;
+                return mentalState;
             }
         }
 
@@ -83,73 +81,26 @@ namespace Tony
             }
         }
 
-        public Player Player
-        {
-            get
-            {
-                return _player;
-            }
-        }
-
-        public float MentalState
-        {
-            get
-            {
-                return mentalState;
-            }
-        }
 
 
-        /// <summary>
-        /// AddObject is called to add a new GameObject to the Objects list.
-        /// </summary>
-        ///
-        public void AddObject(GameObject newObject)
-        {
-            Objects.Add(newObject);
-            
-
-            // Adds to Drawables if drawable.
-            if (newObject is Drawable drawable)
-            {
-                Drawables.Add(drawable);
-            }
-
-            // Adds to Collidables if collidable.
-            if (newObject is Collider)
-            {
-                Collidables.Add(newObject);
-            }
-
-            if (newObject is Player)
-            {
-                _player = (Player)newObject;
-            }
-        }
 
         public void MentalDecay(GameTime gameTime)
         {
-            currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds; //Time passed since last Update() 
-
-            if (currentTime >= countDuration)
+            if( mentalState > 0)
             {
-                currentTime -= countDuration;
-                mentalState--;
+                currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds; //Time passed since last Update() 
+
+                if (currentTime >= countDuration)
+                {
+                    currentTime -= countDuration;
+                    mentalState--;
+                }
             }
+           
         }
 
 
-
-
-
-
-        /// <summary>
-        /// RemoveObject is called to remove a GameObject from the Objects list.
-        /// </summary>
-        public void RemoveObject(GameObject oldObject)
-        {
-            Objects.Remove(oldObject);
-        }
+        
 
         /// <summary>
         /// AddItem is called to add a new Item to the Items list.
