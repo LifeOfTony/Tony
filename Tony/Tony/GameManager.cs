@@ -162,11 +162,14 @@ namespace Tony
                         {
                           
                             int textureNumber = Int32.Parse(currentRow[x]);
-                            if (textureNumber == 0) break;
-                            Vector2 position = new Vector2(x * currentLevel.tileWidth, y * currentLevel.tileHeight);
-                            Vector2 size = new Vector2(currentLevel.tileWidth, currentLevel.tileHeight);
-                            Sprite currentTile = new Sprite(position, size, i, tileset[textureNumber - 1]);
-                            newLevel.AddObject(currentTile);
+                            if (textureNumber != 0)
+                            {
+                                Vector2 position = new Vector2(x * currentLevel.tileWidth, y * currentLevel.tileHeight);
+                                Vector2 size = new Vector2(currentLevel.tileWidth, currentLevel.tileHeight);
+                                Sprite currentTile = new Sprite(position, size, i, tileset[textureNumber - 1]);
+                                newLevel.AddObject(currentTile);
+                            }
+                            
                         }
                     }
 
@@ -226,17 +229,17 @@ namespace Tony
                     if (objectData.Attribute("type").Value == "Interactable")
                     {
 
-                        InteractableObject currentObject = new InteractableObject(position, size, complex, requires, gives, basic, 1, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1]);
+                        InteractableObject currentObject = new InteractableObject(position, size, complex, requires, gives, basic, 4, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1]);
                         newLevel.AddObject(currentObject);
                     }
                     if (objectData.Attribute("type").Value == "NPC")
                     {
-                        Npc currentObject = new Npc(position, size, complex, requires, gives, basic, route, 1, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1]);
+                        Npc currentObject = new Npc(position, size, complex, requires, gives, basic, route, 4, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1]);
                         newLevel.AddObject(currentObject);
                     }
                     if (objectData.Attribute("type").Value == "End")
                     {
-                        EndObject currentObject = new EndObject(position, size, complex, requires, gives, basic, 1, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1]);
+                        EndObject currentObject = new EndObject(position, size, complex, requires, gives, basic, 4, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1]);
                         newLevel.AddObject(currentObject);
                     }
 
@@ -249,7 +252,7 @@ namespace Tony
                 {
                     Vector2 position = new Vector2(Int32.Parse(playerData.Attribute("x").Value), Int32.Parse(playerData.Attribute("y").Value));
                     Vector2 size = new Vector2(Int32.Parse(playerData.Attribute("width").Value), Int32.Parse(playerData.Attribute("height").Value));
-                    Player player = new Player(position, size, 1, tileset[Int32.Parse(playerData.Attribute("gid").Value) - 1], 1);
+                    Player player = new Player(position, size, 4, tileset[Int32.Parse(playerData.Attribute("gid").Value) - 1], 1);
                     newLevel.AddObject(player);
                 }
                 #endregion

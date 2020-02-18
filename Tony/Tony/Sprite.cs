@@ -43,7 +43,7 @@ namespace Tony
                 origin: rotationOrigin,
                 scale: 1f,
                 effects: SpriteEffects.None,
-                layerDepth: depth);
+                layerDepth: depth/10);
         }
 
     }
