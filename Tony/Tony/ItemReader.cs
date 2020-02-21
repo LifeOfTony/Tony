@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Tony
 {
@@ -13,11 +16,10 @@ namespace Tony
     class ItemReader
     {
         //reader stores the content of an Xml file in memory.
-        private XDocument reader;
 
         //items is the root element.
         private XElement items;
-
+        private XDocument reader;
         /// <summary>
         /// takes a filepath to the XML file and reads the file.
         /// </summary>
@@ -37,5 +39,7 @@ namespace Tony
                 ObjectManager.Instance.AddItem(newItem);
             }
         }
+
+
     }
 }

@@ -58,6 +58,10 @@ namespace Tony
                             //Collect();
                             ComplexInteract();
                         }
+                        else
+                        {
+                            BasicInteract();
+                        }
                     }
                 }
 

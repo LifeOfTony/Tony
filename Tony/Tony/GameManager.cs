@@ -109,169 +109,31 @@ namespace Tony
             mainMenu= new MainMenu(logo);
             levelUI = new LevelUI();
 
-
-
-
             // Loads the SpriteFont 'textFont' from Content.
             font = Content.Load<SpriteFont>("textFont");
+
+
 
             // Creates a new ItemReader for the Items.xml file.
             ItemReader itemList = new ItemReader(@"Content\Items.xml");
 
 
-            for(int currentLevelNo = 0; currentLevelNo < levels; currentLevelNo++)
-            {
 
-                // Creates a new LevelReader for the testmap.xml file. 
-                LevelReader currentLevel = new LevelReader(@"Content\TestEnvironment1.tmx");
+            // Creates a new LevelReader for the testmap.xml file. 
+            LevelReader currentLevel = new LevelReader(@"Content\TestEnvironment1.tmx", Content, level);
 
-                int mapWidth = currentLevel.width;
-                int mapHeight = currentLevel.height;
+            int mapWidth = currentLevel.width;
+            int mapHeight = currentLevel.height;
 
-                lightsTarget = new RenderTarget2D(
-                GraphicsDevice, mapWidth * 32, mapHeight * 32);
-                mainTarget = new RenderTarget2D(
-                GraphicsDevice, mapWidth * 32, mapHeight * 32);
+            lightsTarget = new RenderTarget2D(
+            GraphicsDevice, mapWidth * 32, mapHeight * 32);
+            mainTarget = new RenderTarget2D(
+            GraphicsDevice, mapWidth * 32, mapHeight * 32);
 
-                Level newLevel = new Level(currentLevelNo, mapWidth, mapHeight);
-
-                if (currentLevelNo == level)
-                {
-                    ObjectManager.Instance.CurrentLevel = newLevel;
-                }
-
-                // Creates all of the textures from the tileset.
-                foreach (string currentTexture in currentLevel.tileset)
-                {
-                    this.tileset.Add(Content.Load<Texture2D>(currentTexture));
-                }
-
-                int tileLayerNum = currentLevel.layers.Count;
-
-                #region Tile creation
-
-                // Creates all instances of Tile objects from the tileNumbers list.
-                for (int i = 0; i < tileLayerNum; i++)
-                {
-                    string layer = currentLevel.layers[i];
-                    List<string[]> currentLayer = currentLevel.tileSplitter(layer);
-                    for (int y = 0; y < currentLayer.Count; y++)
-                    {
-                        string[] currentRow = currentLayer[y];
-                        for (int x = 0; x < currentRow.Length; x++)
-                        {
-                          
-                            int textureNumber = Int32.Parse(currentRow[x]);
-                            if (textureNumber != 0)
-                            {
-                                Vector2 position = new Vector2(x * currentLevel.tileWidth, y * currentLevel.tileHeight);
-                                Vector2 size = new Vector2(currentLevel.tileWidth, currentLevel.tileHeight);
-                                Sprite currentTile = new Sprite(position, size, i, tileset[textureNumber - 1]);
-                                newLevel.AddObject(currentTile);
-                            }
-                            
-                        }
-                    }
-
-                }
-
-                #endregion
-
-
-                #region Object creation
-
-
-                #region Colliders
-                // Loops through the collider list to make colliders.
-                foreach (XElement objectData in currentLevel.colliders)
-                {
-                    // Data taken from the object element.
-                    Vector2 position = new Vector2(Int32.Parse(objectData.Attribute("x").Value), Int32.Parse(objectData.Attribute("y").Value));
-                    Vector2 size = new Vector2(Int32.Parse(objectData.Attribute("width").Value), Int32.Parse(objectData.Attribute("height").Value));
-
-                    // creates a new collider.
-                    Collider currentCollider = new Collider(position, size);
-                    newLevel.AddObject(currentCollider);
-                }
-                #endregion
-
-
-                #region Interactors
-                // Loops through the interactors list to make interacable objects.
-                foreach (XElement objectData in currentLevel.interactors)
-                {
-                    // Data taken from the object element.
-                    Vector2 position = new Vector2(Int32.Parse(objectData.Attribute("x").Value), Int32.Parse(objectData.Attribute("y").Value));
-                    Vector2 size = new Vector2(Int32.Parse(objectData.Attribute("width").Value), Int32.Parse(objectData.Attribute("height").Value));
-                    bool complex = false;
-                    string requires = null;
-                    string gives = null;
-                    string basic = null;
-                    string route = null;
-
-                    // Uses the property element of the objectData to assign requires and gives.
-                    IEnumerable<XElement> properties = objectData.Element("properties").Elements();
-                    foreach (XElement property in properties)
-                    {
-                        if (property.Attribute("name").Value == "Requires") requires = property.Attribute("value").Value;
-                        if (property.Attribute("name").Value == "Gives") gives = property.Attribute("value").Value;
-                        if (property.Attribute("name").Value == "Basic") basic = property.Attribute("value").Value;
-                        if (property.Attribute("name").Value == "Complex") complex = bool.Parse(property.Attribute("value").Value);
-                        if (property.Attribute("name").Value == "Route")
-                        {
-                            route = property.Attribute("value").Value;
-
-                        }
-
-                    }
-
-                    // Creates a standard InteractableObject and associated Sprite.
-                    if (objectData.Attribute("type").Value == "Interactable")
-                    {
-
-                        InteractableObject currentObject = new InteractableObject(position, size, complex, requires, gives, basic, 4, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1]);
-                        newLevel.AddObject(currentObject);
-                    }
-                    if (objectData.Attribute("type").Value == "NPC")
-                    {
-                        Npc currentObject = new Npc(position, size, complex, requires, gives, basic, route, 4, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1]);
-                        newLevel.AddObject(currentObject);
-                    }
-                    if (objectData.Attribute("type").Value == "End")
-                    {
-                        EndObject currentObject = new EndObject(position, size, complex, requires, gives, basic, 4, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1]);
-                        newLevel.AddObject(currentObject);
-                    }
-
-
-                }
-                #endregion
-
-                #region Player
-                XElement playerData = currentLevel.player;
-                {
-                    Vector2 position = new Vector2(Int32.Parse(playerData.Attribute("x").Value), Int32.Parse(playerData.Attribute("y").Value));
-                    Vector2 size = new Vector2(Int32.Parse(playerData.Attribute("width").Value), Int32.Parse(playerData.Attribute("height").Value));
-                    Player player = new Player(position, size, 4, tileset[Int32.Parse(playerData.Attribute("gid").Value) - 1], 1);
-                    newLevel.AddObject(player);
-                }
-                #endregion
-
-                #endregion
-
-                ObjectManager.Instance.AddLevel(newLevel);
+            Level newLevel = currentLevel.GetLevel();
+            ObjectManager.Instance.CurrentLevel = newLevel;
+            ObjectManager.Instance.AddLevel(newLevel);
                 
-
-
-
-
-
-            }
-
-
-
-
-
 
         }
 
