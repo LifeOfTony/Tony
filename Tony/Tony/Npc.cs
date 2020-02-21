@@ -30,7 +30,6 @@ namespace Tony
         {
             this.route = route;
             FindDestination(route);
-            path = Pathfinder.FindPath(this.position, destination);
             move = false;
         }
 
@@ -44,6 +43,7 @@ namespace Tony
         {
             if (move == true)
             {
+                path = Pathfinder.FindPath(this.position, destination);
                 if (path.Any())
                 {
                     this.position = path.Dequeue();
