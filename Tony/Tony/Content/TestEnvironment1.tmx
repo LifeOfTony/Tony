@@ -73,6 +73,7 @@
   <object id="1" type="NPC" gid="9" x="448" y="672" width="32" height="32">
    <properties>
     <property name="Basic" value="Bring me snacks."/>
+    <property name="BasicMove" type="bool" value="false"/>
     <property name="Complex" type="bool" value="true"/>
     <property name="Gives" value="helpful_personality"/>
     <property name="Requires" value="snacks"/>
@@ -82,6 +83,7 @@
   <object id="2" type="NPC" gid="9" x="224" y="768" width="32" height="32">
    <properties>
     <property name="Basic" value="gotta run."/>
+    <property name="BasicMove" type="bool" value="true"/>
     <property name="Complex" type="bool" value="false"/>
     <property name="Gives" value="helpful_personality"/>
     <property name="Requires" value="snacks"/>

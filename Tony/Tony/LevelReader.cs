@@ -166,6 +166,7 @@ namespace Tony
             string gives = null;
             string basic = null;
             string route = null;
+            bool basicMove = false;
 
             #region object property navigation
             IEnumerable<XElement> properties = objectData.Element("properties").Elements();
@@ -174,6 +175,7 @@ namespace Tony
                 if (property.Attribute("name").Value == "Requires") requires = property.Attribute("value").Value;
                 if (property.Attribute("name").Value == "Gives") gives = property.Attribute("value").Value;
                 if (property.Attribute("name").Value == "Basic") basic = property.Attribute("value").Value;
+                if (property.Attribute("name").Value == "BasicMove") basicMove = bool.Parse(property.Attribute("value").Value);
                 if (property.Attribute("name").Value == "Complex") complex = bool.Parse(property.Attribute("value").Value);
                 if (property.Attribute("name").Value == "Route")
                 {
@@ -193,7 +195,7 @@ namespace Tony
             }
             if (objectData.Attribute("type").Value == "NPC")
             {
-                Npc currentObject = new Npc(position, size, complex, requires, gives, basic, route, 4, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1]);
+                Npc currentObject = new Npc(position, size, complex, requires, gives, basic, basicMove, route, 4, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1]);
                 levelRead.AddObject(currentObject);
             }
             if (objectData.Attribute("type").Value == "End")
