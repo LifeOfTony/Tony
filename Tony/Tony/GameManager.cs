@@ -124,16 +124,17 @@ namespace Tony
 
             int mapWidth = currentLevel.width;
             int mapHeight = currentLevel.height;
-
             lightsTarget = new RenderTarget2D(
             GraphicsDevice, mapWidth * 32, mapHeight * 32);
             mainTarget = new RenderTarget2D(
             GraphicsDevice, mapWidth * 32, mapHeight * 32);
 
             Level newLevel = currentLevel.GetLevel();
+            
             ObjectManager.Instance.CurrentLevel = newLevel;
             ObjectManager.Instance.AddLevel(newLevel);
-                
+            Pathfinder.CreateGrid(mapWidth, mapHeight);
+            newLevel.setPaths();
 
         }
 

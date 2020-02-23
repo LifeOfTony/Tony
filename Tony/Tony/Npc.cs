@@ -39,11 +39,16 @@ namespace Tony
             destination = new Vector2(Int32.Parse(coordinates[0]), Int32.Parse(coordinates[1]));
         }
 
+        public void setPath()
+        {
+            path = Pathfinder.FindPath(this.position, destination);
+        }
+
         public void Move()
         {
             if (move == true)
             {
-                path = Pathfinder.FindPath(this.position, destination);
+                
                 if (path.Any())
                 {
                     this.position = path.Dequeue();
