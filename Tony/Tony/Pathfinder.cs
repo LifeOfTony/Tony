@@ -10,8 +10,6 @@ namespace Tony
 {
     public static class Pathfinder
     {
-        private static int mapWidth;
-        private static int mapHeight;
         private static Vector2 startPosition;
         private static Vector2 finalPosition;
         private static List<GridNode> allNodes;
@@ -20,14 +18,17 @@ namespace Tony
         private static GridNode endNode;
 
 
+        static Pathfinder()
+        {
+            allNodes = new List<GridNode>();
+        }
+
+
         public static Queue<Vector2> FindPath(Vector2 position, Vector2 endPosition)
         {
             startPosition = new Vector2((position.X/32), (position.Y/32));
             finalPosition = new Vector2((endPosition.X / 32), (endPosition.Y / 32));
-            mapWidth = ObjectManager.Instance.CurrentLevel.MapWidth;
-            mapHeight = ObjectManager.Instance.CurrentLevel.MapHeight;
-            allNodes = new List<GridNode>();
-            CreateGrid();
+            setHNumbers(startPosition, finalPosition);
             FindConnections();
             AStarSearch();
             var shortestpath = new List<GridNode>();
@@ -51,7 +52,21 @@ namespace Tony
         }
 
 
-
+        private static void setHNumbers(Vector2 start, Vector2 finish)
+        {
+            foreach(GridNode currentNode in allNodes)
+            {
+                if (currentNode.Position == startPosition)
+                {
+                    startNode = currentNode;
+                }
+                else if (currentNode.Position == finalPosition)
+                {
+                    endNode = currentNode;
+                }
+                currentNode.FindHNumber(finalPosition);
+            }
+        }
 
 
         private static void BuildShortestPath(List<GridNode> path, GridNode node)
@@ -122,7 +137,7 @@ namespace Tony
             }
         }
 
-        public static void CreateGrid()
+        public static void CreateGrid(int mapWidth, int mapHeight)
         {
 
             for(int i = 0; i < mapWidth; i++)
@@ -140,15 +155,6 @@ namespace Tony
                     {
                         GridNode currentNode;
                         currentNode = new GridNode(currentPosition);
-                        if (currentPosition == startPosition)
-                        {
-                            startNode = currentNode;
-                        }
-                        else if (currentPosition == finalPosition)
-                        {
-                            endNode = currentNode;
-                        }
-                        currentNode.FindHNumber(finalPosition);
                         allNodes.Add(currentNode);
                     }
                 } 

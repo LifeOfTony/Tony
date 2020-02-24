@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Xml.Linq;
 
+
+
 namespace Tony
 {
     class LevelReader
@@ -18,100 +20,30 @@ namespace Tony
         public int tileWidth;
         public int tileHeight;
 
-        //reader stores the content of an Xml file in memory.
+        Level levelRead;
+        private int levelNo;
         private XDocument reader;
-
         //tileNumbers, tileset and objectElements store the information taken from the Xml file.
-        public List<string> layers;
-        public List<String> tileset;
+        public List<Texture2D> tileset;
         public List<XElement> interactors;
         public List<XElement> colliders;
         public XElement player;
         private XElement map;
-
+        private Microsoft.Xna.Framework.Content.ContentManager Content;
 
         /// <summary>
         /// the LevelReader takes a file path string as a parameter.
         /// It then reads the xml file found and sets the instance variables to the value of certain information in the file.
         /// </summary>
         /// <param name="filePath"></param>
-        public LevelReader(string filePath)
+        public LevelReader(string filePath, Microsoft.Xna.Framework.Content.ContentManager content, int level)
         {
-            #region Setting up basic map data.
             reader = XDocument.Load(filePath);
-            this.map = reader.Element("map");
-            this.interactors = new List<XElement>();
-            this.colliders = new List<XElement>();
-            this.tileset = new List<string>();
-            this.layers = new List<string>();
-            if (map.Attribute("orientation").Value != "orthogonal")
-            {
-                //return exception level file invalid.
-            }
-            else
-            {
-                //sets the basic map information.
-                this.width = Int32.Parse(map.Attribute("width").Value);
-                this.height = Int32.Parse(map.Attribute("height").Value);
-                this.tileWidth = Int32.Parse(map.Attribute("tilewidth").Value);
-                this.tileHeight = Int32.Parse(map.Attribute("tileheight").Value);
-            }
-            #endregion
-
-            #region Fetching the tileset data.
-            //finds the element called tileset from the map file and uses it to create a new xmlreader for the tileset file.
-            XElement tilesetNode = map.Element("tileset");
-            XmlReader tileReader = XmlReader.Create(tilesetNode.Attribute("source").Value);
-            while (tileReader.Read())
-            {
-                //for each tile in the tileset file, add its file location to the tileset list.
-                if ((tileReader.NodeType == XmlNodeType.Element) && (tileReader.Name == "image"))
-                {
-                    tileset.Add(tileReader.GetAttribute("source"));
-                }
-                tileReader.Read();
-            }
-            #endregion
-
-            #region Fetching tile data.
-            IEnumerable<XElement> tileLayers = map.Elements("layer");
-            foreach(XElement currentLayer in tileLayers)
-            {
-                string tiledata = currentLayer.Element("data").Value;
-                this.layers.Add(tiledata);
-            }
-            #endregion
-
-            #region Fetching object data.
-            //finds the objectLayer element and adds each of its child elements to the objectElements list.
-            foreach (XElement objectLayer in map.Elements("objectgroup"))
-            {
-                IEnumerable<XElement> objects = objectLayer.Elements();
-                switch (objectLayer.Attribute("name").Value)
-                {
-                    case "Interactable Layer":
-                        foreach (XElement objectData in objects)
-                        {
-                            objectData.Attribute("y").Value = "" + (Int32.Parse(objectData.Attribute("y").Value) - 32);
-                            interactors.Add(objectData);
-                        } 
-                        break;
-
-                    case "Collision Layer":
-                        foreach (XElement objectData in objects) colliders.Add(objectData);
-                        break;
-
-                    case "Player":
-                        XElement playerData = objects.First();
-                        playerData.Attribute("y").Value = "" + (Int32.Parse(playerData.Attribute("y").Value) - 32);
-                        this.player = playerData;
-                        break;
-                }
-            }
-
-            #endregion
-
+            Content = content;
+            levelNo = level;
+            LoadFile();
         }
+
         /// <summary>
         /// tileSpitter is used to take the tile data saved in the map file and split it into sets based on the rows and columns of the map.
         /// </summary>
@@ -131,6 +63,190 @@ namespace Tony
             }
             return rows;
         }
- 
+
+
+
+        public void LoadFile()
+        {
+            this.map = reader.Element("map");
+            this.interactors = new List<XElement>();
+            this.colliders = new List<XElement>();
+            this.tileset = new List<Texture2D>();
+            if (map.Attribute("orientation").Value != "orthogonal")
+            {
+                //return exception level file invalid.
+            }
+
+            //sets the basic map information.
+            this.width = Int32.Parse(map.Attribute("width").Value);
+            this.height = Int32.Parse(map.Attribute("height").Value);
+            this.tileWidth = Int32.Parse(map.Attribute("tilewidth").Value);
+            this.tileHeight = Int32.Parse(map.Attribute("tileheight").Value);
+
+            levelRead = new Level(levelNo, width, height);
+
+
+            CreateTileSet();
+            FetchTileData();
+            FetchObjectData();
+        }
+
+
+        private void FetchTileData()
+        {
+            IEnumerable<XElement> tileLayers = map.Elements("layer");
+            foreach (XElement currentLayer in tileLayers)
+            {
+                int depth = Int32.Parse(currentLayer.Attribute("name").Value);
+                string tileData = currentLayer.Element("data").Value;
+                CreateTiles(tileData, depth);
+            }
+        }
+
+        private void CreateTiles(string tileData, int depth)
+        {
+           
+            List<string[]> currentLayer = tileSplitter(tileData);
+            for (int y = 0; y < currentLayer.Count; y++)
+            {
+                string[] currentRow = currentLayer[y];
+                for (int x = 0; x < currentRow.Length; x++)
+                {
+
+                    int textureNumber = Int32.Parse(currentRow[x]);
+                    if (textureNumber != 0)
+                    {
+                        Vector2 position = new Vector2(x * tileWidth, y * tileHeight);
+                        Vector2 size = new Vector2(tileWidth, tileHeight);
+                        Sprite currentTile = new Sprite(position, size, depth, tileset[textureNumber - 1]);
+                        levelRead.AddObject(currentTile);
+                    }
+
+                }
+            }
+
+            
+        }
+
+        private void FetchObjectData()
+        {
+            foreach (XElement objectLayer in map.Elements("objectgroup"))
+            {
+                IEnumerable<XElement> objects = objectLayer.Elements();
+                switch (objectLayer.Attribute("name").Value)
+                {
+                    case "Interactable Layer":
+                        foreach (XElement objectData in objects)
+                        {
+                            objectData.Attribute("y").Value = "" + (Int32.Parse(objectData.Attribute("y").Value) - 32);
+                            CreateInteractors(objectData);
+                        }
+                        break;
+
+                    case "Collision Layer":
+                        foreach (XElement objectData in objects) CreateColliders(objectData);
+                        break;
+
+                    case "Player":
+                        XElement playerData = objects.First();
+                        playerData.Attribute("y").Value = "" + (Int32.Parse(playerData.Attribute("y").Value) - 32);
+                        CreatePlayer(playerData);
+                        break;
+                }
+            }
+        }
+
+        private void CreateInteractors(XElement objectData)
+        {
+            // Data taken from the object element.
+            Vector2 position = new Vector2(Int32.Parse(objectData.Attribute("x").Value), Int32.Parse(objectData.Attribute("y").Value));
+            Vector2 size = new Vector2(Int32.Parse(objectData.Attribute("width").Value), Int32.Parse(objectData.Attribute("height").Value));
+            bool complex = false;
+            string requires = null;
+            string gives = null;
+            string basic = null;
+            string route = null;
+            bool basicMove = false;
+
+            #region object property navigation
+            IEnumerable<XElement> properties = objectData.Element("properties").Elements();
+            foreach (XElement property in properties)
+            {
+                if (property.Attribute("name").Value == "Requires") requires = property.Attribute("value").Value;
+                if (property.Attribute("name").Value == "Gives") gives = property.Attribute("value").Value;
+                if (property.Attribute("name").Value == "Basic") basic = property.Attribute("value").Value;
+                if (property.Attribute("name").Value == "BasicMove") basicMove = bool.Parse(property.Attribute("value").Value);
+                if (property.Attribute("name").Value == "Complex") complex = bool.Parse(property.Attribute("value").Value);
+                if (property.Attribute("name").Value == "Route")
+                {
+                    route = property.Attribute("value").Value;
+
+                }
+
+            }
+            #endregion
+
+            #region object creation
+            if (objectData.Attribute("type").Value == "Interactable")
+            {
+
+                InteractableObject currentObject = new InteractableObject(position, size, complex, requires, gives, basic, 4, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1]);
+                levelRead.AddObject(currentObject);
+            }
+            if (objectData.Attribute("type").Value == "NPC")
+            {
+                Npc currentObject = new Npc(position, size, complex, requires, gives, basic, basicMove, route, 4, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1]);
+                levelRead.AddObject(currentObject);
+            }
+            if (objectData.Attribute("type").Value == "End")
+            {
+                EndObject currentObject = new EndObject(position, size, complex, requires, gives, basic, 4, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1]);
+                levelRead.AddObject(currentObject);
+            }
+            #endregion
+        }
+
+        private void CreateColliders(XElement objectData)
+        {
+            // Data taken from the object element.
+            Vector2 position = new Vector2(Int32.Parse(objectData.Attribute("x").Value), Int32.Parse(objectData.Attribute("y").Value));
+            Vector2 size = new Vector2(Int32.Parse(objectData.Attribute("width").Value), Int32.Parse(objectData.Attribute("height").Value));
+
+            // creates a new collider.
+            Collider currentCollider = new Collider(position, size);
+            levelRead.AddObject(currentCollider);
+        }
+
+        private void CreatePlayer(XElement playerData)
+        {
+            Vector2 position = new Vector2(Int32.Parse(playerData.Attribute("x").Value), Int32.Parse(playerData.Attribute("y").Value));
+            Vector2 size = new Vector2(Int32.Parse(playerData.Attribute("width").Value), Int32.Parse(playerData.Attribute("height").Value));
+
+             
+            Player player = new Player(position, size, 1, tileset[Int32.Parse(playerData.Attribute("gid").Value) - 1], 4);
+            levelRead.AddObject(player);
+        }
+
+        private void CreateTileSet()
+        {
+            //finds the element called tileset from the map file and uses it to create a new xmlreader for the tileset file.
+            XElement tilesetNode = map.Element("tileset");
+            XmlReader tileReader = XmlReader.Create(tilesetNode.Attribute("source").Value);
+            while (tileReader.Read())
+            {
+                //for each tile in the tileset file, add its file location to the tileset list.
+                if ((tileReader.NodeType == XmlNodeType.Element) && (tileReader.Name == "image"))
+                {
+                    tileset.Add(Content.Load<Texture2D>(tileReader.GetAttribute("source")));
+                }
+                tileReader.Read();
+            }
+        }
+
+        public Level GetLevel()
+        {
+            return levelRead;
+        }
+
     }
 }
