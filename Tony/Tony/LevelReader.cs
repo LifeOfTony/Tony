@@ -222,8 +222,8 @@ namespace Tony
             Vector2 position = new Vector2(Int32.Parse(playerData.Attribute("x").Value), Int32.Parse(playerData.Attribute("y").Value));
             Vector2 size = new Vector2(Int32.Parse(playerData.Attribute("width").Value), Int32.Parse(playerData.Attribute("height").Value));
 
-
-            Player player = new Player(position, size, 4, tileset[Int32.Parse(playerData.Attribute("gid").Value) - 1], 1);
+             
+            Player player = new Player(position, size, 1, tileset[Int32.Parse(playerData.Attribute("gid").Value) - 1], 4);
             levelRead.AddObject(player);
         }
 

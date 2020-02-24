@@ -39,37 +39,33 @@ namespace Tony
         /// </summary>
         public void Interact()
         {
-            if(complex == true)
+            
+            if(requirement.Equals("none"))
             {
-                if(requirement.Equals("none"))
-                {
-                   ComplexInteract();
-                }
-                else
-                {
-                    // checks to see if the player has got the required item to trigger the interaction.
-                    foreach (Item currentItem in ObjectManager.Instance.Items)
-                    {
-                        // if an item is used, text feedback is given.
-                        if (currentItem.GetName().Equals(requirement) && currentItem.IsCollected())
-                        {
-                            GameManager.textOutput = "";
-                            GameManager.textOutput += "used " + requirement + "\n\r";
-                            //Collect();
-                            ComplexInteract();
-                        }
-                        else
-                        {
-                            BasicInteract();
-                        }
-                    }
-                }
-
+                ComplexInteract();
             }
             else
             {
-                BasicInteract();
+                // checks to see if the player has got the required item to trigger the interaction.
+                foreach (Item currentItem in ObjectManager.Instance.Items)
+                {
+                    // if an item is used, text feedback is given.
+                    if (currentItem.GetName().Equals(requirement) && currentItem.IsCollected())
+                    {
+                        GameManager.textOutput = "";
+                        GameManager.textOutput += "used " + requirement + "\n\r";
+                        //Collect();
+                        ComplexInteract();
+                    }
+                    else
+                    {
+                        BasicInteract();
+                    }
+                }
             }
+
+            
+
         }
 
 
