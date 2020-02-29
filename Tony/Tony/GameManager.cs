@@ -29,8 +29,7 @@ namespace Tony
         Vector2 lightPosition;
 
 
-        enum GameState {mainmenu, playing, paused}
-        static GameState gameState;
+        
 
 
         LevelUI levelUI;
@@ -61,7 +60,7 @@ namespace Tony
             textOutput = "";
             level = 0;
             levels = 2;
-            gameState = GameState.mainmenu;
+            
 
         }
 
@@ -172,7 +171,7 @@ namespace Tony
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape) || Controller.exit == true)
                 Exit();
 
             ClearText(gameTime);

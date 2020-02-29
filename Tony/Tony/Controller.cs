@@ -13,54 +13,69 @@ namespace Tony
 {
     static class Controller
     {
+        enum GameState { mainmenu, playing, paused }
+        static GameState gameState;
+
+        public static bool exit = false;
 
 
         public static void Initialize(ContentManager content)
         {
 
             View.Initialize(content);
-
+            gameState = GameState.mainmenu;
         }
 
 
-        public static void SwitchState( /* state */)
+        public static void SwitchState()
         {
-            //switch the state between main-menu, pause menu, and playing state.
+            if (gameState == GameState.playing)
+            {
+                View.HideMainMenu();
+                View.ShowLevelUI();
+            }
+            else if (gameState == GameState.mainmenu)
+            {
+                View.ShowMainMenu();
+                View.HideLevelUI();
+            }
         }
 
 
         /* Button handler for the menus */
 
-/*
+
         public static void ProcessButtons()
         {
-            mainMenu.MainToGame.OnClick = (Entity button) =>
+            View.mainMenu.MainToGame.OnClick = (Entity button) =>
             {
                 gameState = GameState.playing;
-                ShowMainMenu();
             };
 
-            mainMenu.MainToLevels.OnClick = (Entity button) => { ShowLevels(); };
+            View.mainMenu.MainToLevels.OnClick = (Entity button) => { View.ShowLevels(); };
 
-            mainMenu.MainToQuit.OnClick = (Entity button) => Exit();
+            View.mainMenu.MainToQuit.OnClick = (Entity button) => exit = true;
 
-            mainMenu.LevelSetOne.OnClick = (Entity button) =>
+            /*
+            View.mainMenu.LevelSetOne.OnClick = (Entity button) =>
             {
                 level = 0;
                 HideLevels();
             };
 
-            mainMenu.LevelSetTwo.OnClick = (Entity button) =>
+            View.mainMenu.LevelSetTwo.OnClick = (Entity button) =>
             {
                 level = 1;
                 HideLevels();
             };
+            */
         }
-        */
 
 
         public static void Update(GameTime gameTime)
         {
+            ProcessButtons();
+            SwitchState();
             // GeonBit.UIL update UI manager
             UserInterface.Active.Update(gameTime);
         }

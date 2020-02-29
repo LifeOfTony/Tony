@@ -15,11 +15,12 @@ namespace Tony
     {
         public Panel TextBox { get; private set; }
 
-
         public LevelUI()
         {
             TextBox = new Panel(new Vector2(500, 200), PanelSkin.Fancy, Anchor.BottomCenter, new Vector2(0, 200));
             TextBox.Visible = false;
+
+            UserInterface.Active.AddEntity(TextBox);
         }
     }
 }

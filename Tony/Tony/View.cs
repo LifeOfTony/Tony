@@ -14,7 +14,7 @@ namespace Tony
     static class View
     {
 
-        static MainMenu mainMenu;
+        public static MainMenu mainMenu;
 
         static LevelUI levelUI;
 
@@ -26,6 +26,8 @@ namespace Tony
 
             Texture2D logo = content.Load<Texture2D>("tony_logo");
             mainMenu = new MainMenu(logo);
+            levelUI = new LevelUI();
+            levelUI.Visible = false;
         }
 
 
@@ -33,7 +35,6 @@ namespace Tony
         {
             UserInterface.Active.Update(gameTime);
         }
-
 
         static void Draw(SpriteBatch spriteBatch)
         {
@@ -52,6 +53,25 @@ namespace Tony
             mainMenu.LevelSetTwo.Visible = false;
         }
 
+        public static void HideMainMenu()
+        {
+            mainMenu.Menu.Visible = false;
+        }
+
+        public static void ShowMainMenu()
+        {
+            mainMenu.Menu.Visible = true;
+        }
+
+        public static void ShowLevelUI()
+        {
+            levelUI.TextBox.Visible = true;
+        }
+
+        public static void HideLevelUI()
+        {
+            levelUI.TextBox.Visible = false;
+        }
 
         //creates the textbox element
         static void CreateTextBox()
