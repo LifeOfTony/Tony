@@ -29,14 +29,11 @@ namespace Tony
         Vector2 lightPosition;
 
 
-        enum GameState {mainmenu, playing}
+        enum GameState {mainmenu, playing, paused}
         static GameState gameState;
 
-        MainMenu mainMenu;
 
         LevelUI levelUI;
-
-        Texture2D logo;
 
         //A list holding the tileset textures.
         private List<Texture2D> tileset;
@@ -79,6 +76,7 @@ namespace Tony
         protected override void Initialize()
         {
 
+
             UserInterface.Initialize(Content, BuiltinThemes.editor);
 
             //These four lines set up the screen to fit the users monitor.
@@ -105,8 +103,8 @@ namespace Tony
 
             lightMask = Content.Load<Texture2D>("lightMask");
             effect1 = Content.Load<Effect>("lighteffect");
-            logo = Content.Load<Texture2D>("tony_logo");
-            mainMenu= new MainMenu(logo);
+            //logo = Content.Load<Texture2D>("tony_logo");
+            //mainMenu= new MainMenu(logo);
             levelUI = new LevelUI();
 
             // Loads the SpriteFont 'textFont' from Content.
@@ -117,7 +115,7 @@ namespace Tony
             // Creates a new ItemReader for the Items.xml file.
             ItemReader itemList = new ItemReader(@"Content\Items.xml");
 
-
+            Controller.Initialize(Content);
 
             // Creates a new LevelReader for the testmap.xml file. 
             LevelReader currentLevel = new LevelReader(@"Content\TestEnvironment1.tmx", Content, level);
@@ -179,9 +177,7 @@ namespace Tony
 
             ClearText(gameTime);
 
-            // GeonBit.UIL update UI manager
-            UserInterface.Active.Update(gameTime);
-
+            Controller.Update(gameTime);
 
             
             // Poll for current keyboard state
@@ -201,71 +197,10 @@ namespace Tony
             {
                 npc.Move();
             }
-
-            ProcessButtons();
-            ShowMainMenu();
             
 
             base.Update(gameTime);
         }
-
-        public void ShowMainMenu()
-        {
-            if (gameState == GameState.mainmenu)
-            {
-                mainMenu.Menu.Visible = true;
-                levelUI.TextBox.Visible = false;
-            }
-            else
-            {
-                mainMenu.Menu.Visible = false;
-                levelUI.TextBox.Visible = true;
-            }
-        }
-
-        public void ShowLevels()
-        {
-            mainMenu.LevelSetOne.Visible = true;
-            mainMenu.LevelSetTwo.Visible = true;
-        }
-
-        public void HideLevels()
-        {
-            mainMenu.LevelSetOne.Visible = false;
-            mainMenu.LevelSetTwo.Visible = false;
-        }
-
-
-        public void ProcessButtons()
-        {
-            mainMenu.MainToGame.OnClick = (Entity button) =>
-            {
-                gameState = GameState.playing;
-                ShowMainMenu();
-            };
-
-            mainMenu.MainToLevels.OnClick = (Entity button) => { ShowLevels(); };
-
-            mainMenu.MainToQuit.OnClick = (Entity button) => Exit();
-
-            mainMenu.LevelSetOne.OnClick = (Entity button) =>
-            {
-                level = 0;
-                HideLevels();
-            };
-
-            mainMenu.LevelSetTwo.OnClick = (Entity button) =>
-            {
-                level = 1;
-                HideLevels();
-            };
-        }
-
-        public static void setMainMenuState()
-        {
-            gameState = GameState.mainmenu;
-        }
-
 
         /// <summary>
         /// This is called when the game should draw itself.
@@ -336,10 +271,8 @@ namespace Tony
 
             spriteBatch.End();
 
-            // GeonBit.UI: draw UI using the spriteBatch you created above
-            UserInterface.Active.Draw(spriteBatch);
-
-
+            
+            Controller.Draw(spriteBatch);
 
             base.Draw(gameTime);
         }

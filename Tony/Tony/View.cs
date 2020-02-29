@@ -14,9 +14,18 @@ namespace Tony
     static class View
     {
 
-        static View()
-        {
+        static MainMenu mainMenu;
 
+        static LevelUI levelUI;
+
+
+        public static void Initialize(ContentManager content)
+        {
+            //load textures for the big lantern and textbox.
+            //create mainmenu.
+
+            Texture2D logo = content.Load<Texture2D>("tony_logo");
+            mainMenu = new MainMenu(logo);
         }
 
 
@@ -31,12 +40,20 @@ namespace Tony
             UserInterface.Active.Draw(spriteBatch);
         }
 
-
-        static void MainMenu()
+        public static void ShowLevels()
         {
-
+            mainMenu.LevelSetOne.Visible = true;
+            mainMenu.LevelSetTwo.Visible = true;
         }
 
+        public static void HideLevels()
+        {
+            mainMenu.LevelSetOne.Visible = false;
+            mainMenu.LevelSetTwo.Visible = false;
+        }
+
+
+        //creates the textbox element
         static void CreateTextBox()
         {
 
