@@ -26,7 +26,7 @@ namespace Tony
                 {
                     currentItem.Collect();
                     GameManager.textOutput += "gained " + gives + "\n\r";
-                    GameManager.setMainMenuState();
+                    //GameManager.setMainMenuState();
                 }
             }
         }
