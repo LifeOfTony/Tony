@@ -102,9 +102,7 @@ namespace Tony
 
             lightMask = Content.Load<Texture2D>("lightMask");
             effect1 = Content.Load<Effect>("lighteffect");
-            //logo = Content.Load<Texture2D>("tony_logo");
-            //mainMenu= new MainMenu(logo);
-            levelUI = new LevelUI();
+
 
             // Loads the SpriteFont 'textFont' from Content.
             font = Content.Load<SpriteFont>("textFont");

@@ -24,9 +24,10 @@ namespace Tony
             //load textures for the big lantern and textbox.
             //create mainmenu.
 
-            Texture2D logo = content.Load<Texture2D>("tony_logo");
+            Texture2D logo = content.Load<Texture2D>("tonylogo-12");
+            Texture2D lantern = content.Load<Texture2D>("biglanternOne");
             mainMenu = new MainMenu(logo);
-            levelUI = new LevelUI();
+            levelUI = new LevelUI(lantern);
             levelUI.Visible = false;
         }
 
@@ -65,12 +66,12 @@ namespace Tony
 
         public static void ShowLevelUI()
         {
-            levelUI.TextBox.Visible = true;
+            levelUI.LowerUI.Visible = true;
         }
 
         public static void HideLevelUI()
         {
-            levelUI.TextBox.Visible = false;
+            levelUI.LowerUI.Visible = false;
         }
 
         //creates the textbox element
