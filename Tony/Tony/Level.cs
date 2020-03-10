@@ -205,9 +205,6 @@ namespace Tony
             }
         }
 
-        public String ToString()
-        {
-            return "L" + level ;
-        }
+
     }
 }

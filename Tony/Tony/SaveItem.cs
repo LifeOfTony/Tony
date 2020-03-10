@@ -41,9 +41,9 @@ namespace Tony
                     }
 
                 }
-               writer.WriteLine(ObjectManager .Instance .CurrentLevel.ToString ()  );
+               writer.WriteLine("L"+ ObjectManager .Instance .CurrentLevel.getLevel  );
 
-
+                writer.WriteLine("M"+ ObjectManager.Instance.MentalState.ToString());
             }
         }
         public void read()
