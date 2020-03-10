@@ -190,17 +190,17 @@ namespace Tony
             if (objectData.Attribute("type").Value == "Interactable")
             {
 
-                InteractableObject currentObject = new InteractableObject(position, size, complex, requires, gives, basic, 4, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1]);
+                InteractableObject currentObject = new InteractableObject(position, size, 4, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1], requires, gives);
                 levelRead.AddObject(currentObject);
             }
             if (objectData.Attribute("type").Value == "NPC")
             {
-                Npc currentObject = new Npc(position, size, complex, requires, gives, basic, basicMove, route, 4, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1]);
+                Npc currentObject = new Npc(position, size, 4, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1], basicMove, route, requires, gives);
                 levelRead.AddObject(currentObject);
             }
             if (objectData.Attribute("type").Value == "End")
             {
-                EndObject currentObject = new EndObject(position, size, complex, requires, gives, basic, 4, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1]);
+                EndObject currentObject = new EndObject(position, size, 4, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1], requires, gives);
                 levelRead.AddObject(currentObject);
             }
             #endregion
