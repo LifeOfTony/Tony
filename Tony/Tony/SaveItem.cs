@@ -35,10 +35,14 @@ namespace Tony
                // writer.WriteLine(ObjectManager.Instance.Items);
                 foreach (Item i in ObjectManager.Instance.Items)
                 {
-                    writer.WriteLine(i.GetName());
 
+                    if (i.IsCollected() == true){
+                        writer.WriteLine(i.GetName());
+                    }
 
                 }
+               writer.WriteLine(ObjectManager .Instance .CurrentLevel.ToString ()  );
+
 
             }
         }
