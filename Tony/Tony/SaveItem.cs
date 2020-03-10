@@ -37,13 +37,15 @@ namespace Tony
                 {
 
                     if (i.IsCollected() == true){
-                        writer.WriteLine(i.GetName());
+                        writer.WriteLine("I"+ " " + i.GetName());
                     }
 
                 }
-               writer.WriteLine("L"+ ObjectManager .Instance .CurrentLevel.getLevel  );
+               writer.WriteLine("L"+ " "+ ObjectManager .Instance .CurrentLevel.getLevel  );
 
-                writer.WriteLine("M"+ ObjectManager.Instance.MentalState.ToString());
+                writer.WriteLine("M"+ " "+ ObjectManager.Instance.MentalState.ToString());
+
+                writer.WriteLine("P" + " "+ ObjectManager.Instance.CurrentLevel.Player.getPosition());
             }
         }
         public void read()
