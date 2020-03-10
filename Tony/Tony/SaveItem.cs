@@ -37,26 +37,45 @@ namespace Tony
                 {
 
                     if (i.IsCollected() == true){
-                        writer.WriteLine("I"+ " " + i.GetName());
+                        writer.WriteLine("I"+  i.GetName());
                     }
 
                 }
-               writer.WriteLine("L"+ " "+ ObjectManager .Instance .CurrentLevel.getLevel  );
+               writer.WriteLine("L"+  ObjectManager .Instance .CurrentLevel.getLevel  );
 
-                writer.WriteLine("M"+ " "+ ObjectManager.Instance.MentalState.ToString());
+                writer.WriteLine("M"+  ObjectManager.Instance.MentalState.ToString());
 
-                writer.WriteLine("P" + " "+ ObjectManager.Instance.CurrentLevel.Player.getPosition());
+                writer.WriteLine("P" +  ObjectManager.Instance.CurrentLevel.Player.getPosition());
             }
         }
         public void read()
         {
             string line = "";
             using (StreamReader sr = new StreamReader (@"D:\VS CM\LifeOfTony\save.txt"))
-            { 
-                while ((line =sr.ReadLine()) != null)
+            {
+                //  while ((line = sr.ReadLine()) != null)
+                // {
+                // Console.WriteLine(line);
+                while (sr.Peek() >= 0)
                 {
-                    Console.WriteLine(line);
+                    if (sr.Read().Equals('L'))
+                    {
+                        line = sr.ReadLine();
+
+                        Console.WriteLine(line);
+                    }
+                    else if (sr.Read().Equals('P'))
+                    {
+                        line = sr.ReadLine();
+
+                        Console.WriteLine(line);
+                    }
+
                 }
+                
+               // }
+
+                Console.WriteLine ("end of the file");
             }
         }
 
