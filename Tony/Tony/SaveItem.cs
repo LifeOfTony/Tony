@@ -32,11 +32,16 @@ namespace Tony
             using (StreamWriter writer = new StreamWriter(@"D:\VS CM\LifeOfTony\save.txt"))
             {
 
-                writer.WriteLine(ObjectManager.Instance.Items );
+               // writer.WriteLine(ObjectManager.Instance.Items);
+                foreach (Item i in ObjectManager.Instance.Items)
+                {
+                    writer.WriteLine(i.GetName());
+
+
+                }
+
             }
-            
         }
-        
         public void read()
         {
             string line = "";

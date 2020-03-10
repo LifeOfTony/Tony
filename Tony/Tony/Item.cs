@@ -56,7 +56,5 @@ namespace Tony
             this.collected = true;
         }
 
-
-
     }
 }
