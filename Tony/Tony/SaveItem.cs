@@ -15,24 +15,15 @@ namespace Tony
         public SaveItem()
         {
 
-            /*
-            string testItem = "testItem";
-            Item x = new Item(testItem, 1);
-            ObjectManager.Instance.AddItem(x);
-
-            string testItemB = "testItemB";
-            Item y = new Item(testItemB, 2);
-            ObjectManager.Instance.AddItem(y);
-            */
         }
 
         public void save()
         {
+            //Use the StreamWriter to save file in a txt fromate.
 
             using (StreamWriter writer = new StreamWriter(@"D:\VS CM\LifeOfTony\save.txt"))
             {
 
-               // writer.WriteLine(ObjectManager.Instance.Items);
                 foreach (Item i in ObjectManager.Instance.Items)
                 {
 
@@ -50,15 +41,19 @@ namespace Tony
         }
         public void read()
         {
+
             char prefix  ;
             string line = "";
+
+            //Use a StreamReader to read savefile.
+
             using (StreamReader sr = new StreamReader (@"D:\VS CM\LifeOfTony\save.txt"))
             {
 
                 while (sr.Peek() >= 0)
                 {
                     prefix = ((char)sr.Read());
-                   // Console.Write(prefix);
+
                     if (prefix.Equals('I'))
                     {
                         line = sr.ReadLine();
@@ -84,9 +79,7 @@ namespace Tony
                         Console.WriteLine(line);
                     }
 
-
                 }
-
 
                 Console.WriteLine ("end of the file");
             }
