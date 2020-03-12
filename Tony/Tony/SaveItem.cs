@@ -50,30 +50,43 @@ namespace Tony
         }
         public void read()
         {
+            char prefix  ;
             string line = "";
             using (StreamReader sr = new StreamReader (@"D:\VS CM\LifeOfTony\save.txt"))
             {
-                //  while ((line = sr.ReadLine()) != null)
-                // {
-                // Console.WriteLine(line);
+
                 while (sr.Peek() >= 0)
                 {
-                    if (sr.Read().Equals('L'))
+                    prefix = ((char)sr.Read());
+                   // Console.Write(prefix);
+                    if (prefix.Equals('I'))
                     {
                         line = sr.ReadLine();
 
                         Console.WriteLine(line);
                     }
-                    else if (sr.Read().Equals('P'))
+                    else if (prefix.Equals('L'))
+                    {
+                        line = sr.ReadLine();
+                      
+                        Console.WriteLine(line);
+                    }
+                    else if (prefix.Equals('M'))
                     {
                         line = sr.ReadLine();
 
                         Console.WriteLine(line);
                     }
+                    else if (prefix.Equals('P'))
+                    {
+                        line = sr.ReadLine();
+
+                        Console.WriteLine(line);
+                    }
+
 
                 }
-                
-               // }
+
 
                 Console.WriteLine ("end of the file");
             }
