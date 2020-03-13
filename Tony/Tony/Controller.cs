@@ -13,7 +13,7 @@ namespace Tony
 {
     static class Controller
     {
-        enum GameState { mainmenu, playing, paused }
+        enum GameState { mainmenu, playing, paused, gameOver }
         static GameState gameState;
 
         public static bool exit = false;
@@ -33,6 +33,7 @@ namespace Tony
             {
                 View.HideMainMenu();
                 View.ShowLevelUI();
+
             }
             else if (gameState == GameState.mainmenu)
             {

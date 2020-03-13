@@ -128,17 +128,27 @@ namespace Tony
             
         }
 
+        private void CreateProps(XElement objectData, int depth)
+        {
+            // Data taken from the object element.
+            Vector2 size = new Vector2(float.Parse(objectData.Attribute("width").Value), float.Parse(objectData.Attribute("height").Value));
+            Vector2 position = new Vector2(float.Parse(objectData.Attribute("x").Value), float.Parse(objectData.Attribute("y").Value) - size.Y);
+            // creates a new collider.
+            Sprite currentProp = new Sprite(position, size, depth, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1]);
+            levelRead.AddObject(currentProp);
+        }
+
+
         private void FetchObjectData()
         {
             foreach (XElement objectLayer in map.Elements("objectgroup"))
             {
-                IEnumerable<XElement> objects = objectLayer.Elements();
+                IEnumerable<XElement> objects = objectLayer.Elements("object");
                 switch (objectLayer.Attribute("name").Value)
                 {
                     case "Interactable Layer":
                         foreach (XElement objectData in objects)
                         {
-                            objectData.Attribute("y").Value = "" + (Int32.Parse(objectData.Attribute("y").Value) - 32);
                             CreateInteractors(objectData);
                         }
                         break;
@@ -149,9 +159,14 @@ namespace Tony
 
                     case "Player":
                         XElement playerData = objects.First();
-                        playerData.Attribute("y").Value = "" + (Int32.Parse(playerData.Attribute("y").Value) - 32);
                         CreatePlayer(playerData);
                         break;
+
+                    case "Prop Layer":
+                        int depth = Int32.Parse(objectLayer.Element("properties").Element("property").Attribute("value").Value);
+                        foreach (XElement objectData in objects) CreateProps(objectData, depth);
+                        break;
+
                 }
             }
         }
@@ -159,9 +174,8 @@ namespace Tony
         private void CreateInteractors(XElement objectData)
         {
             // Data taken from the object element.
-            Vector2 position = new Vector2(Int32.Parse(objectData.Attribute("x").Value), Int32.Parse(objectData.Attribute("y").Value));
-            Vector2 size = new Vector2(Int32.Parse(objectData.Attribute("width").Value), Int32.Parse(objectData.Attribute("height").Value));
-            bool complex = false;
+            Vector2 size = new Vector2(float.Parse(objectData.Attribute("width").Value), float.Parse(objectData.Attribute("height").Value));
+            Vector2 position = new Vector2(float.Parse(objectData.Attribute("x").Value), float.Parse(objectData.Attribute("y").Value) - size.Y);
             string requires = null;
             string gives = null;
             string basic = null;
@@ -169,21 +183,24 @@ namespace Tony
             bool basicMove = false;
 
             #region object property navigation
-            IEnumerable<XElement> properties = objectData.Element("properties").Elements();
-            foreach (XElement property in properties)
+            if (objectData.Element("properties") != null)
             {
-                if (property.Attribute("name").Value == "Requires") requires = property.Attribute("value").Value;
-                if (property.Attribute("name").Value == "Gives") gives = property.Attribute("value").Value;
-                if (property.Attribute("name").Value == "Basic") basic = property.Attribute("value").Value;
-                if (property.Attribute("name").Value == "BasicMove") basicMove = bool.Parse(property.Attribute("value").Value);
-                if (property.Attribute("name").Value == "Complex") complex = bool.Parse(property.Attribute("value").Value);
-                if (property.Attribute("name").Value == "Route")
+                IEnumerable<XElement> properties = objectData.Element("properties").Elements();
+                foreach (XElement property in properties)
                 {
-                    route = property.Attribute("value").Value;
+                    if (property.Attribute("name").Value == "Requires") requires = property.Attribute("value").Value;
+                    if (property.Attribute("name").Value == "Gives") gives = property.Attribute("value").Value;
+                    if (property.Attribute("name").Value == "Basic") basic = property.Attribute("value").Value;
+                    if (property.Attribute("name").Value == "BasicMove") basicMove = bool.Parse(property.Attribute("value").Value);
+                    if (property.Attribute("name").Value == "Route")
+                    {
+                        route = property.Attribute("value").Value;
+                    }
 
                 }
-
             }
+
+            
             #endregion
 
             #region object creation
@@ -195,7 +212,7 @@ namespace Tony
             }
             if (objectData.Attribute("type").Value == "NPC")
             {
-                Npc currentObject = new Npc(position, size, 4, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1], basicMove, route, requires, gives);
+                Npc currentObject = new Npc(position, size, 4, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1], route, basicMove, requires, gives);
                 levelRead.AddObject(currentObject);
             }
             if (objectData.Attribute("type").Value == "End")
@@ -209,8 +226,8 @@ namespace Tony
         private void CreateColliders(XElement objectData)
         {
             // Data taken from the object element.
-            Vector2 position = new Vector2(Int32.Parse(objectData.Attribute("x").Value), Int32.Parse(objectData.Attribute("y").Value));
-            Vector2 size = new Vector2(Int32.Parse(objectData.Attribute("width").Value), Int32.Parse(objectData.Attribute("height").Value));
+            Vector2 position = new Vector2(float.Parse(objectData.Attribute("x").Value), float.Parse(objectData.Attribute("y").Value));
+            Vector2 size = new Vector2(float.Parse(objectData.Attribute("width").Value), float.Parse(objectData.Attribute("height").Value));
 
             // creates a new collider.
             Collider currentCollider = new Collider(position, size);
@@ -219,28 +236,34 @@ namespace Tony
 
         private void CreatePlayer(XElement playerData)
         {
-            Vector2 position = new Vector2(Int32.Parse(playerData.Attribute("x").Value), Int32.Parse(playerData.Attribute("y").Value));
-            Vector2 size = new Vector2(Int32.Parse(playerData.Attribute("width").Value), Int32.Parse(playerData.Attribute("height").Value));
+            Vector2 size = new Vector2(float.Parse(playerData.Attribute("width").Value), float.Parse(playerData.Attribute("height").Value));
+            Vector2 position = new Vector2(float.Parse(playerData.Attribute("x").Value), float.Parse(playerData.Attribute("y").Value) - size.Y);
 
-             
+
             Player player = new Player(position, size, 1, tileset[Int32.Parse(playerData.Attribute("gid").Value) - 1], 4);
             levelRead.AddObject(player);
         }
 
         private void CreateTileSet()
         {
-            //finds the element called tileset from the map file and uses it to create a new xmlreader for the tileset file.
-            XElement tilesetNode = map.Element("tileset");
-            XmlReader tileReader = XmlReader.Create(tilesetNode.Attribute("source").Value);
-            while (tileReader.Read())
+
+            foreach (XElement tilesetNode in map.Elements("tileset"))
             {
-                //for each tile in the tileset file, add its file location to the tileset list.
-                if ((tileReader.NodeType == XmlNodeType.Element) && (tileReader.Name == "image"))
+                //finds the element called tileset from the map file and uses it to create a new xmlreader for the tileset file.
+                XmlReader tileReader = XmlReader.Create(tilesetNode.Attribute("source").Value);
+                while (tileReader.Read())
                 {
-                    tileset.Add(Content.Load<Texture2D>(tileReader.GetAttribute("source")));
+                    //for each tile in the tileset file, add its file location to the tileset list.
+                    if ((tileReader.NodeType == XmlNodeType.Element) && (tileReader.Name == "image"))
+                    {
+                        tileset.Add(Content.Load<Texture2D>(tileReader.GetAttribute("source")));
+                    }
+                    tileReader.Read();
                 }
-                tileReader.Read();
             }
+
+
+            
         }
 
         public Level GetLevel()
