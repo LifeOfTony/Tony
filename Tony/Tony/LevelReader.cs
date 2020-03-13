@@ -27,7 +27,6 @@ namespace Tony
         public List<Texture2D> tileset;
         public List<XElement> interactors;
         public List<XElement> colliders;
-        public XElement player;
         private XElement map;
         private Microsoft.Xna.Framework.Content.ContentManager Content;
 

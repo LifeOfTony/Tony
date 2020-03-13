@@ -143,23 +143,34 @@ namespace Tony
         {
             tileWidth = tWidth;
             tileHeight = tHeight;
+            Vector2 tileSize = new Vector2(tileWidth, tileHeight);
             for(int i = 0; i < mapWidth; i++)
             {
                 for(int j = 0; j < mapHeight; j++)
                 {
-                    Vector2 currentPosition = new Vector2(i, j);
+
                     bool colliding = false;
+                    Vector2 currentPosition = new Vector2(i*tileWidth, j*tileHeight);
                     foreach(Collider c in ObjectManager.Instance.CurrentLevel.Collidables)
                     {
-                        Vector2 cPosition = new Vector2(c.getPosition().X / tileWidth, c.getPosition().Y / tileHeight);
-                        if (currentPosition == cPosition) colliding = true;
+                        Vector2 cPosition = new Vector2(c.getPosition().X/tileWidth, c.getPosition().Y/tileHeight);
+                        if (Detector.IsTouchingBottom(currentPosition, tileSize, c.getPosition(), c.getSize(), 0)
+                        || Detector.IsTouchingTop(currentPosition, tileSize, c.getPosition(), c.getSize(), 0)
+                        || Detector.IsTouchingLeft(currentPosition, tileSize, c.getPosition(), c.getSize(), 0)
+                        || Detector.IsTouchingRight(currentPosition, tileSize, c.getPosition(), c.getSize(), 0))
+                        {
+                            colliding = true;
+                        }
+
                     }
-                    if (!colliding)
+                    if (colliding == false)
                     {
                         GridNode currentNode;
-                        currentNode = new GridNode(currentPosition);
+                        currentNode = new GridNode(new Vector2(i,j));
                         allNodes.Add(currentNode);
                     }
+                    else colliding = false;
+
                 } 
             }
 
