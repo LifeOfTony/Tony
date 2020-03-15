@@ -10,24 +10,27 @@ namespace Tony
 {
     public static class Pathfinder
     {
-        private static int mapWidth;
-        private static int mapHeight;
         private static Vector2 startPosition;
         private static Vector2 finalPosition;
         private static List<GridNode> allNodes;
         private static List<GridNode> closedList;
         private static GridNode startNode;
         private static GridNode endNode;
+        private static int tileWidth;
+        private static int tileHeight;
+
+
+        static Pathfinder()
+        {
+            allNodes = new List<GridNode>();
+        }
 
 
         public static Queue<Vector2> FindPath(Vector2 position, Vector2 endPosition)
         {
-            startPosition = new Vector2((position.X/32), (position.Y/32));
-            finalPosition = new Vector2((endPosition.X / 32), (endPosition.Y / 32));
-            mapWidth = ObjectManager.Instance.CurrentLevel.MapWidth;
-            mapHeight = ObjectManager.Instance.CurrentLevel.MapHeight;
-            allNodes = new List<GridNode>();
-            CreateGrid();
+            startPosition = new Vector2((position.X/tileWidth), (position.Y/tileHeight));
+            finalPosition = new Vector2((endPosition.X / tileWidth), (endPosition.Y / tileHeight));
+            setHNumbers(startPosition, finalPosition);
             FindConnections();
             AStarSearch();
             var shortestpath = new List<GridNode>();
@@ -44,14 +47,28 @@ namespace Tony
             Queue<Vector2> pathPoints = new Queue<Vector2>(); 
             foreach (GridNode node in path)
             {
-                Vector2 nextPosition = new Vector2((node.Position.X * 32), (node.Position.Y * 32));
+                Vector2 nextPosition = new Vector2((node.Position.X * tileWidth), (node.Position.Y * tileHeight));
                 pathPoints.Enqueue(nextPosition);
             }  
             return pathPoints;
         }
 
 
-
+        private static void setHNumbers(Vector2 start, Vector2 finish)
+        {
+            foreach(GridNode currentNode in allNodes)
+            {
+                if (currentNode.Position == startPosition)
+                {
+                    startNode = currentNode;
+                }
+                else if (currentNode.Position == finalPosition)
+                {
+                    endNode = currentNode;
+                }
+                currentNode.FindHNumber(finalPosition);
+            }
+        }
 
 
         private static void BuildShortestPath(List<GridNode> path, GridNode node)
@@ -122,38 +139,44 @@ namespace Tony
             }
         }
 
-        public static void CreateGrid()
+        public static void CreateGrid(int mapWidth, int mapHeight, int tWidth, int tHeight)
         {
-
+            tileWidth = tWidth;
+            tileHeight = tHeight;
+            Vector2 tileSize = new Vector2(tileWidth, tileHeight);
             for(int i = 0; i < mapWidth; i++)
             {
                 for(int j = 0; j < mapHeight; j++)
                 {
-                    Vector2 currentPosition = new Vector2(i, j);
+
                     bool colliding = false;
+                    Vector2 currentPosition = new Vector2(i*tileWidth, j*tileHeight);
                     foreach(Collider c in ObjectManager.Instance.CurrentLevel.Collidables)
                     {
-                        Vector2 cPosition = new Vector2(c.getPosition().X / 32, c.getPosition().Y / 32);
-                        if (currentPosition == cPosition) colliding = true;
+                        Vector2 cPosition = new Vector2(c.getPosition().X/tileWidth, c.getPosition().Y/tileHeight);
+                        if (Detector.IsTouchingBottom(currentPosition, tileSize, c.getPosition(), c.getSize(), 0)
+                        || Detector.IsTouchingTop(currentPosition, tileSize, c.getPosition(), c.getSize(), 0)
+                        || Detector.IsTouchingLeft(currentPosition, tileSize, c.getPosition(), c.getSize(), 0)
+                        || Detector.IsTouchingRight(currentPosition, tileSize, c.getPosition(), c.getSize(), 0))
+                        {
+                            colliding = true;
+                        }
+
                     }
-                    if (!colliding)
+                    if (colliding == false)
                     {
                         GridNode currentNode;
-                        currentNode = new GridNode(currentPosition);
-                        if (currentPosition == startPosition)
-                        {
-                            startNode = currentNode;
-                        }
-                        else if (currentPosition == finalPosition)
-                        {
-                            endNode = currentNode;
-                        }
-                        currentNode.FindHNumber(finalPosition);
+                        currentNode = new GridNode(new Vector2(i,j));
                         allNodes.Add(currentNode);
                     }
+                    else colliding = false;
+
                 } 
             }
 
         }
     }
+
+
+    
 }

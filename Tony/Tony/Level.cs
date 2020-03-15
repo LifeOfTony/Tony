@@ -18,7 +18,6 @@ namespace Tony
         //static list of collidable objects.
         private List<GameObject> _Collidables;
 
-        
 
         private List<GameObject> _Npcs;
 
@@ -195,6 +194,14 @@ namespace Tony
             if (oldObject is Npc)
             {
                 Npcs.Remove(oldObject);
+            }
+        }
+
+        public void setPaths()
+        {
+            foreach (Npc currentNpc in _Npcs)
+            {
+                currentNpc.setPath();
             }
         }
 

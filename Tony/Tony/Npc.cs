@@ -16,6 +16,7 @@ namespace Tony
         private bool move;
         private Vector2 destination;
         private Queue<Vector2> path;
+        private bool basicMove;
 
         /// <summary>
         /// An Npc is a moving interactable object.
@@ -25,13 +26,14 @@ namespace Tony
         /// <param name="collidable"></param>
         /// <param name="requirement"></param>
         /// <param name="gives"></param>
-        public Npc(Vector2 position, Vector2 size, bool complex, string requirement, string gives, string basic, string route, float depth, Texture2D texture) :
-            base(position, size, complex, requirement, gives, basic, depth, texture)
+        public Npc(Vector2 position, Vector2 size, float depth, Texture2D texture, string route,
+            bool basicMove = false, string requirement = "", string gives = "") :
+            base(position, size, depth, texture, requirement, gives)
         {
             this.route = route;
             FindDestination(route);
-            path = Pathfinder.FindPath(this.position, destination);
             move = false;
+            this.basicMove = basicMove;
         }
 
         public void FindDestination(string route)
@@ -40,10 +42,16 @@ namespace Tony
             destination = new Vector2(Int32.Parse(coordinates[0]), Int32.Parse(coordinates[1]));
         }
 
+        public void setPath()
+        {
+            path = Pathfinder.FindPath(this.position, destination);
+        }
+
         public void Move()
         {
             if (move == true)
             {
+                
                 if (path.Any())
                 {
                     this.position = path.Dequeue();
@@ -53,7 +61,18 @@ namespace Tony
             }
         }
 
-        public override void ComplexInteract()
+
+        public override void BasicInteract()
+        {
+            if (basicMove == true)
+            {
+                move = true;
+            }
+            GameManager.textOutput = "";
+            GameManager.textOutput += "Basic Interact \n\r";
+        }
+
+        public override void GiverInteract()
         {
             // finds the correct item and sets it to collected.
             foreach (Item currentItem in ObjectManager.Instance.Items)
@@ -67,13 +86,6 @@ namespace Tony
                     GameManager.textOutput += "gained " + gives + "\n\r";
                 }
             }
-        }
-
-        public override void BasicInteract()
-        {
-            move = true;
-            GameManager.textOutput = "";
-            GameManager.textOutput += basic;
         }
 
     }

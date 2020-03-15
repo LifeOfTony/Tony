@@ -10,12 +10,13 @@ namespace Tony
 {
     public class EndObject : InteractableObject
     {
-        public EndObject(Vector2 position, Vector2 size, bool complex, string requirement, string gives, string basic, float depth, Texture2D texture)
-            : base(position, size, complex, requirement, gives, basic, depth, texture)
+        public EndObject(Vector2 position, Vector2 size, float depth, Texture2D texture, string requirement, string gives)
+            : base(position, size, depth, texture, requirement, gives)
         {
 
         }
 
+        /*
         public override void ComplexInteract()
         {
             // finds the correct item and sets it to collected.
@@ -26,9 +27,10 @@ namespace Tony
                 {
                     currentItem.Collect();
                     GameManager.textOutput += "gained " + gives + "\n\r";
-                    GameManager.setMainMenuState();
+                    //GameManager.setMainMenuState();
                 }
             }
         }
+        */
     }
 }

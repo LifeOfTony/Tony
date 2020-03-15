@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+public delegate void InteractHandler();
 
 namespace Tony
 {
@@ -12,8 +13,7 @@ namespace Tony
     {
         protected string requirement;
         protected string gives;
-        protected string basic;
-        protected bool complex;
+        public InteractHandler InteractType = null;
 
         /// <summary>
         /// InteractableObjects are any object that can be interacted with by the player.
@@ -24,52 +24,66 @@ namespace Tony
         /// <param name="size"></param>
         /// <param name="requirement"></param>
         /// <param name="gives"></param>
-        public InteractableObject(Vector2 position, Vector2 size, bool complex, string requirement, string gives, string basic, float depth, Texture2D texture) :
+        public InteractableObject(Vector2 position, Vector2 size, float depth, Texture2D texture, string requirement = null, string gives = null) :
             base(position, size, depth, texture)
         {
             this.requirement = requirement;
             this.gives = gives;
-            this.basic = basic;
-            this.complex = complex;
+            AssignType();
+
         }
 
 
-        /// <summary>
-        /// The Interact method handles when the player triggers this object in game.
-        /// </summary>
-        public void Interact()
+        private void AssignType()
         {
-            if(complex == true)
+            if(requirement != null)
             {
-                if(requirement.Equals("none"))
-                {
-                   ComplexInteract();
-                }
-                else
-                {
-                    // checks to see if the player has got the required item to trigger the interaction.
-                    foreach (Item currentItem in ObjectManager.Instance.Items)
-                    {
-                        // if an item is used, text feedback is given.
-                        if (currentItem.GetName().Equals(requirement) && currentItem.IsCollected())
-                        {
-                            GameManager.textOutput = "";
-                            GameManager.textOutput += "used " + requirement + "\n\r";
-                            //Collect();
-                            ComplexInteract();
-                        }
-                    }
-                }
-
+                InteractType = new InteractHandler(TakerInteract);
+            }
+            else if (gives != null)
+            {
+                InteractType = new InteractHandler(GiverInteract);
             }
             else
             {
-                BasicInteract();
+                InteractType = new InteractHandler(BasicInteract);
             }
         }
 
 
-        public virtual void ComplexInteract()
+     
+        public void Interact()
+        {
+            InteractType(); 
+        }
+
+
+        public void TakerInteract()
+        {
+            // checks to see if the player has got the required item to trigger the interaction.
+            foreach (Item currentItem in ObjectManager.Instance.Items)
+            {
+                // if an item is used, text feedback is given.
+                if (currentItem.GetName().Equals(requirement) && currentItem.IsCollected())
+                {
+                    GameManager.textOutput = "";
+                    GameManager.textOutput += "used " + requirement + "\n\r";
+                    GiverInteract();
+                }
+                else
+                {
+                    BasicInteract();
+                }
+            }
+        }
+
+        public virtual void BasicInteract()
+        {
+            GameManager.textOutput = "";
+            GameManager.textOutput += ("Basic interact \n\r");
+        }
+
+        public virtual void GiverInteract()
         {
             // finds the correct item and sets it to collected.
             foreach (Item currentItem in ObjectManager.Instance.Items)
@@ -84,10 +98,5 @@ namespace Tony
             }
         }
 
-        public virtual void BasicInteract()
-        {
-            GameManager.textOutput = "";
-            GameManager.textOutput += (basic + "\n\r");
-        }
     }
 }
