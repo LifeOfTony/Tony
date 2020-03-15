@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Controller.cs" />
     <Compile Include="EndObject.cs" />
+    <Compile Include="Event.cs" />
     <Compile Include="GridNode.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="LevelUI.cs" />
