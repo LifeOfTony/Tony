@@ -184,6 +184,10 @@ namespace Tony
             if (state.IsKeyDown(Keys.D)) player.move("D");
             if (state.IsKeyDown(Keys.E)) player.interact();
 
+            SaveItem saveI = new SaveItem();
+            if (state.IsKeyDown(Keys.L)) saveI.save();
+            if (state.IsKeyDown(Keys.P)) saveI.read();
+
             ObjectManager.Instance.MentalDecay(gameTime);
 
             foreach(Npc npc in ObjectManager.Instance.CurrentLevel.Npcs)

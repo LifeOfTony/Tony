@@ -19,7 +19,9 @@ namespace Tony
         private static Level currentLevel;
 
         private static float mentalState = 100;
+
         private static float countDuration = 2f;
+
         private static float currentTime = 0f;
 
         //static list of all Items in the current game.
