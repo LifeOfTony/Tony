@@ -9,43 +9,30 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Tony
 {
-    class Detector
+    static class Detector
     {
-        private float objectLeft;
-        private float objectRight;
-        private float objectTop;
-        private float objectBottom;
 
-        private float playerLeft;
-        private float playerRight;
-        private float playerTop;
-        private float playerBottom;
 
-        private float offset;
-
-        public Detector(Vector2 objectPosition, Vector2 objectSize, Vector2 playerPosition, Vector2 playerSize, float offset)
-        {
-            // location data is created to simplify collision logic.
-
-            this.objectLeft = objectPosition.X;
-            this.objectRight = objectPosition.X + objectSize.X;
-            this.objectTop = objectPosition.Y;
-            this.objectBottom = objectPosition.Y + objectSize.Y;
-
-            this.playerLeft = playerPosition.X;
-            this.playerRight = playerPosition.X + playerSize.X;
-            this.playerTop = playerPosition.Y;
-            this.playerBottom = playerPosition.Y + playerSize.Y;
-
-            this.offset = offset;
-        }
 
         /// <summary>
         /// computes if the player is touching the left side of the object.
         /// </summary>
         /// <returns></returns>
-        public bool IsTouchingLeft()
+        public static bool IsTouchingLeft(Vector2 objectPosition, Vector2 objectSize, Vector2 playerPosition, Vector2 playerSize, float offsetValue)
         {
+            float objectLeft = objectPosition.X;
+            float objectRight = objectPosition.X + objectSize.X;
+            float objectTop = objectPosition.Y;
+            float objectBottom = objectPosition.Y + objectSize.Y;
+
+            float playerLeft = playerPosition.X;
+            float playerRight = playerPosition.X + playerSize.X;
+            float playerTop = playerPosition.Y;
+            float playerBottom = playerPosition.Y + playerSize.Y;
+
+            float offset = offsetValue;
+
+
             return playerRight + offset >= objectLeft &&
                    playerLeft < objectLeft &&
                    playerBottom > objectTop &&
@@ -56,8 +43,20 @@ namespace Tony
         /// computes if the player is touching the right side of the object.
         /// </summary>
         /// <returns></returns>
-        public bool IsTouchingRight()
+        public static bool IsTouchingRight(Vector2 objectPosition, Vector2 objectSize, Vector2 playerPosition, Vector2 playerSize, float offsetValue)
         {
+            float objectLeft = objectPosition.X;
+            float objectRight = objectPosition.X + objectSize.X;
+            float objectTop = objectPosition.Y;
+            float objectBottom = objectPosition.Y + objectSize.Y;
+
+            float playerLeft = playerPosition.X;
+            float playerRight = playerPosition.X + playerSize.X;
+            float playerTop = playerPosition.Y;
+            float playerBottom = playerPosition.Y + playerSize.Y;
+
+            float offset = offsetValue;
+
             return playerRight > objectRight &&
                    playerLeft - offset <= objectRight &&
                    playerBottom > objectTop &&
@@ -68,8 +67,20 @@ namespace Tony
         /// computes if the player is touching the top of the object.
         /// </summary>
         /// <returns></returns>
-        public bool IsTouchingTop()
+        public static bool IsTouchingTop(Vector2 objectPosition, Vector2 objectSize, Vector2 playerPosition, Vector2 playerSize, float offsetValue)
         {
+            float objectLeft = objectPosition.X;
+            float objectRight = objectPosition.X + objectSize.X;
+            float objectTop = objectPosition.Y;
+            float objectBottom = objectPosition.Y + objectSize.Y;
+
+            float playerLeft = playerPosition.X;
+            float playerRight = playerPosition.X + playerSize.X;
+            float playerTop = playerPosition.Y;
+            float playerBottom = playerPosition.Y + playerSize.Y;
+
+            float offset = offsetValue;
+
             return playerRight > objectLeft &&
                    playerLeft < objectRight &&
                    playerBottom + offset >= objectTop &&
@@ -80,8 +91,20 @@ namespace Tony
         /// computes if the player is touching the bottom of the object.
         /// </summary>
         /// <returns></returns>
-        public bool IsTouchingBottom()
+        public static bool IsTouchingBottom(Vector2 objectPosition, Vector2 objectSize, Vector2 playerPosition, Vector2 playerSize, float offsetValue)
         {
+            float objectLeft = objectPosition.X;
+            float objectRight = objectPosition.X + objectSize.X;
+            float objectTop = objectPosition.Y;
+            float objectBottom = objectPosition.Y + objectSize.Y;
+
+            float playerLeft = playerPosition.X;
+            float playerRight = playerPosition.X + playerSize.X;
+            float playerTop = playerPosition.Y;
+            float playerBottom = playerPosition.Y + playerSize.Y;
+
+            float offset = offsetValue;
+
             return playerRight > objectLeft &&
                    playerLeft < objectRight &&
                    playerBottom > objectBottom &&

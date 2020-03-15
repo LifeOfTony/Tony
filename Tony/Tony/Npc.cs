@@ -26,7 +26,8 @@ namespace Tony
         /// <param name="collidable"></param>
         /// <param name="requirement"></param>
         /// <param name="gives"></param>
-        public Npc(Vector2 position, Vector2 size, float depth, Texture2D texture, bool basicMove, string route, string requirement = "", string gives = "") :
+        public Npc(Vector2 position, Vector2 size, float depth, Texture2D texture, string route,
+            bool basicMove = false, string requirement = "", string gives = "") :
             base(position, size, depth, texture, requirement, gives)
         {
             this.route = route;

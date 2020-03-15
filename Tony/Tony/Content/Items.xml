@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <items>
- <item name = "small-rock" modifier="10"/>
+ <item name = "money" modifier="10"/>
  <item name = "rock" modifier="10"/>
  <item name = "large-rock" modifier="10"/>
  <item name = "big-ol-rock" modifier="10"/>
  <item name = "thing" modifier="10"/>
- <item name = "thingy" modifier="10"/>
+ <item name = "coffee" modifier="10"/>
  <item name = "keytotherock" modifier="10"/>
   <item name = "snacks" modifier="10"/>
   <item name = "THE_PAPERS" modifier="10"/>
