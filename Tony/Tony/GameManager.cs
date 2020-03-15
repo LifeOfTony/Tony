@@ -28,12 +28,6 @@ namespace Tony
 
         Vector2 lightPosition;
 
-
-        
-
-
-        LevelUI levelUI;
-
         //A list holding the tileset textures.
         private List<Texture2D> tileset;
 
@@ -115,20 +109,22 @@ namespace Tony
             Controller.Initialize(Content);
 
             // Creates a new LevelReader for the testmap.xml file. 
-            LevelReader currentLevel = new LevelReader(@"Content\TestEnvironment1.tmx", Content, level);
+            LevelReader currentLevel = new LevelReader(@"Content\Levels\TestMapNew.tmx", Content, level);
 
             int mapWidth = currentLevel.width;
             int mapHeight = currentLevel.height;
+            int tileWidth = currentLevel.tileWidth;
+            int tileHeight = currentLevel.tileHeight;
             lightsTarget = new RenderTarget2D(
-            GraphicsDevice, mapWidth * 32, mapHeight * 32);
+            GraphicsDevice, mapWidth * tileWidth, mapHeight * tileHeight);
             mainTarget = new RenderTarget2D(
-            GraphicsDevice, mapWidth * 32, mapHeight * 32);
+            GraphicsDevice, mapWidth * tileWidth, mapHeight * tileHeight);
 
             Level newLevel = currentLevel.GetLevel();
             
             ObjectManager.Instance.CurrentLevel = newLevel;
             ObjectManager.Instance.AddLevel(newLevel);
-            Pathfinder.CreateGrid(mapWidth, mapHeight);
+            Pathfinder.CreateGrid(mapWidth, mapHeight, tileWidth, tileHeight);
             newLevel.setPaths();
 
         }

@@ -20,6 +20,7 @@ namespace Tony
         public LevelUI(Texture2D texture)
         {
             LowerUI = new Panel(new Vector2(675, 250), PanelSkin.Fancy, Anchor.BottomCenter, new Vector2(0, 125));
+            LowerUI.Opacity = 70;
 
             Panel frame = new Panel(new Vector2(175, 250), PanelSkin.None, Anchor.BottomCenter, new Vector2(-250, -25));
             LowerUI.AddChild(frame);

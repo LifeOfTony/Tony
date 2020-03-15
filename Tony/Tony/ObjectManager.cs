@@ -98,6 +98,7 @@ namespace Tony
                     mentalState--;
                 }
             }
+
            
         }
 
