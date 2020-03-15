@@ -121,6 +121,17 @@ namespace Tony
             Items.Remove(oldItem);
         }
 
+        public int LevelSize()
+        {
+            return levels.Count;
+        }
 
+        public List<Level> Levels
+        {
+            get
+            {
+                return levels;
+            }
+        }
     }
 }

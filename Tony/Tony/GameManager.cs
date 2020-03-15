@@ -194,7 +194,12 @@ namespace Tony
             {
                 npc.Move();
             }
+
+            if (level < ObjectManager.Instance.CurrentLevel.getLevel)
+            {
+                Console.WriteLine("Is is working");
             
+}
 
             base.Update(gameTime);
         }

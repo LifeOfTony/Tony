@@ -10,27 +10,35 @@ namespace Tony
 {
     public class EndObject : InteractableObject
     {
+        private string requirement;
         public EndObject(Vector2 position, Vector2 size, float depth, Texture2D texture, string requirement, string gives)
             : base(position, size, depth, texture, requirement, gives)
         {
-
+            this.requirement = requirement;
         }
 
-        /*
-        public override void ComplexInteract()
+        
+        public override void Interact()
         {
-            // finds the correct item and sets it to collected.
-            foreach (Item currentItem in ObjectManager.Instance.Items)
+            foreach (Item i in ObjectManager .Instance .Items)
             {
-                // text feedback is given when the item is gained.
-                if (currentItem.GetName().Equals(gives))
+                if (i.IsCollected() == true && i.Equals (requirement))
                 {
-                    currentItem.Collect();
-                    GameManager.textOutput += "gained " + gives + "\n\r";
-                    //GameManager.setMainMenuState();
+                    if(ObjectManager .Instance .CurrentLevel .getLevel < ObjectManager.Instance.LevelSize() )
+                    {
+                        ObjectManager.Instance.CurrentLevel = ObjectManager.Instance.Levels[ObjectManager .Instance .CurrentLevel .getLevel +1];
+                        Console.WriteLine("Level incremented!");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Next Level not exect");
                 }
             }
+            
+
+            
         }
-        */
+        
     }
 }
