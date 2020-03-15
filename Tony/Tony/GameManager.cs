@@ -20,6 +20,9 @@ namespace Tony
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        public float screenWidth;
+        public float screenHeight;
+        private Camera camera;
 
         public static Texture2D lightMask;
         public static Effect effect1;
@@ -75,6 +78,8 @@ namespace Tony
             //These four lines set up the screen to fit the users monitor.
             graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
             graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
+            screenWidth = GraphicsDevice.DisplayMode.Width;
+            screenHeight = GraphicsDevice.DisplayMode.Height;
             graphics.IsFullScreen = false;
             graphics.ApplyChanges();
             base.Initialize();
@@ -86,7 +91,8 @@ namespace Tony
         /// </summary>
         protected override void LoadContent()
         {
-
+            //Create a Camera Object
+            camera = new Camera(screenWidth, screenHeight);
 
 
             // Create a new SpriteBatch, which can be used to draw textures.
@@ -178,6 +184,8 @@ namespace Tony
 
             // Calls any Player methods based on the Keyboard state.
             Player player = ObjectManager.Instance.CurrentLevel.Player;
+                        //update camera
+            camera.follow(player);
             if (state.IsKeyDown(Keys.A)) player.move("A");
             if (state.IsKeyDown(Keys.W)) player.move("W");
             if (state.IsKeyDown(Keys.S)) player.move("S");
@@ -221,7 +229,7 @@ namespace Tony
 
                 GraphicsDevice.SetRenderTarget(lightsTarget);
                 GraphicsDevice.Clear(Color.Black);
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive);
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, transformMatrix: camera.Transform);
                 spriteBatch.Draw(lightMask, lightPosition, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
                 spriteBatch.End();
             }
@@ -230,7 +238,7 @@ namespace Tony
             {
                 GraphicsDevice.SetRenderTarget(mainTarget);
                 GraphicsDevice.Clear(Color.Transparent);
-                spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend);
+                spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, transformMatrix: camera.Transform);
 
                 
                 // Draws all Drawable objects.
