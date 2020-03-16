@@ -33,8 +33,8 @@ namespace Tony
             Transform =
                 Matrix.CreateScale( new Vector3(zoom, zoom, 1.0f)) 
                 * Matrix.CreateRotationZ(0)
-                * Matrix.CreateTranslation( (-spritePosition.X - (tileWidth/2)) + (screenWidth / 2),
-                               (-spritePosition.Y - (tileHeight/2)) + (screenHeight / 2),
+                * Matrix.CreateTranslation( (((-spritePosition.X - (tileWidth/2)) * zoom) + (screenWidth / 2)),
+                               (((-spritePosition.Y - (tileHeight/2)) * zoom) + (screenHeight / 2)),
                                0);
 
         }
