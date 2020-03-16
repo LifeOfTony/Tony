@@ -26,6 +26,11 @@ namespace Tony
 
         public Matrix Transform { get; private set; }
 
+        public void changeZoom(float zoomLevel)
+        {
+            zoom = zoomLevel;
+        }
+
         public void follow(Player target)
         {
             Vector2 spritePosition = target.getPosition();
