@@ -78,8 +78,8 @@ namespace Tony
             //These four lines set up the screen to fit the users monitor.
             graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
             graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
-            screenWidth = GraphicsDevice.DisplayMode.Width;
-            screenHeight = GraphicsDevice.DisplayMode.Height;
+            screenWidth = graphics.PreferredBackBufferWidth;
+            screenHeight = graphics.PreferredBackBufferHeight;
             graphics.IsFullScreen = false;
             graphics.ApplyChanges();
             base.Initialize();
@@ -92,7 +92,7 @@ namespace Tony
         protected override void LoadContent()
         {
             //Create a Camera Object (ScreenWidth, ScreenHeight, Zoom Level)
-            camera = new Camera(screenWidth, screenHeight, 1.5f);
+            camera = new Camera(screenWidth, screenHeight, 1.0f);
 
 
             // Create a new SpriteBatch, which can be used to draw textures.
@@ -121,10 +121,19 @@ namespace Tony
             int mapHeight = currentLevel.height;
             int tileWidth = currentLevel.tileWidth;
             int tileHeight = currentLevel.tileHeight;
+
+            /*
             lightsTarget = new RenderTarget2D(
             GraphicsDevice, mapWidth * tileWidth, mapHeight * tileHeight);
             mainTarget = new RenderTarget2D(
             GraphicsDevice, mapWidth * tileWidth, mapHeight * tileHeight);
+            */
+
+
+            lightsTarget = new RenderTarget2D(
+            GraphicsDevice,graphics.PreferredBackBufferWidth,graphics.PreferredBackBufferHeight);
+            mainTarget = new RenderTarget2D(
+            GraphicsDevice,graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
 
             Level newLevel = currentLevel.GetLevel();
             
@@ -229,7 +238,7 @@ namespace Tony
 
                 GraphicsDevice.SetRenderTarget(lightsTarget);
                 GraphicsDevice.Clear(Color.Black);
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, transformMatrix: camera.Transform);
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive);
                 spriteBatch.Draw(lightMask, lightPosition, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
                 spriteBatch.End();
             }
@@ -238,7 +247,7 @@ namespace Tony
             {
                 GraphicsDevice.SetRenderTarget(mainTarget);
                 GraphicsDevice.Clear(Color.Transparent);
-                spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, transformMatrix: camera.Transform);
+                spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend);
 
                 
                 // Draws all Drawable objects.
@@ -256,7 +265,7 @@ namespace Tony
                 GraphicsDevice.SetRenderTarget(null);
                 GraphicsDevice.Clear(Color.Black);
 
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: camera.Transform);
 
                 effect1.Parameters["lightMask"].SetValue(lightsTarget);
                 effect1.CurrentTechnique.Passes[0].Apply();
