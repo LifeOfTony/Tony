@@ -36,6 +36,9 @@ namespace Tony
             this.basicMove = basicMove;
         }
 
+
+        #region RouteStuff
+
         public void FindDestination(string route)
         {
             string[] coordinates = route.Split(',');
@@ -60,6 +63,16 @@ namespace Tony
                 
             }
         }
+
+        #endregion
+
+
+
+        public override void Interact()
+        {
+            base.Interact();
+        }
+
 
 
         public override void BasicInteract()
