@@ -20,6 +20,9 @@ namespace Tony
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        public float screenWidth;
+        public float screenHeight;
+        private Camera camera;
 
         public static Texture2D lightMask;
         public static Effect effect1;
@@ -75,6 +78,8 @@ namespace Tony
             //These four lines set up the screen to fit the users monitor.
             graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
             graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
+            screenWidth = graphics.PreferredBackBufferWidth;
+            screenHeight = graphics.PreferredBackBufferHeight;
             graphics.IsFullScreen = false;
             graphics.ApplyChanges();
             base.Initialize();
@@ -86,7 +91,8 @@ namespace Tony
         /// </summary>
         protected override void LoadContent()
         {
-
+            //Create a Camera Object (ScreenWidth, ScreenHeight, Zoom Level)
+            camera = new Camera(screenWidth, screenHeight, 1.0f);
 
 
             // Create a new SpriteBatch, which can be used to draw textures.
@@ -115,10 +121,19 @@ namespace Tony
             int mapHeight = currentLevel.height;
             int tileWidth = currentLevel.tileWidth;
             int tileHeight = currentLevel.tileHeight;
+
+            /*
             lightsTarget = new RenderTarget2D(
             GraphicsDevice, mapWidth * tileWidth, mapHeight * tileHeight);
             mainTarget = new RenderTarget2D(
             GraphicsDevice, mapWidth * tileWidth, mapHeight * tileHeight);
+            */
+
+
+            lightsTarget = new RenderTarget2D(
+            GraphicsDevice,graphics.PreferredBackBufferWidth,graphics.PreferredBackBufferHeight);
+            mainTarget = new RenderTarget2D(
+            GraphicsDevice,graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
 
             Level newLevel = currentLevel.GetLevel();
             
@@ -178,6 +193,8 @@ namespace Tony
 
             // Calls any Player methods based on the Keyboard state.
             Player player = ObjectManager.Instance.CurrentLevel.Player;
+                        //update camera
+            camera.follow(player);
             if (state.IsKeyDown(Keys.A)) player.move("A");
             if (state.IsKeyDown(Keys.W)) player.move("W");
             if (state.IsKeyDown(Keys.S)) player.move("S");
@@ -248,7 +265,7 @@ namespace Tony
                 GraphicsDevice.SetRenderTarget(null);
                 GraphicsDevice.Clear(Color.Black);
 
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: camera.Transform);
 
                 effect1.Parameters["lightMask"].SetValue(lightsTarget);
                 effect1.CurrentTechnique.Passes[0].Apply();
