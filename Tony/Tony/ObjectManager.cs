@@ -63,8 +63,6 @@ namespace Tony
             
         }
 
-        
-
         public float MentalState
         {
             get
@@ -81,21 +79,22 @@ namespace Tony
             }
         }
 
-
-
-
         public void MentalDecay(GameTime gameTime)
         {
-            if( mentalState > 0)
-            {
-                currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds; //Time passed since last Update() 
-
-                if (currentTime >= countDuration)
+            if (Controller.gameState == Controller.GameState.playing)
+            { 
+                if (mentalState > 0)
                 {
-                    currentTime -= countDuration;
-                    mentalState--;
+                    currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds; //Time passed since last Update() 
+
+                    if (currentTime >= countDuration)
+                    {
+                        currentTime -= countDuration;
+                        mentalState--;
+                    }
                 }
             }
+
 
            
         }
