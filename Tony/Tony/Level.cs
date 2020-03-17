@@ -19,7 +19,7 @@ namespace Tony
         private List<GameObject> _Collidables;
 
 
-        private List<GameObject> _Npcs;
+        private List<Npc> _Npcs;
 
         private int level;
 
@@ -38,7 +38,7 @@ namespace Tony
             _Objects = new List<GameObject>();
             _Drawables = new List<Drawable>();
             _Collidables = new List<GameObject>();
-            _Npcs = new List<GameObject>();
+            _Npcs = new List<Npc>();
         }
 
 
@@ -52,7 +52,7 @@ namespace Tony
         }
 
 
-        public List<GameObject> Npcs
+        public List<Npc> Npcs
         {
             get
             {
@@ -157,7 +157,7 @@ namespace Tony
 
             if (newObject is Npc)
             {
-                _Npcs.Add(newObject);
+                _Npcs.Add((Npc)newObject);
             }
 
             if (newObject is EndObject)
@@ -193,7 +193,7 @@ namespace Tony
 
             if (oldObject is Npc)
             {
-                Npcs.Remove(oldObject);
+                Npcs.Remove((Npc)oldObject);
             }
         }
 
