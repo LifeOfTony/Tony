@@ -37,32 +37,55 @@ namespace Tony
 
             else if (Keyboard.GetState().IsKeyDown(Keys.E))
             {
-                foreach (GameObject i in ObjectManager.Instance.CurrentLevel.Objects)
+                foreach (GameObject i in ObjectManager.Instance.CurrentLevel.Objects.Where(i => i is InteractableObject))
                 {
-                    if (i is InteractableObject)
+                    InteractableObject currentObject;
+                    if (i is Npc)
                     {
-                        InteractableObject currentObject = (InteractableObject)i;
-
-                        //conditions of interaction.
-                        //if met and interaction is triggered.
-                        if (Detector.IsTouchingBottom(currentObject.getPosition(), currentObject.getSize(),
-                            ObjectManager.Instance.CurrentLevel.Player.getPosition(), ObjectManager.Instance.CurrentLevel.Player.getSize(), range)
-
-                            || Detector.IsTouchingTop(currentObject.getPosition(), currentObject.getSize(),
-                            ObjectManager.Instance.CurrentLevel.Player.getPosition(), ObjectManager.Instance.CurrentLevel.Player.getSize(), range)
-
-                            || Detector.IsTouchingLeft(currentObject.getPosition(), currentObject.getSize(),
-                            ObjectManager.Instance.CurrentLevel.Player.getPosition(), ObjectManager.Instance.CurrentLevel.Player.getSize(), range)
-
-                            || Detector.IsTouchingRight(currentObject.getPosition(), currentObject.getSize(),
-                            ObjectManager.Instance.CurrentLevel.Player.getPosition(), ObjectManager.Instance.CurrentLevel.Player.getSize(), range))
+                        Npc currentNpc = (Npc)i;
+                        if (!currentNpc.getActor())
                         {
-                            currentObject.Interact();
+                            currentObject = (Npc)i;
+                            InteractDetection(currentObject);
                         }
+
+
                     }
+                    else
+                    {
+                        currentObject = (InteractableObject)i;
+                        InteractDetection(currentObject);
+                    }
+
                 }
             }
         }
+
+
+        private static void InteractDetection(InteractableObject currentObject)
+        {
+
+            //conditions of interaction.
+            //if met and interaction is triggered.
+            if (Detector.IsTouchingBottom(currentObject.getPosition(), currentObject.getSize(),
+                ObjectManager.Instance.CurrentLevel.Player.getPosition(), ObjectManager.Instance.CurrentLevel.Player.getSize(), range)
+
+                || Detector.IsTouchingTop(currentObject.getPosition(), currentObject.getSize(),
+                ObjectManager.Instance.CurrentLevel.Player.getPosition(), ObjectManager.Instance.CurrentLevel.Player.getSize(), range)
+
+                || Detector.IsTouchingLeft(currentObject.getPosition(), currentObject.getSize(),
+                ObjectManager.Instance.CurrentLevel.Player.getPosition(), ObjectManager.Instance.CurrentLevel.Player.getSize(), range)
+
+                || Detector.IsTouchingRight(currentObject.getPosition(), currentObject.getSize(),
+                ObjectManager.Instance.CurrentLevel.Player.getPosition(), ObjectManager.Instance.CurrentLevel.Player.getSize(), range))
+            {
+                currentObject.Interact();
+            }
+
+        }
+
+
+
 
     }
 }

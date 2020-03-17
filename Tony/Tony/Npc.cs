@@ -17,6 +17,7 @@ namespace Tony
         private Vector2 destination;
         private Queue<Vector2> path;
         private bool basicMove;
+        private bool actor;
 
         /// <summary>
         /// An Npc is a moving interactable object.
@@ -26,15 +27,25 @@ namespace Tony
         /// <param name="collidable"></param>
         /// <param name="requirement"></param>
         /// <param name="gives"></param>
-        public Npc(Vector2 position, Vector2 size, float depth, Texture2D texture, string route,
+        public Npc(Vector2 position, Vector2 size, float depth, Texture2D texture, string route, bool actor,
             bool basicMove = false, string requirement = "", string gives = "") :
             base(position, size, depth, texture, requirement, gives)
         {
             this.route = route;
             FindDestination(route);
             move = false;
+            this.actor = actor;
             this.basicMove = basicMove;
         }
+
+        public Npc(Vector2 position, Vector2 size, float depth, Texture2D texture, string route,
+            bool basicMove = false, string requirement = "", string gives = "")
+            : this(position, size, depth, texture, route, false, basicMove, requirement, gives)
+        {
+
+        }
+
+
 
 
         #region RouteStuff
@@ -100,6 +111,14 @@ namespace Tony
                 }
             }
         }
+
+
+        public bool getActor()
+        {
+            return actor;
+        }
+
+
 
     }
 
