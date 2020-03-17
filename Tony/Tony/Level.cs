@@ -205,9 +205,6 @@ namespace Tony
             }
         }
 
-        public static implicit operator Level(int v)
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }

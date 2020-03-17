@@ -52,7 +52,7 @@ namespace Tony
 
 
      
-        public void Interact()
+        public virtual void Interact()
         {
             InteractType(); 
         }
