@@ -92,7 +92,7 @@ namespace Tony
         protected override void LoadContent()
         {
             //Create a Camera Object (ScreenWidth, ScreenHeight, Zoom Level)
-            camera = new Camera(screenWidth, screenHeight, 1.0f);
+            camera = new Camera(screenWidth, screenHeight, 1.5f);
 
 
             // Create a new SpriteBatch, which can be used to draw textures.

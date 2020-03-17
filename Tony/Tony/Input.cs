@@ -20,22 +20,22 @@ namespace Tony
             {
                 ObjectManager.Instance.CurrentLevel.Player.move("A");
             }
-            else if (Keyboard.GetState().IsKeyDown(Keys.W))
+            if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
                 ObjectManager.Instance.CurrentLevel.Player.move("W");
             }
-            else if (Keyboard.GetState().IsKeyDown(Keys.S))
+            if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
                 ObjectManager.Instance.CurrentLevel.Player.move("S");
             }
-            else if (Keyboard.GetState().IsKeyDown(Keys.D))
+            if (Keyboard.GetState().IsKeyDown(Keys.D))
             {
                 ObjectManager.Instance.CurrentLevel.Player.move("D");
             }
 
 
 
-            else if (Keyboard.GetState().IsKeyDown(Keys.E))
+            if (Keyboard.GetState().IsKeyDown(Keys.E))
             {
                 foreach (GameObject i in ObjectManager.Instance.CurrentLevel.Objects.Where(i => i is InteractableObject))
                 {
