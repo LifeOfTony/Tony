@@ -128,6 +128,7 @@
     <property name="Route" value="1056,224"/>
    </properties>
   </object>
+  <object id="176" type="EndObject" gid="2" x="425.821" y="530.903" width="13" height="6"/>
  </objectgroup>
  <objectgroup id="9" name="Player">
   <object id="117" type="Player" gid="43" x="544" y="320" width="32" height="32"/>

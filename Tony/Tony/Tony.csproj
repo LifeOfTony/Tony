@@ -42,6 +42,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Camera.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="EndObject.cs" />
     <Compile Include="Event.cs" />

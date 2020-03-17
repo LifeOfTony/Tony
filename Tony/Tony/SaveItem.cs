@@ -11,59 +11,81 @@ namespace Tony
 {
     public class SaveItem
     {
-         
+
         public SaveItem()
         {
-          
 
-           string testItem = "testItem";
-            Item x = new Item(testItem, 1);
-            ObjectManager.Instance.AddItem(x);
-
-            string testItemB = "testItemB";
-            Item y = new Item(testItemB, 2);
-            ObjectManager.Instance.AddItem(y);
         }
 
-        public void Save(string filepath)
+        public void save()
         {
-            
-           // FileStream stream = new FileStream(filepath, FileMode.Create);
-            
-            
+            //Use the StreamWriter to save file in a txt fromate.
 
-            XmlSerializer serializer = new XmlSerializer(typeof(List<Item>));
-            
-            StreamWriter writer = new StreamWriter(filepath);
-            List<Item> ItemList = ObjectManager.Instance.Items;
+            using (StreamWriter writer = new StreamWriter(@"D:\VS CM\LifeOfTony\save.txt"))
+            {
 
-            serializer.Serialize(writer, ItemList);
-            writer.Close();
-           
+                foreach (Item i in ObjectManager.Instance.Items)
+                {
 
+                    if (i.IsCollected() == true){
+                        writer.WriteLine("I"+  i.GetName());
+                    }
+
+                }
+               writer.WriteLine("L"+  ObjectManager .Instance .CurrentLevel.getLevel  );
+
+                writer.WriteLine("M"+  ObjectManager.Instance.MentalState.ToString());
+
+                writer.WriteLine("P" +  ObjectManager.Instance.CurrentLevel.Player.getPosition());
+            }
+        }
+        public void read()
+        {
+
+            char prefix  ;
+            string line = "";
+
+            //Use a StreamReader to read savefile.
+
+            using (StreamReader sr = new StreamReader (@"D:\VS CM\LifeOfTony\save.txt"))
+            {
+
+                while (sr.Peek() >= 0)
+                {
+                    prefix = ((char)sr.Read());
+
+                    if (prefix.Equals('I'))
+                    {
+                        line = sr.ReadLine();
+
+                        Console.WriteLine(line);
+                    }
+                    else if (prefix.Equals('L'))
+                    {
+                        line = sr.ReadLine();
+                      
+                        Console.WriteLine(line);
+                    }
+                    else if (prefix.Equals('M'))
+                    {
+                        line = sr.ReadLine();
+
+                        Console.WriteLine(line);
+                    }
+                    else if (prefix.Equals('P'))
+                    {
+                        line = sr.ReadLine();
+
+                        Console.WriteLine(line);
+                    }
+
+                }
+
+                Console.WriteLine ("end of the file");
+            }
         }
 
-
-
-        // BinaryFormatter bf = new BinaryFormatter();
-        //  for (int i = 1; i < L.Count(); i++)
-        //{
-        //  bf.Serialize(fs, L.Take(i));
-        //}
-
-        // using (Stream fs = new FileStream(@"D:\VS CM\SLS\ItemSave.xml", FileMode.Create, FileAccess.Write, FileShare.None))
-
-        // L = null;
-
-        //XmlSerializer serializer2 = new XmlSerializer(typeof(List<Item>));
-
-        // using (FileStream fs2 = File.OpenRead(@"D:\VS CM\SLS\ItemSave.xml"))
-        // {
-        //L = (List<Item>)serializer2.Deserialize(fs2);
-
-        //@"D:\VS CM\SLS\ItemSave.xml"
     }
-
 }
 
 
