@@ -178,11 +178,7 @@ namespace Tony
 
             // Calls any Player methods based on the Keyboard state.
             Player player = ObjectManager.Instance.CurrentLevel.Player;
-            if (state.IsKeyDown(Keys.A)) player.move("A");
-            if (state.IsKeyDown(Keys.W)) player.move("W");
-            if (state.IsKeyDown(Keys.S)) player.move("S");
-            if (state.IsKeyDown(Keys.D)) player.move("D");
-            if (state.IsKeyDown(Keys.E)) player.interact();
+            Input.CheckInputs();
 
             ObjectManager.Instance.MentalDecay(gameTime);
 

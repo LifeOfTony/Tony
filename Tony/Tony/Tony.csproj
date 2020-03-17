@@ -46,6 +46,7 @@
     <Compile Include="EndObject.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="GridNode.cs" />
+    <Compile Include="Input.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="LevelUI.cs" />
     <Compile Include="MainMenu.cs" />
