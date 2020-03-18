@@ -122,32 +122,14 @@ namespace Tony
             for (int i = 0; i< filePaths .Length; i++)
             {
                 LevelReader iLevel = new LevelReader(@filePaths[i], Content, level);
-
-                int iMapWidth = iLevel.width;
-                int iMapHeight = iLevel.height;
-                int iTileWidth = iLevel.tileWidth;
-                int iTileHeight = iLevel.tileHeight;
-
-                /*
-                lightsTarget = new RenderTarget2D(
-                GraphicsDevice, mapWidth * tileWidth, mapHeight * tileHeight);
-                mainTarget = new RenderTarget2D(
-                GraphicsDevice, mapWidth * tileWidth, mapHeight * tileHeight);
-                */
-
-
-                lightsTarget = new RenderTarget2D(
-                GraphicsDevice, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
-                mainTarget = new RenderTarget2D(
-                GraphicsDevice, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
-
                 Level iNewLevel = iLevel.GetLevel();
-
-                ObjectManager.Instance.CurrentLevel = iNewLevel;
                 ObjectManager.Instance.AddLevel(iNewLevel);
-                Pathfinder.CreateGrid(iMapWidth, iMapHeight, iTileWidth, iTileHeight);
-                iNewLevel.setPaths();
-                Console.WriteLine(ObjectManager.Instance .LevelSize() );
+                if (iNewLevel .getLevel == 0)
+                {
+                    ObjectManager.Instance.CurrentLevel = iNewLevel;
+                }
+                Console.WriteLine(ObjectManager.Instance.LevelSize());
+                
             }
 
             //The code below should be able to trim.
@@ -160,14 +142,6 @@ namespace Tony
             int tileWidth = currentLevel.tileWidth;
             int tileHeight = currentLevel.tileHeight;
 
-            /*
-            lightsTarget = new RenderTarget2D(
-            GraphicsDevice, mapWidth * tileWidth, mapHeight * tileHeight);
-            mainTarget = new RenderTarget2D(
-            GraphicsDevice, mapWidth * tileWidth, mapHeight * tileHeight);
-            */
-
-
             lightsTarget = new RenderTarget2D(
             GraphicsDevice,graphics.PreferredBackBufferWidth,graphics.PreferredBackBufferHeight);
             mainTarget = new RenderTarget2D(
@@ -175,8 +149,6 @@ namespace Tony
 
             Level newLevel = currentLevel.GetLevel();
             
-            ObjectManager.Instance.CurrentLevel = newLevel;
-            ObjectManager.Instance.AddLevel(newLevel);
             Pathfinder.CreateGrid(mapWidth, mapHeight, tileWidth, tileHeight);
             newLevel.setPaths();
 
