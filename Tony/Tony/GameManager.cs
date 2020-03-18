@@ -110,10 +110,16 @@ namespace Tony
             Controller.Initialize(Content);
 
 
-
+            //Get all Levels from the directory
+            string[] filePaths = Directory.GetFiles(@"Content\Levels\", "*.tmx");
+            for (int i = 0; i < filePaths.Length; i++)
+            {
+                string load = filePaths[i];
+               // Console.WriteLine(load);
+            }
 
             // Creates a new LevelReader for the testmap.xml file. 
-            LevelReader currentLevel = new LevelReader(@"Content\Levels\TestMap2.tmx", Content, level);
+            LevelReader currentLevel = new LevelReader(@filePaths[0], Content, level);
 
             int mapWidth = currentLevel.width;
             int mapHeight = currentLevel.height;
