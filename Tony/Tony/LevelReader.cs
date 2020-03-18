@@ -180,6 +180,7 @@ namespace Tony
             string basic = null;
             string route = null;
             bool basicMove = false;
+            string actors = "";
 
             #region object property navigation
             if (objectData.Element("properties") != null)
@@ -194,6 +195,10 @@ namespace Tony
                     if (property.Attribute("name").Value == "Route")
                     {
                         route = property.Attribute("value").Value;
+                    }
+                    if (property.Attribute("name").Value == "Actors")
+                    {
+                        actors = property.Attribute("value").Value;
                     }
 
                 }
@@ -218,6 +223,12 @@ namespace Tony
             if(objectData.Attribute("type").Value == "Actor")
             {
                 Npc currentObject = new Npc(position, size, 4, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1], route, true, basicMove, requires, gives);
+                levelRead.AddObject(currentObject);
+            }
+
+            if(objectData.Attribute("type").Value == "Event")
+            {
+                Event currentObject = new Event(position, size, actors);
                 levelRead.AddObject(currentObject);
             }
             if (objectData.Attribute("type").Value == "EndObject")

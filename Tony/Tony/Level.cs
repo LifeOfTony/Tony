@@ -21,6 +21,9 @@ namespace Tony
 
         private List<Npc> _Npcs;
 
+        private List<Event> _Events;
+
+
         private int level;
 
         private int mapHeight;
@@ -39,6 +42,7 @@ namespace Tony
             _Drawables = new List<Drawable>();
             _Collidables = new List<GameObject>();
             _Npcs = new List<Npc>();
+            _Events = new List<Event>();
         }
 
 
@@ -57,6 +61,14 @@ namespace Tony
             get
             {
                 return _Npcs;
+            }
+        }
+
+        public List<Event> Events
+        {
+            get
+            {
+                return _Events;
             }
         }
 
@@ -160,9 +172,16 @@ namespace Tony
                 _Npcs.Add((Npc)newObject);
             }
 
+
+
             if (newObject is EndObject)
             {
                 _end = (EndObject)newObject;
+            }
+
+            if (newObject is Event)
+            {
+                _Events.Add((Event)newObject);
             }
         }
 
