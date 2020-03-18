@@ -32,7 +32,7 @@ namespace Tony
                 }
                 else
                 {
-                    Console.WriteLine("Next Level not exect");
+                    Console.WriteLine("Can't find next level");
                 }
             }
             

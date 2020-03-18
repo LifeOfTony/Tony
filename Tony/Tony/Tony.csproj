@@ -166,7 +166,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Levels\TestMap2.tmx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Content\Levels\TestMapNew.tmx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
