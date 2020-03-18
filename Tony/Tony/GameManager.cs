@@ -92,7 +92,7 @@ namespace Tony
         protected override void LoadContent()
         {
             //Create a Camera Object (ScreenWidth, ScreenHeight, Zoom Level)
-            camera = new Camera(screenWidth, screenHeight, 1.0f);
+            camera = new Camera(screenWidth, screenHeight, 1.5f);
 
 
             // Create a new SpriteBatch, which can be used to draw textures.
@@ -195,11 +195,7 @@ namespace Tony
             Player player = ObjectManager.Instance.CurrentLevel.Player;
                         //update camera
             camera.follow(player);
-            if (state.IsKeyDown(Keys.A)) player.move("A");
-            if (state.IsKeyDown(Keys.W)) player.move("W");
-            if (state.IsKeyDown(Keys.S)) player.move("S");
-            if (state.IsKeyDown(Keys.D)) player.move("D");
-            if (state.IsKeyDown(Keys.E)) player.interact();
+            Input.CheckInputs();
 
             SaveItem saveI = new SaveItem();
             if (state.IsKeyDown(Keys.L)) saveI.save();

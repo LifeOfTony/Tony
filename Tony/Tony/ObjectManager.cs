@@ -71,6 +71,7 @@ namespace Tony
         {
             get
             {
+ 
                 return mentalState;
             }
         }
