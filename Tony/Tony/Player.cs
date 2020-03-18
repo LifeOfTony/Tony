@@ -13,7 +13,6 @@ namespace Tony
     {
         private int age;
         private int moveSpeed;
-        private int range;
         private Vector2 velocity;
 
         /// <summary>
@@ -30,7 +29,6 @@ namespace Tony
         {
             this.age = age;
             this.moveSpeed = 1;
-            this.range = 1;
             velocity = Vector2.Zero;
 
         }
@@ -93,32 +91,6 @@ namespace Tony
                 case "S":
                     velocity.Y = moveSpeed;
                     break;
-            }
-        }
-
-        /// <summary>
-        /// triggered by the action key (E).
-        /// runs through all InteractableObjects and finds out if they are within range of the player.
-        /// 
-        /// </summary>
-        public void interact()
-        {
-            foreach(GameObject i in ObjectManager.Instance.CurrentLevel.Objects)
-            {
-                if (i is InteractableObject)
-                {
-                    InteractableObject currentObject = (InteractableObject)i;
-
-                    //conditions of interaction.
-                    //if met and interaction is triggered.
-                    if(Detector.IsTouchingBottom(currentObject.getPosition(), currentObject.getSize(), this.position, this.size, this.range) 
-                        || Detector.IsTouchingTop(currentObject.getPosition(), currentObject.getSize(), this.position, this.size, this.range) 
-                        || Detector.IsTouchingLeft(currentObject.getPosition(), currentObject.getSize(), this.position, this.size, this.range) 
-                        || Detector.IsTouchingRight(currentObject.getPosition(), currentObject.getSize(), this.position, this.size, this.range))
-                    {
-                        currentObject.Interact();
-                    }
-                }
             }
         }
 

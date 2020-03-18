@@ -11,17 +11,17 @@ using GeonBit.UI.Entities;
 
 namespace Tony
 {
-    static class Controller
+    public static class Controller
     {
-        enum GameState { mainmenu, playing, paused, gameOver }
-        static GameState gameState;
+        public enum GameState { mainmenu, playing, paused, gameOver }
+        public static GameState gameState;
 
         public static bool exit = false;
 
 
         public static void Initialize(ContentManager content)
         {
-
+            
             View.Initialize(content);
             gameState = GameState.mainmenu;
         }
