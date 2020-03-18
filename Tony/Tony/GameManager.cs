@@ -91,31 +91,29 @@ namespace Tony
         /// </summary>
         protected override void LoadContent()
         {
+
             //Create a Camera Object (ScreenWidth, ScreenHeight, Zoom Level)
             camera = new Camera(screenWidth, screenHeight, 1.5f);
-
 
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            
-
             lightMask = Content.Load<Texture2D>("lightMask");
             effect1 = Content.Load<Effect>("lighteffect");
 
-
             // Loads the SpriteFont 'textFont' from Content.
             font = Content.Load<SpriteFont>("textFont");
-
-
 
             // Creates a new ItemReader for the Items.xml file.
             ItemReader itemList = new ItemReader(@"Content\Items.xml");
 
             Controller.Initialize(Content);
 
+
+
+
             // Creates a new LevelReader for the testmap.xml file. 
-            LevelReader currentLevel = new LevelReader(@"Content\Levels\TestMapNew.tmx", Content, level);
+            LevelReader currentLevel = new LevelReader(@"Content\Levels\TestMap2.tmx", Content, level);
 
             int mapWidth = currentLevel.width;
             int mapHeight = currentLevel.height;
