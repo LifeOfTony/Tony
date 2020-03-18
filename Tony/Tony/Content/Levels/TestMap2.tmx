@@ -3,7 +3,7 @@
  <tileset firstgid="1" source="Content/TileSets/OfficeSet.tsx"/>
  <tileset firstgid="35" source="Content/TileSets/NPCMale.tsx"/>
  <tileset firstgid="39" source="Content/TileSets/Tony.tsx"/>
- <layer id="1" name="Tile Layer 1" width="40" height="30">
+ <layer id="1" name="1" width="40" height="30">
   <data encoding="csv">
 24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,
 23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,
