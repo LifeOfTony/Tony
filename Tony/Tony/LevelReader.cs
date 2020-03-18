@@ -214,12 +214,13 @@ namespace Tony
                 Npc currentObject = new Npc(position, size, 4, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1], route, basicMove, requires, gives);
                 levelRead.AddObject(currentObject);
             }
+
             if(objectData.Attribute("type").Value == "Actor")
             {
                 Npc currentObject = new Npc(position, size, 4, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1], route, true, basicMove, requires, gives);
                 levelRead.AddObject(currentObject);
             }
-            if (objectData.Attribute("type").Value == "End")
+            if (objectData.Attribute("type").Value == "EndObject")
             {
                 EndObject currentObject = new EndObject(position, size, 4, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1], requires, gives);
                 levelRead.AddObject(currentObject);
