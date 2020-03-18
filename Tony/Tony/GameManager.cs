@@ -110,13 +110,47 @@ namespace Tony
             Controller.Initialize(Content);
 
 
-            //Get all Levels from the directory
+            //Get all Levels from the directory and store in the array.
             string[] filePaths = Directory.GetFiles(@"Content\Levels\", "*.tmx");
-            for (int i = 0; i < filePaths.Length; i++)
+           /* for (int i = 0; i < filePaths.Length; i++)
             {
                 string load = filePaths[i];
-               // Console.WriteLine(load);
+               Console.WriteLine(load);
+            }*/
+
+            //Adding Level to the ObjectManager.Instance.levels
+            for (int i = 0; i< filePaths .Length; i++)
+            {
+                LevelReader iLevel = new LevelReader(@filePaths[i], Content, level);
+
+                int iMapWidth = iLevel.width;
+                int iMapHeight = iLevel.height;
+                int iTileWidth = iLevel.tileWidth;
+                int iTileHeight = iLevel.tileHeight;
+
+                /*
+                lightsTarget = new RenderTarget2D(
+                GraphicsDevice, mapWidth * tileWidth, mapHeight * tileHeight);
+                mainTarget = new RenderTarget2D(
+                GraphicsDevice, mapWidth * tileWidth, mapHeight * tileHeight);
+                */
+
+
+                lightsTarget = new RenderTarget2D(
+                GraphicsDevice, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
+                mainTarget = new RenderTarget2D(
+                GraphicsDevice, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
+
+                Level iNewLevel = iLevel.GetLevel();
+
+                ObjectManager.Instance.CurrentLevel = iNewLevel;
+                ObjectManager.Instance.AddLevel(iNewLevel);
+                Pathfinder.CreateGrid(iMapWidth, iMapHeight, iTileWidth, iTileHeight);
+                iNewLevel.setPaths();
+                Console.WriteLine(ObjectManager.Instance .LevelSize() );
             }
+
+            //The code below should be able to trim.
 
             // Creates a new LevelReader for the testmap.xml file. 
             LevelReader currentLevel = new LevelReader(@filePaths[0], Content, level);
@@ -145,6 +179,9 @@ namespace Tony
             ObjectManager.Instance.AddLevel(newLevel);
             Pathfinder.CreateGrid(mapWidth, mapHeight, tileWidth, tileHeight);
             newLevel.setPaths();
+
+            Console.WriteLine(ObjectManager.Instance.LevelSize());
+            Console.WriteLine(ObjectManager.Instance.CurrentLevel.getLevel);
 
         }
 
