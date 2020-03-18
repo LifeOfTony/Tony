@@ -132,8 +132,6 @@ namespace Tony
                 
             }
 
-            //The code below should be able to trim.
-
             // Creates a new LevelReader for the testmap.xml file. 
             LevelReader currentLevel = new LevelReader(@filePaths[0], Content, level);
 
