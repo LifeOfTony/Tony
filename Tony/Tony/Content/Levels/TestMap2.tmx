@@ -135,6 +135,11 @@
     <property name="Route" value="672,416"/>
    </properties>
   </object>
+  <object id="179" type="Event" x="416" y="512" width="32" height="32">
+    <properties>
+      <property name="Actors" value="Actor1"/>
+    </properties>
+  </object>
  </objectgroup>
  <objectgroup id="9" name="Player">
   <object id="117" type="Player" gid="43" x="544" y="320" width="32" height="32"/>

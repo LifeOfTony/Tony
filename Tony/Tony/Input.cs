@@ -11,7 +11,7 @@ namespace Tony
 {
     public static class Input
     {
-        private static int range = 1;
+
          
 
         public static void CheckInputs()
@@ -45,8 +45,7 @@ namespace Tony
                         Npc currentNpc = (Npc)i;
                         if (!currentNpc.getActor())
                         {
-                            currentObject = (Npc)i;
-                            InteractDetection(currentObject);
+                            if (InteractDetection(currentNpc, 1)) currentNpc.Interact();
                         }
 
 
@@ -54,7 +53,7 @@ namespace Tony
                     else
                     {
                         currentObject = (InteractableObject)i;
-                        InteractDetection(currentObject);
+                        if (InteractDetection(currentObject, 1)) currentObject.Interact();
                     }
 
                 }
@@ -62,7 +61,7 @@ namespace Tony
         }
 
 
-        private static void InteractDetection(InteractableObject currentObject)
+        public static bool InteractDetection(GameObject currentObject, int range)
         {
 
             //conditions of interaction.
@@ -79,8 +78,9 @@ namespace Tony
                 || Detector.IsTouchingRight(currentObject.getPosition(), currentObject.getSize(),
                 ObjectManager.Instance.CurrentLevel.Player.getPosition(), ObjectManager.Instance.CurrentLevel.Player.getSize(), range))
             {
-                currentObject.Interact();
+                return true;
             }
+            return false;
 
         }
 

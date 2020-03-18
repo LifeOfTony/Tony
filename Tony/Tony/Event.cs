@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Tony
 {
-    class Event : GameObject, Interactable
+    public class Event : GameObject, Interactable
     {
         private string[] actors;
         private string requirement;
