@@ -56,7 +56,6 @@ namespace Tony
             tileset = new List<Texture2D>();
             textOutput = "";
             level = 0;
-            levels = 2;
             
 
         }
@@ -112,19 +111,15 @@ namespace Tony
 
             //Get all Levels from the directory and store in the array.
             string[] filePaths = Directory.GetFiles(@"Content\Levels\", "*.tmx");
-           /* for (int i = 0; i < filePaths.Length; i++)
-            {
-                string load = filePaths[i];
-               Console.WriteLine(load);
-            }*/
+
 
             //Adding Level to the ObjectManager.Instance.levels
             for (int i = 0; i< filePaths .Length; i++)
             {
-                LevelReader iLevel = new LevelReader(@filePaths[i], Content, level);
+                LevelReader iLevel = new LevelReader(@filePaths[i], Content);
                 Level iNewLevel = iLevel.GetLevel();
                 ObjectManager.Instance.AddLevel(iNewLevel);
-                if (iNewLevel .getLevel == 0)
+                if (iNewLevel.getLevel == 0)
                 {
                     ObjectManager.Instance.CurrentLevel = iNewLevel;
                 }
@@ -132,26 +127,18 @@ namespace Tony
                 
             }
 
-            // Creates a new LevelReader for the testmap.xml file. 
-            LevelReader currentLevel = new LevelReader(@filePaths[0], Content, level);
 
-            int mapWidth = currentLevel.width;
-            int mapHeight = currentLevel.height;
-            int tileWidth = currentLevel.tileWidth;
-            int tileHeight = currentLevel.tileHeight;
+
 
             lightsTarget = new RenderTarget2D(
             GraphicsDevice,graphics.PreferredBackBufferWidth,graphics.PreferredBackBufferHeight);
             mainTarget = new RenderTarget2D(
             GraphicsDevice,graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
 
-            Level newLevel = currentLevel.GetLevel();
-            
-            Pathfinder.CreateGrid(mapWidth, mapHeight, tileWidth, tileHeight);
-            newLevel.setPaths();
+            Level currentLevel = ObjectManager.Instance.CurrentLevel;
+            Pathfinder.CreateGrid(currentLevel.MapWidth, currentLevel.MapHeight, currentLevel.TileWidth, currentLevel.TileHeight);
+            currentLevel.setPaths();
 
-            Console.WriteLine(ObjectManager.Instance.LevelSize());
-            Console.WriteLine(ObjectManager.Instance.CurrentLevel.getLevel);
 
         }
 

@@ -21,24 +21,32 @@ namespace Tony
 
         private List<Npc> _Npcs;
 
+        private List<Event> _Events;
+
+
         private int level;
 
         private int mapHeight;
         private int mapWidth;
+        private int tileHeight;
+        private int tileWidth;
 
         private Player _player;
 
         private EndObject _end;
 
-        public Level(int level, int mapWidth, int mapHeight)
+        public Level(int level, int mapWidth, int mapHeight, int tileWidth, int tileHeight)
         {
             this.mapWidth = mapWidth;
             this.mapHeight = mapHeight;
+            this.tileWidth = tileWidth;
+            this.tileHeight = tileHeight;
             this.level = level;
             _Objects = new List<GameObject>();
             _Drawables = new List<Drawable>();
             _Collidables = new List<GameObject>();
             _Npcs = new List<Npc>();
+            _Events = new List<Event>();
         }
 
 
@@ -57,6 +65,14 @@ namespace Tony
             get
             {
                 return _Npcs;
+            }
+        }
+
+        public List<Event> Events
+        {
+            get
+            {
+                return _Events;
             }
         }
 
@@ -110,11 +126,6 @@ namespace Tony
             {
                 return mapWidth;
             }
-            set
-            {
-                mapWidth = value;
-            }
-
         }
 
         public int MapHeight
@@ -123,11 +134,26 @@ namespace Tony
             {
                 return mapHeight;
             }
-            set
+        }
+
+
+        public int TileWidth
+        {
+            get
             {
-                mapHeight = value;
+                return tileWidth;
+            }
+
+        }
+
+        public int TileHeight
+        {
+            get
+            {
+                return tileHeight;
             }
         }
+
 
         /// <summary>
         /// AddObject is called to add a new GameObject to the Objects list.
@@ -160,9 +186,16 @@ namespace Tony
                 _Npcs.Add((Npc)newObject);
             }
 
+
+
             if (newObject is EndObject)
             {
                 _end = (EndObject)newObject;
+            }
+
+            if (newObject is Event)
+            {
+                _Events.Add((Event)newObject);
             }
         }
 
