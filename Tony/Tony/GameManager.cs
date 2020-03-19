@@ -136,7 +136,7 @@ namespace Tony
             GraphicsDevice,graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
 
             Level currentLevel = ObjectManager.Instance.CurrentLevel;
-            Pathfinder.CreateGrid(currentLevel.MapWidth, currentLevel.MapHeight, currentLevel.TileWidth, currentLevel.TileHeight);
+            Pathfinder.CreateGrid(currentLevel);
             currentLevel.setPaths();
 
 

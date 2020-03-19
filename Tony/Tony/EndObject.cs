@@ -28,6 +28,9 @@ namespace Tony
                     {
                         ObjectManager.Instance.CurrentLevel = ObjectManager.Instance.Levels.Find
                             (x => x.getLevel == (ObjectManager.Instance.CurrentLevel.getLevel + 1));
+
+                        Pathfinder.CreateGrid(ObjectManager.Instance.CurrentLevel);
+                        ObjectManager.Instance.CurrentLevel.setPaths();
                     }
                 }
             }

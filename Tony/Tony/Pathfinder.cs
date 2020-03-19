@@ -139,10 +139,12 @@ namespace Tony
             }
         }
 
-        public static void CreateGrid(int mapWidth, int mapHeight, int tWidth, int tHeight)
+        public static void CreateGrid(Level currentLevel)
         {
-            tileWidth = tWidth;
-            tileHeight = tHeight;
+            tileWidth = currentLevel.TileWidth;
+            tileHeight = currentLevel.TileHeight;
+            int mapHeight = currentLevel.MapHeight;
+            int mapWidth = currentLevel.MapWidth;
             Vector2 tileSize = new Vector2(tileWidth, tileHeight);
             for(int i = 0; i < mapWidth; i++)
             {
