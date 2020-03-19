@@ -134,5 +134,11 @@ namespace Tony
                 return levels;
             }
         }
+
+        public float ModifyMentalState(Item item )
+        {
+            mentalState += item.GetModifier ();
+            return mentalState;
+        }
     }
 }

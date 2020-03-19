@@ -56,7 +56,6 @@ namespace Tony
             tileset = new List<Texture2D>();
             textOutput = "";
             level = 0;
-            levels = 2;
             
 
         }
@@ -110,22 +109,25 @@ namespace Tony
             Controller.Initialize(Content);
 
 
+            //Get all Levels from the directory and store in the array.
+            string[] filePaths = Directory.GetFiles(@"Content\Levels\", "*.tmx");
 
 
-            // Creates a new LevelReader for the testmap.xml file. 
-            LevelReader currentLevel = new LevelReader(@"Content\Levels\TestMap2.tmx", Content, level);
+            //Adding Level to the ObjectManager.Instance.levels
+            for (int i = 0; i< filePaths .Length; i++)
+            {
+                LevelReader iLevel = new LevelReader(@filePaths[i], Content);
+                Level iNewLevel = iLevel.GetLevel();
+                ObjectManager.Instance.AddLevel(iNewLevel);
+                if (iNewLevel.getLevel == 0)
+                {
+                    ObjectManager.Instance.CurrentLevel = iNewLevel;
+                }
+                Console.WriteLine(ObjectManager.Instance.LevelSize());
+                
+            }
 
-            int mapWidth = currentLevel.width;
-            int mapHeight = currentLevel.height;
-            int tileWidth = currentLevel.tileWidth;
-            int tileHeight = currentLevel.tileHeight;
 
-            /*
-            lightsTarget = new RenderTarget2D(
-            GraphicsDevice, mapWidth * tileWidth, mapHeight * tileHeight);
-            mainTarget = new RenderTarget2D(
-            GraphicsDevice, mapWidth * tileWidth, mapHeight * tileHeight);
-            */
 
 
             lightsTarget = new RenderTarget2D(
@@ -133,12 +135,10 @@ namespace Tony
             mainTarget = new RenderTarget2D(
             GraphicsDevice,graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
 
-            Level newLevel = currentLevel.GetLevel();
-            
-            ObjectManager.Instance.CurrentLevel = newLevel;
-            ObjectManager.Instance.AddLevel(newLevel);
-            Pathfinder.CreateGrid(mapWidth, mapHeight, tileWidth, tileHeight);
-            newLevel.setPaths();
+            Level currentLevel = ObjectManager.Instance.CurrentLevel;
+            Pathfinder.CreateGrid(currentLevel);
+            currentLevel.setPaths();
+
 
         }
 
@@ -212,11 +212,12 @@ namespace Tony
                 npc.Move();
             }
 
+            /*
             if (level < ObjectManager.Instance.CurrentLevel.getLevel)
             {
-                Console.WriteLine("Is is working");
+                Console.WriteLine("It is working");
             
-}
+            }*/
 
             base.Update(gameTime);
         }
