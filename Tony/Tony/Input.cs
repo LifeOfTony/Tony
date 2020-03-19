@@ -12,7 +12,7 @@ namespace Tony
     public static class Input
     {
 
-         
+        private static bool interactDown = false;
 
         public static void CheckInputs()
         {
@@ -35,8 +35,9 @@ namespace Tony
 
 
 
-            if (Keyboard.GetState().IsKeyDown(Keys.E))
+            if (Keyboard.GetState().IsKeyDown(Keys.E) && interactDown == false)
             {
+                interactDown = true;
                 foreach (GameObject i in ObjectManager.Instance.CurrentLevel.Objects.Where(i => i is InteractableObject))
                 {
                     InteractableObject currentObject;
@@ -58,6 +59,9 @@ namespace Tony
 
                 }
             }
+
+            if (Keyboard.GetState().IsKeyUp(Keys.E)) interactDown = false;
+
         }
 
 
