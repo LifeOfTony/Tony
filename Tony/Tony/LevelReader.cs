@@ -21,7 +21,6 @@ namespace Tony
         public int tileHeight;
 
         Level levelRead;
-        private int levelNo;
         private XDocument reader;
         //tileNumbers, tileset and objectElements store the information taken from the Xml file.
         public List<Texture2D> tileset;
@@ -35,11 +34,11 @@ namespace Tony
         /// It then reads the xml file found and sets the instance variables to the value of certain information in the file.
         /// </summary>
         /// <param name="filePath"></param>
-        public LevelReader(string filePath, Microsoft.Xna.Framework.Content.ContentManager content, int level)
+        public LevelReader(string filePath, Microsoft.Xna.Framework.Content.ContentManager content)
         {
             reader = XDocument.Load(filePath);
             Content = content;
-            levelNo = level;
+
             LoadFile();
         }
 
@@ -75,6 +74,8 @@ namespace Tony
             {
                 //return exception level file invalid.
             }
+
+            int levelNo = Int32.Parse(map.Element("properties").Element("property").Attribute("value").Value);
 
             //sets the basic map information.
             this.width = Int32.Parse(map.Attribute("width").Value);

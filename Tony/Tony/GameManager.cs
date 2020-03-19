@@ -40,7 +40,6 @@ namespace Tony
         //The current level number.
         private int level;
 
-        private int levels;
 
         private float countDuration = 2f;
         private float currentTime = 0f;
@@ -56,7 +55,7 @@ namespace Tony
             tileset = new List<Texture2D>();
             textOutput = "";
             level = 0;
-            levels = 2;
+
             
 
         }
@@ -113,7 +112,7 @@ namespace Tony
 
 
             // Creates a new LevelReader for the testmap.xml file. 
-            LevelReader currentLevel = new LevelReader(@"Content\Levels\TestMap2.tmx", Content, level);
+            LevelReader currentLevel = new LevelReader(@"Content\Levels\TestMap2.tmx", Content);
 
             int mapWidth = currentLevel.width;
             int mapHeight = currentLevel.height;
