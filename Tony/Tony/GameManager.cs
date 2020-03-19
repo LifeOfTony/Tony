@@ -214,10 +214,17 @@ namespace Tony
 
             ObjectManager.Instance.MentalDecay(gameTime);
 
-            foreach(Npc npc in ObjectManager.Instance.CurrentLevel.Npcs)
+            foreach (Event currentEvent in ObjectManager.Instance.CurrentLevel.Events)
+            {
+                if (Input.InteractDetection(currentEvent, 0)) currentEvent.Interact();
+            }
+
+
+            foreach (Npc npc in ObjectManager.Instance.CurrentLevel.Npcs)
             {
                 npc.Move();
             }
+
 
             if (level < ObjectManager.Instance.CurrentLevel.getLevel)
             {
