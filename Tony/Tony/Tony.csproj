@@ -49,6 +49,7 @@
     <Compile Include="GridNode.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="LevelUI.cs" />
+    <Compile Include="PauseMenu.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="Pathfinder.cs" />
     <Compile Include="SaveItem.cs" />
