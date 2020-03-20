@@ -43,6 +43,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Camera.cs" />
+    <Compile Include="GameOver.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="EndObject.cs" />
     <Compile Include="Event.cs" />

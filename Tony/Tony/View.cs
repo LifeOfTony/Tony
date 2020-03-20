@@ -15,6 +15,8 @@ namespace Tony
     {
 
         public static MainMenu mainMenu;
+        public static PauseMenu pauseMenu;
+        public static GameOver gameOver;
 
         static LevelUI levelUI;
 
@@ -64,6 +66,26 @@ namespace Tony
             mainMenu.Menu.Visible = true;
         }
 
+        public static void HidePauseMenu()
+        {
+            pauseMenu.Menu.Visible = false;
+        }
+
+        public static void ShowPauseMenu()
+        {
+            pauseMenu.Menu.Visible = true;
+        }
+
+
+        public static void HideGameOver()
+        {
+            gameOver.Menu.Visible = false;
+        }
+
+        public static void ShowGameOver()
+        {
+            gameOver.Menu.Visible = true;
+        }
         public static void ShowLevelUI()
         {
             levelUI.LowerUI.Visible = true;

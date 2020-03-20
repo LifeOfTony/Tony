@@ -13,16 +13,17 @@ namespace Tony
 {
     public static class Controller
     {
-       public enum GameState { mainmenu, playing, paused, gameOver }
+       public enum GameState { mainmenu, playing, paused, pausemenu, gameOver }
        public static GameState gameState;
        public static bool exit = false;
 
 
         public static void Initialize(ContentManager content)
         {
-
             View.Initialize(content);
             gameState = GameState.mainmenu;
+            gameState = GameState.pausemenu;
+            gameState = GameState.gameOver;
         }
 
         public static void SwitchState()
@@ -31,13 +32,29 @@ namespace Tony
             {
                 View.HideMainMenu();
                 View.ShowLevelUI();
-
+                View.HidePauseMenu();
+                View.HideGameOver();
             }
             else if (gameState == GameState.mainmenu)
             {
                 View.ShowMainMenu();
                 View.HideLevelUI();
-
+                View.HidePauseMenu();
+                View.HideGameOver();
+            }
+            else if (gameState == GameState.pausemenu)
+            {
+                View.HideMainMenu();
+                View.HideLevelUI();
+                View.ShowPauseMenu();
+                View.HideGameOver();
+            }
+            else if (gameState == GameState.gameOver)
+            {
+                View.HideMainMenu();
+                View.HideLevelUI();
+                View.HidePauseMenu();
+                View.ShowGameOver();
             }
         }
 
