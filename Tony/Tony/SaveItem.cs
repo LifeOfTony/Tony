@@ -21,7 +21,7 @@ namespace Tony
         {
             //Use the StreamWriter to save file in a txt fromate.
 
-            using (StreamWriter writer = new StreamWriter(@"D:\VS CM\LifeOfTony\save.txt"))
+            using (StreamWriter writer = new StreamWriter(@"Content\Save\save.txt"))
             {
 
                 foreach (Item i in ObjectManager.Instance.Items)
@@ -47,7 +47,7 @@ namespace Tony
 
             //Use a StreamReader to read savefile.
 
-            using (StreamReader sr = new StreamReader (@"D:\VS CM\LifeOfTony\save.txt"))
+            using (StreamReader sr = new StreamReader (@"Content\Save\save.txt"))
             {
 
                 while (sr.Peek() >= 0)

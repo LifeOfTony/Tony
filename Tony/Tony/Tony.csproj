@@ -48,6 +48,7 @@
     <Compile Include="EndObject.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="GridNode.cs" />
+    <Compile Include="Input.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="LevelUI.cs" />
     <Compile Include="PauseMenu.cs" />
@@ -166,8 +167,11 @@
     <None Include="Content\GeonBit.UI\themes\lowres\fonts\Regular.spritefont">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Content\Levels\TestMap2.tmx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Content\Levels\TestMapNew.tmx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
   </ItemGroup>

@@ -69,6 +69,7 @@ namespace Tony
         {
             get
             {
+ 
                 return mentalState;
             }
         }
@@ -120,6 +121,23 @@ namespace Tony
             Items.Remove(oldItem);
         }
 
+        public int LevelSize()
+        {
+            return levels.Count;
+        }
 
+        public List<Level> Levels
+        {
+            get
+            {
+                return levels;
+            }
+        }
+
+        public float ModifyMentalState(Item item )
+        {
+            mentalState += item.GetModifier ();
+            return mentalState;
+        }
     }
 }

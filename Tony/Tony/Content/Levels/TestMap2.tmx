@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="40" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="10" nextobjectid="170">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="40" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="10" nextobjectid="179">
  <properties>
-  <property name="Level" type="int" value="0"/>
+  <property name="Level" type="int" value="1"/>
  </properties>
  <tileset firstgid="1" source="Content/TileSets/OfficeSet.tsx"/>
  <tileset firstgid="35" source="Content/TileSets/NPCMale.tsx"/>
@@ -42,7 +42,7 @@
  </layer>
  <objectgroup id="5" name="Prop Layer">
   <properties>
-     <property name="Layer" type="int" value="3"/>
+   <property name="Layer" type="int" value="3"/>
   </properties>
   <object id="18" gid="31" x="655.371" y="115.874" width="31" height="45"/>
   <object id="20" gid="25" x="1254.33" y="108.874" width="16" height="30"/>
@@ -79,7 +79,7 @@
  </objectgroup>
  <objectgroup id="6" name="Prop Layer">
   <properties>
-     <property name="Layer" type="int" value="4"/>
+   <property name="Layer" type="int" value="4"/>
   </properties>
   <object id="34" gid="7" x="574.497" y="98.0828" width="5" height="4"/>
   <object id="35" gid="8" x="581.123" y="98.0828" width="5" height="4"/>
@@ -115,26 +115,33 @@
   <object id="110" type="NPC" gid="35" x="800" y="256" width="32" height="32">
    <properties>
     <property name="Gives" value="money"/>
-    <property name="Route" value="704,128"/>
+    <property name="Route" value="704,160"/>
    </properties>
   </object>
   <object id="112" type="NPC" gid="35" x="480" y="160" width="32" height="32">
    <properties>
     <property name="Gives" value="thing"/>
     <property name="Requires" value="snacks"/>
-    <property name="Route" value="928,224"/>
+    <property name="Route" value="928,256"/>
    </properties>
   </object>
   <object id="113" type="NPC" gid="35" x="416" y="160" width="32" height="32">
    <properties>
     <property name="BasicMove" type="bool" value="true"/>
-    <property name="Route" value="1056,224"/>
+    <property name="Route" value="1056,256"/>
    </properties>
   </object>
-  <object id="176" type="EndObject" gid="2" x="425.821" y="530.903" width="13" height="6">
+  <object id="176" type="EndObject" gid="2" x="425.821" y="530.903" width="13" height="6"/>
+  <object id="177" type="Actor" gid="35" x="576" y="448" width="32" height="32">
    <properties>
-    <property name="Requires" value="snacks"/>
+    <property name="BasicMove" type="bool" value="true"/>
+    <property name="Route" value="672,416"/>
    </properties>
+  </object>
+  <object id="179" type="Event" x="416" y="512" width="32" height="32">
+    <properties>
+      <property name="Actors" value="Actor1"/>
+    </properties>
   </object>
  </objectgroup>
  <objectgroup id="9" name="Player">

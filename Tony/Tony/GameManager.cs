@@ -56,7 +56,6 @@ namespace Tony
             tileset = new List<Texture2D>();
             textOutput = "";
             level = 0;
-            levels = 2;
             
 
         }
@@ -91,43 +90,44 @@ namespace Tony
         /// </summary>
         protected override void LoadContent()
         {
-            //Create a Camera Object (ScreenWidth, ScreenHeight, Zoom Level)
-            camera = new Camera(screenWidth, screenHeight, 1.0f);
 
+            //Create a Camera Object (ScreenWidth, ScreenHeight, Zoom Level)
+            camera = new Camera(screenWidth, screenHeight, 1.5f);
 
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            
-
             lightMask = Content.Load<Texture2D>("lightMask");
             effect1 = Content.Load<Effect>("lighteffect");
 
-
             // Loads the SpriteFont 'textFont' from Content.
             font = Content.Load<SpriteFont>("textFont");
-
-
 
             // Creates a new ItemReader for the Items.xml file.
             ItemReader itemList = new ItemReader(@"Content\Items.xml");
 
             Controller.Initialize(Content);
 
-            // Creates a new LevelReader for the testmap.xml file. 
-            LevelReader currentLevel = new LevelReader(@"Content\Levels\TestMapNew.tmx", Content, level);
 
-            int mapWidth = currentLevel.width;
-            int mapHeight = currentLevel.height;
-            int tileWidth = currentLevel.tileWidth;
-            int tileHeight = currentLevel.tileHeight;
+            //Get all Levels from the directory and store in the array.
+            string[] filePaths = Directory.GetFiles(@"Content\Levels\", "*.tmx");
 
-            /*
-            lightsTarget = new RenderTarget2D(
-            GraphicsDevice, mapWidth * tileWidth, mapHeight * tileHeight);
-            mainTarget = new RenderTarget2D(
-            GraphicsDevice, mapWidth * tileWidth, mapHeight * tileHeight);
-            */
+
+            //Adding Level to the ObjectManager.Instance.levels
+            for (int i = 0; i< filePaths .Length; i++)
+            {
+                LevelReader iLevel = new LevelReader(@filePaths[i], Content);
+                Level iNewLevel = iLevel.GetLevel();
+                ObjectManager.Instance.AddLevel(iNewLevel);
+                if (iNewLevel.getLevel == 0)
+                {
+                    ObjectManager.Instance.CurrentLevel = iNewLevel;
+                }
+                Console.WriteLine(ObjectManager.Instance.LevelSize());
+                
+            }
+
+
 
 
             lightsTarget = new RenderTarget2D(
@@ -135,12 +135,10 @@ namespace Tony
             mainTarget = new RenderTarget2D(
             GraphicsDevice,graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
 
-            Level newLevel = currentLevel.GetLevel();
-            
-            ObjectManager.Instance.CurrentLevel = newLevel;
-            ObjectManager.Instance.AddLevel(newLevel);
-            Pathfinder.CreateGrid(mapWidth, mapHeight, tileWidth, tileHeight);
-            newLevel.setPaths();
+            Level currentLevel = ObjectManager.Instance.CurrentLevel;
+            Pathfinder.CreateGrid(currentLevel);
+            currentLevel.setPaths();
+
 
         }
 
@@ -195,11 +193,7 @@ namespace Tony
             Player player = ObjectManager.Instance.CurrentLevel.Player;
                         //update camera
             camera.follow(player);
-            if (state.IsKeyDown(Keys.A)) player.move("A");
-            if (state.IsKeyDown(Keys.W)) player.move("W");
-            if (state.IsKeyDown(Keys.S)) player.move("S");
-            if (state.IsKeyDown(Keys.D)) player.move("D");
-            if (state.IsKeyDown(Keys.E)) player.interact();
+            Input.CheckInputs();
 
             SaveItem saveI = new SaveItem();
             if (state.IsKeyDown(Keys.L)) saveI.save();
@@ -207,11 +201,23 @@ namespace Tony
 
             ObjectManager.Instance.MentalDecay(gameTime);
 
-            foreach(Npc npc in ObjectManager.Instance.CurrentLevel.Npcs)
+            foreach (Event currentEvent in ObjectManager.Instance.CurrentLevel.Events)
+            {
+                if (Input.InteractDetection(currentEvent, 0)) currentEvent.Interact();
+            }
+
+
+            foreach (Npc npc in ObjectManager.Instance.CurrentLevel.Npcs)
             {
                 npc.Move();
             }
+
+            /*
+            if (level < ObjectManager.Instance.CurrentLevel.getLevel)
+            {
+                Console.WriteLine("It is working");
             
+            }*/
 
             base.Update(gameTime);
         }
