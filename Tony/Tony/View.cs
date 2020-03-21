@@ -14,11 +14,10 @@ namespace Tony
     static class View
     {
 
-        public static MainMenu mainMenu;
-        public static PauseMenu pauseMenu;
-        public static GameOver gameOver;
-
-        static LevelUI levelUI;
+        public static MainMenu mainMenu { get; private set; }
+        public static PauseMenu pauseMenu { get; private set; }
+        public static GameOver gameOver { get; private set; }
+        public static LevelUI levelUI { get; private set; }
 
 
         public static void Initialize(ContentManager content)
@@ -30,6 +29,9 @@ namespace Tony
             Texture2D lantern = content.Load<Texture2D>("biglanternOne");
             mainMenu = new MainMenu(logo);
             levelUI = new LevelUI(lantern);
+            pauseMenu = new PauseMenu();
+            gameOver = new GameOver(lantern);
+
             levelUI.Visible = false;
         }
 
@@ -86,6 +88,8 @@ namespace Tony
         {
             gameOver.Menu.Visible = true;
         }
+
+
         public static void ShowLevelUI()
         {
             levelUI.LowerUI.Visible = true;

@@ -16,29 +16,19 @@ namespace Tony
         public Panel Menu { get; private set; }
         public Button PausetoGame { get; private set; }
         public Button PausetoMain { get; private set; }
-        public Button PausetoSettings { get; private set; }
         public Button PausetoQuit { get; private set; }
 
-    public PauseMenu(Texture2D texture)
+    public PauseMenu()
         {
             Menu = new Panel(new Vector2(0, 0), PanelSkin.Simple, Anchor.Center);
 
-            Panel frame = new Panel(new Vector2(800, 400), PanelSkin.None, Anchor.TopCenter, new Vector2(0, 80));
-            Menu.AddChild(frame);
-
-            Image img = new Image(texture);
-            frame.AddChild(img);
-
-            PausetoGame = new Button("Resume to Game", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(0, 260));
+            PausetoGame = new Button("Resume", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(0, 260));
             Menu.AddChild(PausetoGame);
 
-            PausetoMain = new Button("Main Menu", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(0, 185));
+            PausetoMain = new Button("MainMenu", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(0, 185));
             Menu.AddChild(PausetoMain);
 
-            PausetoSettings = new Button("Settings", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(0, 110));
-            Menu.AddChild(PausetoSettings);
-
-            PausetoQuit = new Button("Quit", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(400, 260));
+            PausetoQuit = new Button("Quit", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(0, 110));
             Menu.AddChild(PausetoQuit);
 
             UserInterface.Active.AddEntity(Menu);

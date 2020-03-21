@@ -32,7 +32,7 @@ namespace Tony
                     }
 
                 }
-               writer.WriteLine("L"+  ObjectManager .Instance .CurrentLevel.getLevel  );
+               writer.WriteLine("L"+  ObjectManager .Instance .CurrentLevel.level  );
 
                 writer.WriteLine("M"+  ObjectManager.Instance.MentalState.ToString());
 

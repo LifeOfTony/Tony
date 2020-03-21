@@ -14,7 +14,7 @@ namespace Tony
         private int modifier;
         private string name;
         private Boolean collected;
-        private Boolean equiped;
+
 
         /// <summary>
         /// items have a name and a mental-state modifier.
@@ -27,7 +27,7 @@ namespace Tony
             this.name = name;
             this.modifier = modifier;
             this.collected = false;
-            this.equiped = false;
+
         }
 
         /// <summary>

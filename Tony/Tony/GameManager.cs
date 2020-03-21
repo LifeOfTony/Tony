@@ -37,10 +37,7 @@ namespace Tony
         //A SpriteFont for displaying text.
         private SpriteFont font;
 
-        //The current level number.
-        private int level;
 
-        private int levels;
 
         private float countDuration = 2f;
         private float currentTime = 0f;
@@ -55,7 +52,7 @@ namespace Tony
             Content.RootDirectory = "Content";
             tileset = new List<Texture2D>();
             textOutput = "";
-            level = 0;
+
             
 
         }
@@ -119,7 +116,7 @@ namespace Tony
                 LevelReader iLevel = new LevelReader(@filePaths[i], Content);
                 Level iNewLevel = iLevel.GetLevel();
                 ObjectManager.Instance.AddLevel(iNewLevel);
-                if (iNewLevel.getLevel == 0)
+                if (iNewLevel.level == 0)
                 {
                     ObjectManager.Instance.CurrentLevel = iNewLevel;
                 }
