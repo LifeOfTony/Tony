@@ -22,8 +22,6 @@ namespace Tony
         {
             View.Initialize(content);
             gameState = GameState.mainmenu;
-            gameState = GameState.pausemenu;
-            gameState = GameState.gameOver;
         }
 
         public static void SwitchState()
