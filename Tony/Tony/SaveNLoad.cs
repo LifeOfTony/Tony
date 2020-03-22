@@ -61,17 +61,28 @@ namespace Tony
                         string name = line;
                         line = sr.ReadLine();
                         int modifier = Convert.ToInt32 (line);
-                        Item i = new Item(name, modifier);
-                        ObjectManager.Instance.setCorrectedItem(i);
+                        Item item = new Item(name, modifier);
+                        ObjectManager.Instance.setCorrectedItem(item);
 
                         //Console.WriteLine(line);
+                        foreach (Item i in ObjectManager .Instance .Items)
+                        {
+                            if (i.IsCollected()==true)
+                            {
+                                Console.WriteLine(i.GetName() );
+                            }
+                        }
+
+                       // Console.WriteLine(ObjectManager.Instance.Items);
                     }
                     else if (prefix.Equals('L'))
                     {
                         line = sr.ReadLine();
                         int levelNumber = Convert.ToInt32(line);
+                        Console.WriteLine(line);
                         ObjectManager .Instance .setCurrentLevel (ObjectManager.Instance.getLevelFromList (levelNumber));
-                        
+
+                        Console.WriteLine(ObjectManager.Instance.CurrentLevel .level );
                         //Console.WriteLine(line);
                     }
                     else if (prefix.Equals('M'))
@@ -80,6 +91,7 @@ namespace Tony
                         int mentalState = Convert.ToInt32(line);
                         ObjectManager.Instance.setMentalState(mentalState);
 
+                        Console.WriteLine(ObjectManager.Instance.MentalState);
                         //Console.WriteLine(line);
                     }
                     else if (prefix.Equals('P'))
@@ -91,6 +103,8 @@ namespace Tony
                         Vector2 Position = new Vector2(x,y);
                         ObjectManager.Instance.setPosition(Position);
 
+                        Console.WriteLine(ObjectManager.Instance.CurrentLevel.Player.getPosition().X );
+                        Console.WriteLine(ObjectManager.Instance.CurrentLevel.Player.getPosition().Y);
                        // Console.WriteLine(line);
                     }
 

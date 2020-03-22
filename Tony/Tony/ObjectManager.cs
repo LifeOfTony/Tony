@@ -187,7 +187,7 @@ namespace Tony
             {
                 if (i.Equals(correctedItem))
                 {
-                    i.IsCollected();
+                    i.loadCollect ();
                 }
             }
         }
