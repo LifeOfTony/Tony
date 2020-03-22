@@ -18,7 +18,7 @@ namespace Tony
 
         private static Level currentLevel;
 
-        private static float mentalState = 100;
+        private static float mentalState;
 
         private static float countDuration = 2f;
 
@@ -65,8 +65,6 @@ namespace Tony
             
         }
 
-        
-
         public float MentalState
         {
             get
@@ -84,24 +82,45 @@ namespace Tony
             }
         }
 
-
-
-
         public void MentalDecay(GameTime gameTime)
         {
-            if( mentalState > 0)
-            {
-                currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds; //Time passed since last Update() 
-
-                if (currentTime >= countDuration)
+            if (Controller.gameState == Controller.GameState.playing)
+            { 
+                if (mentalState > 0)
                 {
-                    currentTime -= countDuration;
-                    mentalState--;
+                    currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds; //Time passed since last Update() 
+
+                    if (currentTime >= countDuration)
+                    {
+                        currentTime -= countDuration;
+                        mentalState--;
+                    }
+                }
+                else
+                {
+                    Controller.gameState = Controller.GameState.gameOver;
                 }
             }
 
+
            
         }
+
+
+        public void ResetLevel()
+        {
+            currentLevel = levels.Find(x => x.level == 0);
+            Pathfinder.CreateGrid(currentLevel);
+            currentLevel.setPaths();
+            ResetMentalState();
+
+        }
+
+        public void ResetMentalState()
+        {
+            mentalState = 100;
+        }
+
 
 
         

@@ -19,6 +19,7 @@ namespace Tony
         public Button MainToQuit { get; private set; }
         public Button LevelSetOne { get; private set; }
         public Button LevelSetTwo { get; private set; }
+        public Button MainToLoad { get; private set; }
 
         public MainMenu(Texture2D texture)
         {
@@ -30,8 +31,11 @@ namespace Tony
             Image img = new Image(texture);
             frame.AddChild(img);
 
-            MainToGame = new Button("Start Game", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(0, 260));
+            MainToGame = new Button("Start Game", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(0, 335));
             Menu.AddChild(MainToGame);
+
+            MainToLoad = new Button("Continue", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(0, 260));
+            Menu.AddChild(MainToLoad);
 
             MainToLevels = new Button("Levels", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(0, 185));
             Menu.AddChild(MainToLevels);
@@ -39,10 +43,10 @@ namespace Tony
             MainToQuit = new Button("Quit", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(0, 110));
             Menu.AddChild(MainToQuit);
 
-            LevelSetOne = new Button("TestRoom", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(400, 260));
+            LevelSetOne = new Button("Tutorial", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(400, 260));
             Menu.AddChild(LevelSetOne);
 
-            LevelSetTwo = new Button("LevelDemo", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(400, 185));
+            LevelSetTwo = new Button("Level One", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(400, 185));
             Menu.AddChild(LevelSetTwo);
 
             LevelSetOne.Visible = false;

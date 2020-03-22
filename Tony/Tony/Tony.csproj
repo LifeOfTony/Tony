@@ -43,6 +43,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Camera.cs" />
+    <Compile Include="GameOver.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="EndObject.cs" />
     <Compile Include="Event.cs" />
@@ -50,6 +51,7 @@
     <Compile Include="Input.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="LevelUI.cs" />
+    <Compile Include="PauseMenu.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="Pathfinder.cs" />
     <Compile Include="SaveItem.cs" />

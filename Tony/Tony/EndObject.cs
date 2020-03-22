@@ -24,10 +24,10 @@ namespace Tony
             {
                 if (i.IsCollected() == true && i.GetName().Equals (requirement))
                 {
-                    if(ObjectManager .Instance .CurrentLevel .getLevel < ObjectManager.Instance.LevelSize() )
+                    if(ObjectManager .Instance .CurrentLevel.level < ObjectManager.Instance.LevelSize() )
                     {
                         ObjectManager.Instance.CurrentLevel = ObjectManager.Instance.Levels.Find
-                            (x => x.getLevel == (ObjectManager.Instance.CurrentLevel.getLevel + 1));
+                            (x => x.level == (ObjectManager.Instance.CurrentLevel.level + 1));
 
                         Pathfinder.CreateGrid(ObjectManager.Instance.CurrentLevel);
                         ObjectManager.Instance.CurrentLevel.setPaths();
