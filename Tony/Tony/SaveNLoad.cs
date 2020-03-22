@@ -85,6 +85,14 @@ namespace Tony
             }
         }
 
+        public void resetSave()
+        {
+            using (StreamWriter writer = new StreamWriter(@"Content\Save\save.txt"))
+            {
+                writer.WriteLine("");
+            }
+        }
+
     }
 }
 

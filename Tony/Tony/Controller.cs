@@ -72,7 +72,8 @@ namespace Tony
 
             View.mainMenu.MainToLoad.OnClick = (Entity button) =>
             {
-
+                SaveNLoad loadGame = new SaveNLoad ();
+                loadGame.read();
             };
 
             View.mainMenu.MainToLevels.OnClick = (Entity button) => { View.ShowLevels(); };

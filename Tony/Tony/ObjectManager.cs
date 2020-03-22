@@ -30,6 +30,7 @@ namespace Tony
 
         private ObjectManager()
         {
+
         }
 
         public static ObjectManager Instance
@@ -62,14 +63,14 @@ namespace Tony
             {
                 currentLevel = value;
             }
-            
+
         }
 
         public float MentalState
         {
             get
             {
- 
+
                 return mentalState;
             }
         }
@@ -85,7 +86,7 @@ namespace Tony
         public void MentalDecay(GameTime gameTime)
         {
             if (Controller.gameState == Controller.GameState.playing)
-            { 
+            {
                 if (mentalState > 0)
                 {
                     currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds; //Time passed since last Update() 
@@ -103,7 +104,7 @@ namespace Tony
             }
 
 
-           
+
         }
 
 
@@ -123,7 +124,7 @@ namespace Tony
 
 
 
-        
+
 
         /// <summary>
         /// AddItem is called to add a new Item to the Items list.
@@ -154,10 +155,36 @@ namespace Tony
             }
         }
 
-        public float ModifyMentalState(Item item )
+        public float ModifyMentalState(Item item)
         {
-            mentalState += item.GetModifier ();
+            mentalState += item.GetModifier();
             return mentalState;
+        }
+
+        public void setMentalState(float newMentalStalte)
+            {
+                    mentalState = newMentalStalte;
+            }
+
+        public void setPosition (Vector2 position)
+        {
+            currentLevel.Player.setPosition(position);
+        }
+
+        public void setCurrentLevel(Level newLevel)
+        {
+            currentLevel = newLevel;
+        }
+
+        public void setCorrectedItem(Item correctedItem)
+        {
+            foreach(Item i in Items)
+            {
+                if (i.Equals(correctedItem))
+                {
+                    i.IsCollected();
+                }
+            }
         }
     }
 }

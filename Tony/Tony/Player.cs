@@ -94,5 +94,10 @@ namespace Tony
             }
         }
 
+        public void setPosition(Vector2 newPosition)
+        {
+            position = newPosition;
+        }
+
     }
 }
