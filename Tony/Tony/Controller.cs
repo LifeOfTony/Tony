@@ -70,6 +70,15 @@ namespace Tony
                 gameState = GameState.playing;
             };
 
+            View.mainMenu.MainToLoad.OnClick = (Entity button) =>
+            {
+                SaveNLoad loadGame = new SaveNLoad ();
+                loadGame.read();
+                Pathfinder.CreateGrid(ObjectManager.Instance.CurrentLevel);
+                ObjectManager.Instance.CurrentLevel.setPaths();
+                gameState = GameState.playing;
+            };
+
             View.mainMenu.MainToLevels.OnClick = (Entity button) => { View.ShowLevels(); };
 
             View.mainMenu.MainToQuit.OnClick = (Entity button) => exit = true;
@@ -101,8 +110,12 @@ namespace Tony
 
             View.pauseMenu.PausetoGame.OnClick = (Entity button) => gameState = GameState.playing;
 
-            View.pauseMenu.PausetoMain.OnClick = (Entity button) => gameState = GameState.mainmenu;
-
+            View.pauseMenu.PausetoMain.OnClick = (Entity button) =>
+            {
+                SaveNLoad saveGame = new SaveNLoad();
+                saveGame.save();
+                gameState = GameState.mainmenu;
+            };
             View.pauseMenu.PausetoQuit.OnClick = (Entity button) => exit = true;
 
         }

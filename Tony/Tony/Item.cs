@@ -66,6 +66,10 @@ namespace Tony
                 return modifier;          
         }
 
+        public void loadCollect()
+        {
+            this.collected = true;
+        }
     }
 }
 
