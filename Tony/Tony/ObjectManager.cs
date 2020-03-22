@@ -18,7 +18,7 @@ namespace Tony
 
         private static Level currentLevel;
 
-        private static float mentalState = 100;
+        private static float mentalState;
 
         private static float countDuration = 2f;
 
@@ -96,11 +96,31 @@ namespace Tony
                         mentalState--;
                     }
                 }
+                else
+                {
+                    Controller.gameState = Controller.GameState.gameOver;
+                }
             }
 
 
            
         }
+
+
+        public void ResetLevel()
+        {
+            currentLevel = levels.Find(x => x.level == 0);
+            Pathfinder.CreateGrid(currentLevel);
+            currentLevel.setPaths();
+            ResetMentalState();
+
+        }
+
+        public void ResetMentalState()
+        {
+            mentalState = 100;
+        }
+
 
 
         

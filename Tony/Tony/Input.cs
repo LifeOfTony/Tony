@@ -32,6 +32,14 @@ namespace Tony
             {
                 ObjectManager.Instance.CurrentLevel.Player.move("D");
             }
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
+                if (Controller.gameState == Controller.GameState.playing)
+                {
+                    Controller.gameState = Controller.GameState.paused;
+                }
+                
+            }
 
 
 

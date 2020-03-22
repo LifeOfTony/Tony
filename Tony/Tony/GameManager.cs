@@ -116,10 +116,12 @@ namespace Tony
                 LevelReader iLevel = new LevelReader(@filePaths[i], Content);
                 Level iNewLevel = iLevel.GetLevel();
                 ObjectManager.Instance.AddLevel(iNewLevel);
+                /*
                 if (iNewLevel.level == 0)
                 {
                     ObjectManager.Instance.CurrentLevel = iNewLevel;
                 }
+                */
                 Console.WriteLine(ObjectManager.Instance.LevelSize());
                 
             }
@@ -132,10 +134,7 @@ namespace Tony
             mainTarget = new RenderTarget2D(
             GraphicsDevice,graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
 
-            Level currentLevel = ObjectManager.Instance.CurrentLevel;
-            Pathfinder.CreateGrid(currentLevel);
-            currentLevel.setPaths();
-
+            ObjectManager.Instance.ResetLevel();
 
         }
 
@@ -175,7 +174,7 @@ namespace Tony
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape) || Controller.exit == true)
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Controller.exit == true)
                 Exit();
 
             ClearText(gameTime);
@@ -186,9 +185,8 @@ namespace Tony
             // Poll for current keyboard state
             KeyboardState state = Keyboard.GetState();
 
-            // Calls any Player methods based on the Keyboard state.
             Player player = ObjectManager.Instance.CurrentLevel.Player;
-                        //update camera
+            //update camera
             camera.follow(player);
             Input.CheckInputs();
 

@@ -19,6 +19,7 @@ namespace Tony
         public Button MainToQuit { get; private set; }
         public Button LevelSetOne { get; private set; }
         public Button LevelSetTwo { get; private set; }
+        public Button MainToLoad { get; private set; }
 
         public MainMenu(Texture2D texture)
         {
@@ -30,8 +31,11 @@ namespace Tony
             Image img = new Image(texture);
             frame.AddChild(img);
 
-            MainToGame = new Button("Start Game", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(0, 260));
+            MainToGame = new Button("Start Game", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(0, 335));
             Menu.AddChild(MainToGame);
+
+            MainToLoad = new Button("Continue", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(0, 260));
+            Menu.AddChild(MainToLoad);
 
             MainToLevels = new Button("Levels", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(0, 185));
             Menu.AddChild(MainToLevels);

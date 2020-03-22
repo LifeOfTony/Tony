@@ -22,16 +22,16 @@ namespace Tony
         {
             Menu = new Panel(new Vector2(0, 0), PanelSkin.Simple, Anchor.Center);
 
-            Panel frame = new Panel(new Vector2(175, 250), PanelSkin.None, Anchor.TopCenter, new Vector2(0, 80));
+            Panel frame = new Panel(new Vector2(175, 250), PanelSkin.None, Anchor.Center, new Vector2(0, -40));
             Menu.AddChild(frame);
 
             Image img = new Image(texture);
             frame.AddChild(img);
 
-            OverToMain = new Button("MainMenu", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(0, 260));
+            OverToMain = new Button("MainMenu", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(0, 300));
             Menu.AddChild(OverToMain);
 
-            OverToExit = new Button("Quit", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(0, 185));
+            OverToExit = new Button("Quit", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(0, 225));
             Menu.AddChild(OverToExit);
 
             UserInterface.Active.AddEntity(Menu);

@@ -17,18 +17,22 @@ namespace Tony
         public Button PausetoGame { get; private set; }
         public Button PausetoMain { get; private set; }
         public Button PausetoQuit { get; private set; }
+        public Button PausetoLoad { get; private set; }
 
-    public PauseMenu()
+        public PauseMenu()
         {
-            Menu = new Panel(new Vector2(0, 0), PanelSkin.Simple, Anchor.Center);
+            Menu = new Panel(new Vector2(350, 325), PanelSkin.Simple, Anchor.Center);
 
-            PausetoGame = new Button("Resume", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(0, 260));
+            PausetoGame = new Button("Resume", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(0, 225));
             Menu.AddChild(PausetoGame);
 
-            PausetoMain = new Button("MainMenu", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(0, 185));
+            PausetoLoad = new Button("Continue", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(0, 150));
+            Menu.AddChild(PausetoLoad);
+
+            PausetoMain = new Button("MainMenu", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(0, 75));
             Menu.AddChild(PausetoMain);
 
-            PausetoQuit = new Button("Quit", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(0, 110));
+            PausetoQuit = new Button("Quit", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(0, 0));
             Menu.AddChild(PausetoQuit);
 
             UserInterface.Active.AddEntity(Menu);
