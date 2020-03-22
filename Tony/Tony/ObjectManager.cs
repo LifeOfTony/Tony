@@ -147,6 +147,11 @@ namespace Tony
             return levels.Count;
         }
 
+        public Level getLevelFromList(int levelNumber)
+        {
+            return levels[levelNumber];
+        }
+
         public List<Level> Levels
         {
             get
