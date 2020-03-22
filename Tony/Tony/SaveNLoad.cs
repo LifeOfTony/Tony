@@ -9,10 +9,10 @@ using System.Xml.Serialization;
 
 namespace Tony
 {
-    public class SaveItem
+    public class SaveNLoad
     {
 
-        public SaveItem()
+        public SaveNLoad()
         {
 
         }

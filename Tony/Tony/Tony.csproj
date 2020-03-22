@@ -54,7 +54,7 @@
     <Compile Include="PauseMenu.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="Pathfinder.cs" />
-    <Compile Include="SaveItem.cs" />
+    <Compile Include="SaveNLoad.cs" />
     <Compile Include="Collider.cs" />
     <Compile Include="Detector.cs" />
     <Compile Include="Drawable.cs" />

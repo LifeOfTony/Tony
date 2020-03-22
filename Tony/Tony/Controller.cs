@@ -70,6 +70,11 @@ namespace Tony
                 gameState = GameState.playing;
             };
 
+            View.mainMenu.MainToLoad.OnClick = (Entity button) =>
+            {
+
+            };
+
             View.mainMenu.MainToLevels.OnClick = (Entity button) => { View.ShowLevels(); };
 
             View.mainMenu.MainToQuit.OnClick = (Entity button) => exit = true;
@@ -101,8 +106,12 @@ namespace Tony
 
             View.pauseMenu.PausetoGame.OnClick = (Entity button) => gameState = GameState.playing;
 
-            View.pauseMenu.PausetoMain.OnClick = (Entity button) => gameState = GameState.mainmenu;
-
+            View.pauseMenu.PausetoMain.OnClick = (Entity button) =>
+            {
+                SaveNLoad saveGame = new SaveNLoad();
+                saveGame.save();
+                gameState = GameState.mainmenu;
+            };
             View.pauseMenu.PausetoQuit.OnClick = (Entity button) => exit = true;
 
         }

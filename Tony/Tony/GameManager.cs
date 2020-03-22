@@ -190,7 +190,7 @@ namespace Tony
             camera.follow(player);
             Input.CheckInputs();
 
-            SaveItem saveI = new SaveItem();
+            SaveNLoad saveI = new SaveNLoad();
             if (state.IsKeyDown(Keys.L)) saveI.save();
             if (state.IsKeyDown(Keys.P)) saveI.read();
 
