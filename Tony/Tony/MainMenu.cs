@@ -43,10 +43,10 @@ namespace Tony
             MainToQuit = new Button("Quit", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(0, 110));
             Menu.AddChild(MainToQuit);
 
-            LevelSetOne = new Button("TestRoom", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(400, 260));
+            LevelSetOne = new Button("Tutorial", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(400, 260));
             Menu.AddChild(LevelSetOne);
 
-            LevelSetTwo = new Button("LevelDemo", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(400, 185));
+            LevelSetTwo = new Button("Level One", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(400, 185));
             Menu.AddChild(LevelSetTwo);
 
             LevelSetOne.Visible = false;
