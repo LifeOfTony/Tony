@@ -147,11 +147,6 @@ namespace Tony
             return levels.Count;
         }
 
-        public Level getLevelFromList(int levelNumber)
-        {
-            return levels[levelNumber];
-        }
-
         public List<Level> Levels
         {
             get
@@ -174,11 +169,6 @@ namespace Tony
         public void setPosition (Vector2 position)
         {
             currentLevel.Player.setPosition(position);
-        }
-
-        public void setCurrentLevel(Level newLevel)
-        {
-            currentLevel = newLevel;
         }
 
         public void setCorrectedItem(Item correctedItem)

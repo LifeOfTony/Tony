@@ -80,7 +80,7 @@ namespace Tony
                         line = sr.ReadLine();
                         int levelNumber = Convert.ToInt32(line);
                         Console.WriteLine(line);
-                        ObjectManager .Instance .setCurrentLevel (ObjectManager.Instance.getLevelFromList (levelNumber));
+                        ObjectManager.Instance.CurrentLevel = ObjectManager.Instance.Levels.Find(x => x.level == levelNumber);
 
                         Console.WriteLine(ObjectManager.Instance.CurrentLevel .level );
                         //Console.WriteLine(line);

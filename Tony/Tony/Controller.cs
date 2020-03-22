@@ -74,6 +74,9 @@ namespace Tony
             {
                 SaveNLoad loadGame = new SaveNLoad ();
                 loadGame.read();
+                Pathfinder.CreateGrid(ObjectManager.Instance.CurrentLevel);
+                ObjectManager.Instance.CurrentLevel.setPaths();
+                gameState = GameState.playing;
             };
 
             View.mainMenu.MainToLevels.OnClick = (Entity button) => { View.ShowLevels(); };
