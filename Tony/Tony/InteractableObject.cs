@@ -11,6 +11,9 @@ namespace Tony
 {
     public class InteractableObject : Sprite, Interactable
     {
+        protected string basic;
+        protected string giver;
+        protected string taker;
         protected string requirement;
         protected string gives;
         public InteractHandler InteractType = null;
@@ -24,9 +27,13 @@ namespace Tony
         /// <param name="size"></param>
         /// <param name="requirement"></param>
         /// <param name="gives"></param>
-        public InteractableObject(Vector2 position, Vector2 size, float depth, Texture2D texture, string requirement = null, string gives = null) :
+        public InteractableObject(Vector2 position, Vector2 size, float depth, Texture2D texture, string name, string requirement = null, string gives = null) :
             base(position, size, depth, texture)
         {
+            ScriptReader.ReadScript(name);
+            this.basic = ScriptReader.basic;
+            this.giver = ScriptReader.giver;
+            this.taker = ScriptReader.taker;
             this.requirement = requirement;
             this.gives = gives;
             AssignType();
