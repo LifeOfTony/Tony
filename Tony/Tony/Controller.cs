@@ -121,6 +121,17 @@ namespace Tony
         }
 
 
+        public static void DisplayText(string text)
+        {
+            View.levelUI.text.Text += text;
+        }
+
+        public static void ClearText()
+        {
+            View.levelUI.text.Text = "";
+        }
+
+
         public static void Update(GameTime gameTime)
         {
             ProcessButtons();

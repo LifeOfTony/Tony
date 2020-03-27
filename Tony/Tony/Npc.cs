@@ -10,8 +10,6 @@ namespace Tony
 {
     public class Npc : InteractableObject
     {
-
-
         private string route;
         private bool move;
         private Vector2 destination;

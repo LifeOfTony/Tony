@@ -73,8 +73,7 @@ namespace Tony
                 // if an item is used, text feedback is given.
                 if (currentItem.GetName().Equals(requirement) && currentItem.IsCollected())
                 {
-                    GameManager.textOutput = "";
-                    GameManager.textOutput += "used " + requirement + "\n\r";
+                    Controller.DisplayText(taker);
                     GiverInteract();
                 }
                 else
@@ -86,8 +85,7 @@ namespace Tony
 
         public virtual void BasicInteract()
         {
-            GameManager.textOutput = "";
-            GameManager.textOutput += ("Basic interact \n\r");
+            Controller.DisplayText(basic);
         }
 
         public virtual void GiverInteract()
@@ -99,8 +97,7 @@ namespace Tony
                 if (currentItem.GetName().Equals(gives))
                 {
                     currentItem.Collect();
-                    GameManager.textOutput = "";
-                    GameManager.textOutput += "gained " + gives + "\n\r";
+                    Controller.DisplayText(giver);
                 }
             }
         }
