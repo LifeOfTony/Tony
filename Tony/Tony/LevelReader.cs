@@ -212,18 +212,21 @@ namespace Tony
             if (objectData.Attribute("type").Value == "Interactable")
             {
 
-                InteractableObject currentObject = new InteractableObject(position, size, 4, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1], requires, gives);
+                InteractableObject currentObject = new InteractableObject(position, size, 4, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1], 
+                    objectData.Attribute("name").Value, requires, gives);
                 levelRead.AddObject(currentObject);
             }
             if (objectData.Attribute("type").Value == "NPC")
             {
-                Npc currentObject = new Npc(position, size, 4, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1], route, basicMove, requires, gives);
+                Npc currentObject = new Npc(position, size, 4, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1], route,
+                    objectData.Attribute("name").Value, basicMove, requires, gives);
                 levelRead.AddObject(currentObject);
             }
 
             if(objectData.Attribute("type").Value == "Actor")
             {
-                Npc currentObject = new Npc(position, size, 4, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1], route, true, basicMove, requires, gives);
+                Npc currentObject = new Npc(position, size, 4, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1], route,
+                    objectData.Attribute("name").Value, true, basicMove, requires, gives);
                 levelRead.AddObject(currentObject);
             }
 

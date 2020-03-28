@@ -12,10 +12,10 @@ namespace Tony
     public class InteractableObject : Sprite, Interactable
     {
         protected string basic;
-        protected string giver;
-        protected string taker;
+        protected string complex;
         protected string requirement;
         protected string gives;
+        public string name { get; private set; }
         public InteractHandler InteractType = null;
 
         /// <summary>
@@ -30,10 +30,10 @@ namespace Tony
         public InteractableObject(Vector2 position, Vector2 size, float depth, Texture2D texture, string name, string requirement = null, string gives = null) :
             base(position, size, depth, texture)
         {
+            this.name = name;
             ScriptReader.ReadScript(name);
             this.basic = ScriptReader.basic;
-            this.giver = ScriptReader.giver;
-            this.taker = ScriptReader.taker;
+            this.complex = ScriptReader.complex;
             this.requirement = requirement;
             this.gives = gives;
             AssignType();
@@ -73,7 +73,6 @@ namespace Tony
                 // if an item is used, text feedback is given.
                 if (currentItem.GetName().Equals(requirement) && currentItem.IsCollected())
                 {
-                    Controller.DisplayText(taker);
                     GiverInteract();
                 }
                 else
@@ -97,7 +96,7 @@ namespace Tony
                 if (currentItem.GetName().Equals(gives))
                 {
                     currentItem.Collect();
-                    Controller.DisplayText(giver);
+                    Controller.DisplayText(complex);
                 }
             }
         }

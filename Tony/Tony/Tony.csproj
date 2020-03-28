@@ -757,10 +757,24 @@
     <Content Include="Content\Items.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Scripts\0\Coffee.txt" />
+    <Content Include="Content\Scripts\0\End.txt" />
+    <Content Include="Content\Scripts\0\NPC1.txt" />
+    <Content Include="Content\Scripts\0\NPC2.txt" />
+    <Content Include="Content\Scripts\0\NPC3.txt" />
+    <Content Include="Content\Scripts\0\TV.txt" />
+    <Content Include="Content\Scripts\0\Vending.txt" />
+    <Content Include="Content\Scripts\1\Actor1.txt" />
+    <Content Include="Content\Scripts\1\Coffee.txt" />
+    <Content Include="Content\Scripts\1\End.txt" />
+    <Content Include="Content\Scripts\1\NPC1.txt" />
+    <Content Include="Content\Scripts\1\NPC2.txt" />
+    <Content Include="Content\Scripts\1\NPC3.txt" />
+    <Content Include="Content\Scripts\1\TV.txt" />
+    <Content Include="Content\Scripts\1\Vending.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Save\" />
-    <Folder Include="Content\Scripts\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\TileSets\NPCMale.tsx">

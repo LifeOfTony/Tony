@@ -12,7 +12,7 @@ namespace Tony
     {
 
         public EndObject(Vector2 position, Vector2 size, float depth, Texture2D texture, string requirement, string gives)
-            : base(position, size, depth, texture, requirement, gives)
+            : base(position, size, depth, texture, "End", requirement, gives)
         {
 
         }
@@ -26,6 +26,7 @@ namespace Tony
                 {
                     if(ObjectManager .Instance .CurrentLevel.level < ObjectManager.Instance.LevelSize() )
                     {
+                        Controller.DisplayText(basic);
                         ObjectManager.Instance.CurrentLevel = ObjectManager.Instance.Levels.Find
                             (x => x.level == (ObjectManager.Instance.CurrentLevel.level + 1));
 

@@ -11,15 +11,15 @@ namespace Tony
     {
         private static StreamReader reader;
         public static string basic { get; private set; }
-        public static string giver { get; private set; }
-        public static string taker { get; private set; }
+        public static string complex { get; private set; }
+
 
         public static void ReadScript(string ObjectName)
         {
-            reader = new StreamReader(@"Content\Scripts\"+ObjectName + ".txt");
+            reader = new StreamReader(@"Content\Scripts\"+ ObjectManager.Instance.CurrentLevel.level + "\\" + ObjectName + ".txt");
             basic = reader.ReadLine();
-            giver = reader.ReadLine();
-            taker = reader.ReadLine();
+            complex = reader.ReadLine();
+
             reader.Close();
         }
     }

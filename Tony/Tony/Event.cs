@@ -27,7 +27,7 @@ namespace Tony
         {
             foreach(string actorName in actors)
             {
-                foreach(Npc i in ObjectManager.Instance.CurrentLevel.Npcs.Where(i => i.getActor() == true))
+                foreach(Npc i in ObjectManager.Instance.CurrentLevel.Npcs.Where(i => i.name.Equals(actorName)))
                 {
                     i.Interact();
                 }
