@@ -106,35 +106,14 @@ namespace Tony
             Controller.Initialize(Content);
 
 
-            //Get all Levels from the directory and store in the array.
-            string[] filePaths = Directory.GetFiles(@"Content\Levels\", "*.tmx");
-
-
-            //Adding Level to the ObjectManager.Instance.levels
-            for (int i = 0; i< filePaths .Length; i++)
-            {
-                LevelReader iLevel = new LevelReader(@filePaths[i], Content);
-                Level iNewLevel = iLevel.GetLevel();
-                ObjectManager.AddLevel(iNewLevel);
-                /*
-                if (iNewLevel.level == 0)
-                {
-                    ObjectManager.Instance.CurrentLevel = iNewLevel;
-                }
-                */
-                Console.WriteLine(ObjectManager.LevelSize());
-                
-            }
-
-
-
+            
 
             lightsTarget = new RenderTarget2D(
             GraphicsDevice,graphics.PreferredBackBufferWidth,graphics.PreferredBackBufferHeight);
             mainTarget = new RenderTarget2D(
             GraphicsDevice,graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
 
-            ObjectManager.ResetLevel();
+            ObjectManager.SetLevels(Content);
 
         }
 

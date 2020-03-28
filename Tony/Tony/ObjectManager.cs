@@ -4,6 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using System.IO;
 
 namespace Tony
 {
@@ -31,10 +35,7 @@ namespace Tony
 
 
 
-        public static void AddLevel(Level newLevel)
-        {
-            levels.Add(newLevel);
-        }
+
 
 
 
@@ -93,13 +94,25 @@ namespace Tony
         }
 
 
-        public static void ResetLevel()
+        public static void SetLevels(ContentManager Content)
         {
-            currentLevel = levels.Find(x => x.level == 0);
-            Pathfinder.CreateGrid(currentLevel);
-            currentLevel.setPaths();
+            //Get all Levels from the directory and store in the array.
+            string[] filePaths = Directory.GetFiles(@"Content\Levels\", "*.tmx");
+            //Adding Level to the ObjectManager.Instance.levels
+            for (int i = 0; i < filePaths.Length; i++)
+            {
+                LevelReader iLevel = new LevelReader(@filePaths[i], Content);
+                Level iNewLevel = iLevel.GetLevel();
+                levels.Add(iNewLevel);
+                if (iNewLevel.level == 0)
+                {
+                    currentLevel = iNewLevel;
+                    Pathfinder.CreateGrid(currentLevel);
+                    currentLevel.setPaths();
+                    
+                }
+            }
             ResetMentalState();
-
         }
 
         public static void ResetMentalState()

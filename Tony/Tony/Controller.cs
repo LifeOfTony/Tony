@@ -16,11 +16,13 @@ namespace Tony
        public enum GameState { mainmenu, playing, paused, gameOver, quit}
        public static GameState gameState;
        public static bool exit = false;
+       private static ContentManager Content;
 
 
         public static void Initialize(ContentManager content)
         {
-            View.Initialize(content);
+            Content = content;
+            View.Initialize(Content);
             gameState = GameState.mainmenu;
         }
 
@@ -66,7 +68,7 @@ namespace Tony
         {
             View.mainMenu.MainToGame.OnClick = (Entity button) =>
             {
-                ObjectManager.ResetLevel();
+                ObjectManager.SetLevels(Content);
                 gameState = GameState.playing;
             };
 
