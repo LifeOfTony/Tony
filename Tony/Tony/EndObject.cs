@@ -20,18 +20,18 @@ namespace Tony
         
         public override void Interact()
         {
-            foreach (Item i in ObjectManager .Instance .Items)
+            foreach (Item i in ObjectManager.Items)
             {
                 if (i.IsCollected() == true && i.GetName().Equals (requirement))
                 {
-                    if(ObjectManager .Instance .CurrentLevel.level < ObjectManager.Instance.LevelSize() )
+                    if(ObjectManager.CurrentLevel.level < ObjectManager.LevelSize() )
                     {
                         Controller.DisplayText(basic);
-                        ObjectManager.Instance.CurrentLevel = ObjectManager.Instance.Levels.Find
-                            (x => x.level == (ObjectManager.Instance.CurrentLevel.level + 1));
+                        ObjectManager.CurrentLevel = ObjectManager.Levels.Find
+                            (x => x.level == (ObjectManager.CurrentLevel.level + 1));
 
-                        Pathfinder.CreateGrid(ObjectManager.Instance.CurrentLevel);
-                        ObjectManager.Instance.CurrentLevel.setPaths();
+                        Pathfinder.CreateGrid(ObjectManager.CurrentLevel);
+                        ObjectManager.CurrentLevel.setPaths();
                     }
                 }
             }

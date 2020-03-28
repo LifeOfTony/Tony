@@ -85,7 +85,7 @@ namespace Tony
 
             levelRead = new Level(levelNo, width, height, tileWidth, tileHeight);
 
-
+            ScriptReader.currentLevel = levelNo;
             CreateTileSet();
             FetchTileData();
             FetchObjectData();

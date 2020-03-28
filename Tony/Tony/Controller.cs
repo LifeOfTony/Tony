@@ -66,7 +66,7 @@ namespace Tony
         {
             View.mainMenu.MainToGame.OnClick = (Entity button) =>
             {
-                ObjectManager.Instance.ResetLevel();
+                ObjectManager.ResetLevel();
                 gameState = GameState.playing;
             };
 
@@ -74,8 +74,8 @@ namespace Tony
             {
                 SaveNLoad loadGame = new SaveNLoad ();
                 loadGame.read();
-                Pathfinder.CreateGrid(ObjectManager.Instance.CurrentLevel);
-                ObjectManager.Instance.CurrentLevel.setPaths();
+                Pathfinder.CreateGrid(ObjectManager.CurrentLevel);
+                ObjectManager.CurrentLevel.setPaths();
                 gameState = GameState.playing;
             };
 
@@ -90,21 +90,21 @@ namespace Tony
 
             View.mainMenu.LevelSetOne.OnClick = (Entity button) =>
             {
-                Level selectedLevel = ObjectManager.Instance.Levels.Find(x => x.level == 0);
+                Level selectedLevel = ObjectManager.Levels.Find(x => x.level == 0);
                 Pathfinder.CreateGrid(selectedLevel);
                 selectedLevel.setPaths();
-                ObjectManager.Instance.CurrentLevel = selectedLevel;
-                ObjectManager.Instance.ResetMentalState();
+                ObjectManager.CurrentLevel = selectedLevel;
+                ObjectManager.ResetMentalState();
                 gameState = GameState.playing;
             };
 
             View.mainMenu.LevelSetTwo.OnClick = (Entity button) =>
             {
-                Level selectedLevel = ObjectManager.Instance.Levels.Find(x => x.level == 1);
+                Level selectedLevel = ObjectManager.Levels.Find(x => x.level == 1);
                 Pathfinder.CreateGrid(selectedLevel);
                 selectedLevel.setPaths();
-                ObjectManager.Instance.CurrentLevel = selectedLevel;
-                ObjectManager.Instance.ResetMentalState();
+                ObjectManager.CurrentLevel = selectedLevel;
+                ObjectManager.ResetMentalState();
                 gameState = GameState.playing;
             };
 
@@ -123,7 +123,7 @@ namespace Tony
 
         public static void DisplayText(string text)
         {
-            View.levelUI.text.Text += text;
+            View.levelUI.text.Text = text;
         }
 
         public static void ClearText()

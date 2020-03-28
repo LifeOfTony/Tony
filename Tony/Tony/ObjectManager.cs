@@ -7,12 +7,12 @@ using Microsoft.Xna.Framework;
 
 namespace Tony
 {
-    public sealed class ObjectManager
+    public static class ObjectManager
     {
 
 
 
-        private static ObjectManager ObjectManagerinstance = null;
+   
 
         private static List<Level> levels = new List<Level>();
 
@@ -25,35 +25,20 @@ namespace Tony
         private static float currentTime = 0f;
 
         //static list of all Items in the current game.
-        private List<Item> _Items = new List<Item>();
+        private static List<Item> _Items = new List<Item>();
 
 
-        private ObjectManager()
-        {
-
-        }
-
-        public static ObjectManager Instance
-        {
-            get
-            {
-                if (ObjectManagerinstance == null)
-                {
-                    ObjectManagerinstance = new ObjectManager();
-                }
-                return ObjectManagerinstance;
-            }
-        }
 
 
-        public void AddLevel(Level newLevel)
+
+        public static void AddLevel(Level newLevel)
         {
             levels.Add(newLevel);
         }
 
 
 
-        public Level CurrentLevel
+        public static Level CurrentLevel
         {
             get
             {
@@ -66,7 +51,7 @@ namespace Tony
 
         }
 
-        public float MentalState
+        public static float MentalState
         {
             get
             {
@@ -75,7 +60,7 @@ namespace Tony
             }
         }
 
-        public List<Item> Items
+        public static List<Item> Items
         {
             get
             {
@@ -83,7 +68,7 @@ namespace Tony
             }
         }
 
-        public void MentalDecay(GameTime gameTime)
+        public static void MentalDecay(GameTime gameTime)
         {
             if (Controller.gameState == Controller.GameState.playing)
             {
@@ -108,7 +93,7 @@ namespace Tony
         }
 
 
-        public void ResetLevel()
+        public static void ResetLevel()
         {
             currentLevel = levels.Find(x => x.level == 0);
             Pathfinder.CreateGrid(currentLevel);
@@ -117,7 +102,7 @@ namespace Tony
 
         }
 
-        public void ResetMentalState()
+        public static void ResetMentalState()
         {
             mentalState = 100;
         }
@@ -129,7 +114,7 @@ namespace Tony
         /// <summary>
         /// AddItem is called to add a new Item to the Items list.
         /// </summary>
-        public void AddItem(Item newItem)
+        public static void AddItem(Item newItem)
         {
             Items.Add(newItem);
         }
@@ -137,17 +122,17 @@ namespace Tony
         /// <summary>
         /// RemoveItem is called to remove an Item from the Items list.
         /// </summary>
-        public void RemoveItem(Item oldItem)
+        public static void RemoveItem(Item oldItem)
         {
             Items.Remove(oldItem);
         }
 
-        public int LevelSize()
+        public static int LevelSize()
         {
             return levels.Count;
         }
 
-        public List<Level> Levels
+        public static List<Level> Levels
         {
             get
             {
@@ -155,23 +140,23 @@ namespace Tony
             }
         }
 
-        public float ModifyMentalState(Item item)
+        public static float ModifyMentalState(Item item)
         {
             mentalState += item.GetModifier();
             return mentalState;
         }
 
-        public void setMentalState(float newMentalStalte)
+        public static void setMentalState(float newMentalStalte)
             {
                     mentalState = newMentalStalte;
             }
 
-        public void setPosition (Vector2 position)
+        public static void setPosition (Vector2 position)
         {
             currentLevel.Player.setPosition(position);
         }
 
-        public void setCorrectedItem(Item correctedItem)
+        public static void setCorrectedItem(Item correctedItem)
         {
             foreach(Item i in Items)
             {

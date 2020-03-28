@@ -23,7 +23,7 @@ namespace Tony
             using (StreamWriter writer = new StreamWriter(@"Content\Save\save.txt"))
             {
 
-                foreach (Item i in ObjectManager.Instance.Items)
+                foreach (Item i in ObjectManager.Items)
                 {
 
                     if (i.IsCollected() == true){
@@ -32,12 +32,12 @@ namespace Tony
                     }
 
                 }
-               writer.WriteLine("L"+  ObjectManager .Instance .CurrentLevel.level  );
+               writer.WriteLine("L"+  ObjectManager.CurrentLevel.level  );
 
-                writer.WriteLine("M"+  ObjectManager.Instance.MentalState.ToString());
+                writer.WriteLine("M"+  ObjectManager.MentalState.ToString());
 
-                writer.WriteLine("P" +  ObjectManager.Instance.CurrentLevel.Player.getPosition().X);
-                writer.WriteLine(ObjectManager.Instance.CurrentLevel.Player.getPosition().Y);
+                writer.WriteLine("P" +  ObjectManager.CurrentLevel.Player.getPosition().X);
+                writer.WriteLine(ObjectManager.CurrentLevel.Player.getPosition().Y);
             }
         }
         public void read()
@@ -62,10 +62,10 @@ namespace Tony
                         line = sr.ReadLine();
                         int modifier = Convert.ToInt32 (line);
                         Item item = new Item(name, modifier);
-                        ObjectManager.Instance.setCorrectedItem(item);
+                        ObjectManager.setCorrectedItem(item);
 
                         //Console.WriteLine(line);
-                        foreach (Item i in ObjectManager .Instance .Items)
+                        foreach (Item i in ObjectManager .Items)
                         {
                             if (i.IsCollected()==true)
                             {
@@ -80,18 +80,18 @@ namespace Tony
                         line = sr.ReadLine();
                         int levelNumber = Convert.ToInt32(line);
                         Console.WriteLine(line);
-                        ObjectManager.Instance.CurrentLevel = ObjectManager.Instance.Levels.Find(x => x.level == levelNumber);
+                        ObjectManager.CurrentLevel = ObjectManager.Levels.Find(x => x.level == levelNumber);
 
-                        Console.WriteLine(ObjectManager.Instance.CurrentLevel .level );
+                        Console.WriteLine(ObjectManager.CurrentLevel .level );
                         //Console.WriteLine(line);
                     }
                     else if (prefix.Equals('M'))
                     {
                         line = sr.ReadLine();
                         int mentalState = Convert.ToInt32(line);
-                        ObjectManager.Instance.setMentalState(mentalState);
+                        ObjectManager.setMentalState(mentalState);
 
-                        Console.WriteLine(ObjectManager.Instance.MentalState);
+                        Console.WriteLine(ObjectManager.MentalState);
                         //Console.WriteLine(line);
                     }
                     else if (prefix.Equals('P'))
@@ -101,10 +101,10 @@ namespace Tony
                         line = sr.ReadLine();
                         int y = Convert.ToInt32(line);
                         Vector2 Position = new Vector2(x,y);
-                        ObjectManager.Instance.setPosition(Position);
+                        ObjectManager.setPosition(Position);
 
-                        Console.WriteLine(ObjectManager.Instance.CurrentLevel.Player.getPosition().X );
-                        Console.WriteLine(ObjectManager.Instance.CurrentLevel.Player.getPosition().Y);
+                        Console.WriteLine(ObjectManager.CurrentLevel.Player.getPosition().X );
+                        Console.WriteLine(ObjectManager.CurrentLevel.Player.getPosition().Y);
                        // Console.WriteLine(line);
                     }
 

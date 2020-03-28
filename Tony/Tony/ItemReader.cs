@@ -36,7 +36,7 @@ namespace Tony
                 int modifier = Int32.Parse(currentItem.Attribute("modifier").Value);
 
                 Item newItem = new Item(name, modifier);
-                ObjectManager.Instance.AddItem(newItem);
+                ObjectManager.AddItem(newItem);
             }
         }
 
