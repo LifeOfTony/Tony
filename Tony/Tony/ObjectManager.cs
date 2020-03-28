@@ -18,18 +18,18 @@ namespace Tony
 
    
 
-        private static List<Level> levels = new List<Level>();
+        public static List<Level> levels { get; private set; } = new List<Level>();
 
-        private static Level currentLevel;
+        public static Level currentLevel;
 
-        private static float mentalState;
+        public static float mentalState { get; private set; }
 
         private static float countDuration = 2f;
 
-        private static float currentTime = 0f;
+        private static float currentTime  = 0f;
 
         //static list of all Items in the current game.
-        private static List<Item> _Items = new List<Item>();
+        public static List<Item> Items { get; private set; } = new List<Item>();
 
 
 
@@ -39,35 +39,7 @@ namespace Tony
 
 
 
-        public static Level CurrentLevel
-        {
-            get
-            {
-                return currentLevel;
-            }
-            set
-            {
-                currentLevel = value;
-            }
 
-        }
-
-        public static float MentalState
-        {
-            get
-            {
-
-                return mentalState;
-            }
-        }
-
-        public static List<Item> Items
-        {
-            get
-            {
-                return _Items;
-            }
-        }
 
         public static void MentalDecay(GameTime gameTime)
         {
@@ -96,6 +68,9 @@ namespace Tony
 
         public static void SetLevels(ContentManager Content)
         {
+            levels.Clear();
+
+
             //Get all Levels from the directory and store in the array.
             string[] filePaths = Directory.GetFiles(@"Content\Levels\", "*.tmx");
             //Adding Level to the ObjectManager.Instance.levels
@@ -124,34 +99,12 @@ namespace Tony
 
 
 
-        /// <summary>
-        /// AddItem is called to add a new Item to the Items list.
-        /// </summary>
-        public static void AddItem(Item newItem)
-        {
-            Items.Add(newItem);
-        }
+ 
 
-        /// <summary>
-        /// RemoveItem is called to remove an Item from the Items list.
-        /// </summary>
-        public static void RemoveItem(Item oldItem)
-        {
-            Items.Remove(oldItem);
-        }
+    
 
-        public static int LevelSize()
-        {
-            return levels.Count;
-        }
 
-        public static List<Level> Levels
-        {
-            get
-            {
-                return levels;
-            }
-        }
+
 
         public static float ModifyMentalState(Item item)
         {

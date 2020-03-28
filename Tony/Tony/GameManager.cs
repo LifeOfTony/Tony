@@ -164,7 +164,7 @@ namespace Tony
             // Poll for current keyboard state
             KeyboardState state = Keyboard.GetState();
 
-            Player player = ObjectManager.CurrentLevel.Player;
+            Player player = ObjectManager.currentLevel.Player;
             //update camera
             camera.follow(player);
             Input.CheckInputs();
@@ -175,13 +175,13 @@ namespace Tony
 
             ObjectManager.MentalDecay(gameTime);
 
-            foreach (Event currentEvent in ObjectManager.CurrentLevel.Events)
+            foreach (Event currentEvent in ObjectManager.currentLevel.Events)
             {
                 if (Input.InteractDetection(currentEvent, 0)) currentEvent.Interact();
             }
 
 
-            foreach (Npc npc in ObjectManager.CurrentLevel.Npcs)
+            foreach (Npc npc in ObjectManager.currentLevel.Npcs)
             {
                 npc.Move();
             }
@@ -205,14 +205,14 @@ namespace Tony
             //Create lightsTarget RenderTarget.
             {
 
-                float scale = 0.04f * ObjectManager.MentalState;
+                float scale = 0.04f * ObjectManager.mentalState;
                 if (scale < 1)
                 {
                     scale = 1f;
                 }
 
                 float maskRadius = lightMask.Width / 2 * scale;
-                Vector2 playerLocation = ObjectManager.CurrentLevel.Player.getPosition();
+                Vector2 playerLocation = ObjectManager.currentLevel.Player.getPosition();
 
                 lightPosition = new Vector2(playerLocation.X - maskRadius, playerLocation.Y - maskRadius);
 
@@ -231,7 +231,7 @@ namespace Tony
 
                 
                 // Draws all Drawable objects.
-                foreach (Drawable drawable in ObjectManager.CurrentLevel.Drawables)
+                foreach (Drawable drawable in ObjectManager.currentLevel.Drawables)
                     drawable.Draw(spriteBatch);
 
                 // Ends the spriteBatch.
@@ -257,7 +257,7 @@ namespace Tony
 
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive);
             // Draws some text based on the textOutput variable.
-            string text = "" + ObjectManager.MentalState;
+            string text = "" + ObjectManager.mentalState;
             spriteBatch.DrawString(font, text , new Vector2(200, 200), Color.White);
 
             // Draws some text based on the textOutput variable.

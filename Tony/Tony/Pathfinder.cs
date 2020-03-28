@@ -153,7 +153,7 @@ namespace Tony
 
                     bool colliding = false;
                     Vector2 currentPosition = new Vector2(i*tileWidth, j*tileHeight);
-                    foreach(Collider c in ObjectManager.CurrentLevel.Collidables)
+                    foreach(Collider c in ObjectManager.currentLevel.Collidables)
                     {
                         Vector2 cPosition = new Vector2(c.getPosition().X/tileWidth, c.getPosition().Y/tileHeight);
                         if (Detector.IsTouchingBottom(currentPosition, tileSize, c.getPosition(), c.getSize(), 0)

@@ -18,19 +18,19 @@ namespace Tony
         {
             if( Keyboard.GetState().IsKeyDown(Keys.A))
             {
-                ObjectManager.CurrentLevel.Player.move("A");
+                ObjectManager.currentLevel.Player.move("A");
             }
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
-                ObjectManager.CurrentLevel.Player.move("W");
+                ObjectManager.currentLevel.Player.move("W");
             }
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
-                ObjectManager.CurrentLevel.Player.move("S");
+                ObjectManager.currentLevel.Player.move("S");
             }
             if (Keyboard.GetState().IsKeyDown(Keys.D))
             {
-                ObjectManager.CurrentLevel.Player.move("D");
+                ObjectManager.currentLevel.Player.move("D");
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
@@ -46,7 +46,7 @@ namespace Tony
             if (Keyboard.GetState().IsKeyDown(Keys.E) && interactDown == false)
             {
                 interactDown = true;
-                foreach (GameObject i in ObjectManager.CurrentLevel.Objects.Where(i => i is InteractableObject))
+                foreach (GameObject i in ObjectManager.currentLevel.Objects.Where(i => i is InteractableObject))
                 {
                     InteractableObject currentObject;
                     if (i is Npc)
@@ -79,16 +79,16 @@ namespace Tony
             //conditions of interaction.
             //if met and interaction is triggered.
             if (Detector.IsTouchingBottom(currentObject.getPosition(), currentObject.getSize(),
-                ObjectManager.CurrentLevel.Player.getPosition(), ObjectManager.CurrentLevel.Player.getSize(), range)
+                ObjectManager.currentLevel.Player.getPosition(), ObjectManager.currentLevel.Player.getSize(), range)
 
                 || Detector.IsTouchingTop(currentObject.getPosition(), currentObject.getSize(),
-                ObjectManager.CurrentLevel.Player.getPosition(), ObjectManager.CurrentLevel.Player.getSize(), range)
+                ObjectManager.currentLevel.Player.getPosition(), ObjectManager.currentLevel.Player.getSize(), range)
 
                 || Detector.IsTouchingLeft(currentObject.getPosition(), currentObject.getSize(),
-                ObjectManager.CurrentLevel.Player.getPosition(), ObjectManager.CurrentLevel.Player.getSize(), range)
+                ObjectManager.currentLevel.Player.getPosition(), ObjectManager.currentLevel.Player.getSize(), range)
 
                 || Detector.IsTouchingRight(currentObject.getPosition(), currentObject.getSize(),
-                ObjectManager.CurrentLevel.Player.getPosition(), ObjectManager.CurrentLevel.Player.getSize(), range))
+                ObjectManager.currentLevel.Player.getPosition(), ObjectManager.currentLevel.Player.getSize(), range))
             {
                 return true;
             }

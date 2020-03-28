@@ -76,8 +76,8 @@ namespace Tony
             {
                 SaveNLoad loadGame = new SaveNLoad ();
                 loadGame.read();
-                Pathfinder.CreateGrid(ObjectManager.CurrentLevel);
-                ObjectManager.CurrentLevel.setPaths();
+                Pathfinder.CreateGrid(ObjectManager.currentLevel);
+                ObjectManager.currentLevel.setPaths();
                 gameState = GameState.playing;
             };
 
@@ -92,20 +92,20 @@ namespace Tony
 
             View.mainMenu.LevelSetOne.OnClick = (Entity button) =>
             {
-                Level selectedLevel = ObjectManager.Levels.Find(x => x.level == 0);
+                Level selectedLevel = ObjectManager.levels.Find(x => x.level == 0);
                 Pathfinder.CreateGrid(selectedLevel);
                 selectedLevel.setPaths();
-                ObjectManager.CurrentLevel = selectedLevel;
+                ObjectManager.currentLevel = selectedLevel;
                 ObjectManager.ResetMentalState();
                 gameState = GameState.playing;
             };
 
             View.mainMenu.LevelSetTwo.OnClick = (Entity button) =>
             {
-                Level selectedLevel = ObjectManager.Levels.Find(x => x.level == 1);
+                Level selectedLevel = ObjectManager.levels.Find(x => x.level == 1);
                 Pathfinder.CreateGrid(selectedLevel);
                 selectedLevel.setPaths();
-                ObjectManager.CurrentLevel = selectedLevel;
+                ObjectManager.currentLevel = selectedLevel;
                 ObjectManager.ResetMentalState();
                 gameState = GameState.playing;
             };

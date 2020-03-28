@@ -24,14 +24,14 @@ namespace Tony
             {
                 if (i.IsCollected() == true && i.GetName().Equals (requirement))
                 {
-                    if(ObjectManager.CurrentLevel.level < ObjectManager.LevelSize() )
+                    if(ObjectManager.currentLevel.level < ObjectManager.levels.Count() )
                     {
                         Controller.DisplayText(basic);
-                        ObjectManager.CurrentLevel = ObjectManager.Levels.Find
-                            (x => x.level == (ObjectManager.CurrentLevel.level + 1));
+                        ObjectManager.currentLevel = ObjectManager.levels.Find
+                            (x => x.level == (ObjectManager.currentLevel.level + 1));
 
-                        Pathfinder.CreateGrid(ObjectManager.CurrentLevel);
-                        ObjectManager.CurrentLevel.setPaths();
+                        Pathfinder.CreateGrid(ObjectManager.currentLevel);
+                        ObjectManager.currentLevel.setPaths();
                     }
                 }
             }

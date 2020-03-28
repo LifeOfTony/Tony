@@ -32,12 +32,12 @@ namespace Tony
                     }
 
                 }
-               writer.WriteLine("L"+  ObjectManager.CurrentLevel.level  );
+               writer.WriteLine("L"+  ObjectManager.currentLevel.level  );
 
-                writer.WriteLine("M"+  ObjectManager.MentalState.ToString());
+                writer.WriteLine("M"+  ObjectManager.mentalState.ToString());
 
-                writer.WriteLine("P" +  ObjectManager.CurrentLevel.Player.getPosition().X);
-                writer.WriteLine(ObjectManager.CurrentLevel.Player.getPosition().Y);
+                writer.WriteLine("P" +  ObjectManager.currentLevel.Player.getPosition().X);
+                writer.WriteLine(ObjectManager.currentLevel.Player.getPosition().Y);
             }
         }
         public void read()
@@ -80,9 +80,9 @@ namespace Tony
                         line = sr.ReadLine();
                         int levelNumber = Convert.ToInt32(line);
                         Console.WriteLine(line);
-                        ObjectManager.CurrentLevel = ObjectManager.Levels.Find(x => x.level == levelNumber);
+                        ObjectManager.currentLevel = ObjectManager.levels.Find(x => x.level == levelNumber);
 
-                        Console.WriteLine(ObjectManager.CurrentLevel .level );
+                        Console.WriteLine(ObjectManager.currentLevel .level );
                         //Console.WriteLine(line);
                     }
                     else if (prefix.Equals('M'))
@@ -91,7 +91,7 @@ namespace Tony
                         int mentalState = Convert.ToInt32(line);
                         ObjectManager.setMentalState(mentalState);
 
-                        Console.WriteLine(ObjectManager.MentalState);
+                        Console.WriteLine(ObjectManager.mentalState);
                         //Console.WriteLine(line);
                     }
                     else if (prefix.Equals('P'))
@@ -103,8 +103,8 @@ namespace Tony
                         Vector2 Position = new Vector2(x,y);
                         ObjectManager.setPosition(Position);
 
-                        Console.WriteLine(ObjectManager.CurrentLevel.Player.getPosition().X );
-                        Console.WriteLine(ObjectManager.CurrentLevel.Player.getPosition().Y);
+                        Console.WriteLine(ObjectManager.currentLevel.Player.getPosition().X );
+                        Console.WriteLine(ObjectManager.currentLevel.Player.getPosition().Y);
                        // Console.WriteLine(line);
                     }
 

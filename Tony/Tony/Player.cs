@@ -46,7 +46,7 @@ namespace Tony
 
 
             // Compares the player position to all collidable objects.
-            foreach(GameObject currentObject in ObjectManager.CurrentLevel.Collidables)
+            foreach(GameObject currentObject in ObjectManager.currentLevel.Collidables)
             {
                 if (currentObject == this)
                     continue;
