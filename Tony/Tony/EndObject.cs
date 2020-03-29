@@ -11,8 +11,8 @@ namespace Tony
     public class EndObject : InteractableObject
     {
 
-        public EndObject(Vector2 position, Vector2 size, float depth, Texture2D texture, string requirement, string gives)
-            : base(position, size, depth, texture, "End", requirement, gives)
+        public EndObject(Vector2 position, Vector2 size, Texture2D texture, float baseDepth, string requirement, string gives)
+            : base(position, size, texture, baseDepth, "End", requirement, gives)
         {
 
         }

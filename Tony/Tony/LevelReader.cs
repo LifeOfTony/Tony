@@ -97,13 +97,12 @@ namespace Tony
             IEnumerable<XElement> tileLayers = map.Elements("layer");
             foreach (XElement currentLayer in tileLayers)
             {
-                int depth = Int32.Parse(currentLayer.Attribute("name").Value);
                 string tileData = currentLayer.Element("data").Value;
-                CreateTiles(tileData, depth);
+                CreateTiles(tileData);
             }
         }
 
-        private void CreateTiles(string tileData, int depth)
+        private void CreateTiles(string tileData)
         {
            
             List<string[]> currentLayer = tileSplitter(tileData);
@@ -118,7 +117,7 @@ namespace Tony
                     {
                         Vector2 position = new Vector2(x * tileWidth, y * tileHeight);
                         Vector2 size = new Vector2(tileWidth, tileHeight);
-                        Sprite currentTile = new Sprite(position, size, depth, tileset[textureNumber - 1]);
+                        Sprite currentTile = new Sprite(position, size, tileset[textureNumber - 1], 0); 
                         levelRead.AddObject(currentTile);
                     }
 
@@ -128,13 +127,13 @@ namespace Tony
             
         }
 
-        private void CreateProps(XElement objectData, int depth)
+        private void CreateProps(XElement objectData, float baseDepth)
         {
             // Data taken from the object element.
             Vector2 size = new Vector2(float.Parse(objectData.Attribute("width").Value), float.Parse(objectData.Attribute("height").Value));
             Vector2 position = new Vector2(float.Parse(objectData.Attribute("x").Value), float.Parse(objectData.Attribute("y").Value) - size.Y);
             // creates a new collider.
-            Sprite currentProp = new Sprite(position, size, depth, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1]);
+            Sprite currentProp = new Sprite(position, size, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1], baseDepth);
             levelRead.AddObject(currentProp);
         }
 
@@ -163,8 +162,8 @@ namespace Tony
                         break;
 
                     case "Prop Layer":
-                        int depth = Int32.Parse(objectLayer.Element("properties").Element("property").Attribute("value").Value);
-                        foreach (XElement objectData in objects) CreateProps(objectData, depth);
+                        float baseDepth = float.Parse(objectLayer.Element("properties").Element("property").Attribute("value").Value)/10;
+                        foreach (XElement objectData in objects) CreateProps(objectData, baseDepth);
                         break;
 
                 }
@@ -182,6 +181,7 @@ namespace Tony
             string route = null;
             bool basicMove = false;
             string actors = "";
+            float baseDepth = 0.4f;
 
             #region object property navigation
             if (objectData.Element("properties") != null)
@@ -212,20 +212,20 @@ namespace Tony
             if (objectData.Attribute("type").Value == "Interactable")
             {
 
-                InteractableObject currentObject = new InteractableObject(position, size, 4, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1], 
+                InteractableObject currentObject = new InteractableObject(position, size, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1], baseDepth,
                     objectData.Attribute("name").Value, requires, gives);
                 levelRead.AddObject(currentObject);
             }
             if (objectData.Attribute("type").Value == "NPC")
             {
-                Npc currentObject = new Npc(position, size, 4, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1], route,
+                Npc currentObject = new Npc(position, size, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1], baseDepth, route,
                     objectData.Attribute("name").Value, basicMove, requires, gives);
                 levelRead.AddObject(currentObject);
             }
 
             if(objectData.Attribute("type").Value == "Actor")
             {
-                Npc currentObject = new Npc(position, size, 4, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1], route,
+                Npc currentObject = new Npc(position, size, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1], baseDepth, route,
                     objectData.Attribute("name").Value, true, basicMove, requires, gives);
                 levelRead.AddObject(currentObject);
             }
@@ -237,7 +237,7 @@ namespace Tony
             }
             if (objectData.Attribute("type").Value == "EndObject")
             {
-                EndObject currentObject = new EndObject(position, size, 4, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1], requires, gives);
+                EndObject currentObject = new EndObject(position, size, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1], baseDepth, requires, gives);
                 levelRead.AddObject(currentObject);
             }
             #endregion
@@ -258,9 +258,9 @@ namespace Tony
         {
             Vector2 size = new Vector2(float.Parse(playerData.Attribute("width").Value), float.Parse(playerData.Attribute("height").Value));
             Vector2 position = new Vector2(float.Parse(playerData.Attribute("x").Value), float.Parse(playerData.Attribute("y").Value) - size.Y);
+            float playerDepth = 0.2f;
 
-
-            Player player = new Player(position, size, 1, tileset[Int32.Parse(playerData.Attribute("gid").Value) - 1], 4);
+            Player player = new Player(position, size, 1, tileset[Int32.Parse(playerData.Attribute("gid").Value) - 1], playerDepth);
             levelRead.AddObject(player);
         }
 

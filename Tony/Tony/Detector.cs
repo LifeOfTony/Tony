@@ -110,5 +110,14 @@ namespace Tony
                    playerBottom > objectBottom &&
                    playerTop - offset <= objectBottom;
         }
+
+
+        public static bool isTouching(Vector2 objectPosition, Vector2 objectSize, Vector2 playerPosition, Vector2 playerSize, float offsetValue)
+        {
+            return (IsTouchingBottom(objectPosition, objectSize, playerPosition, playerSize, offsetValue) ||
+                IsTouchingLeft(objectPosition, objectSize, playerPosition, playerSize, offsetValue) ||
+                IsTouchingRight(objectPosition, objectSize, playerPosition, playerSize, offsetValue) ||
+                IsTouchingTop(objectPosition, objectSize, playerPosition, playerSize, offsetValue));
+        }
     }
 }

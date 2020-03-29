@@ -24,8 +24,8 @@ namespace Tony
         /// <param name="age"></param>
         /// <param name="depth"></param>
         /// <param name="texture"></param>
-        public Player(Vector2 position, Vector2 size, int age, Texture2D texture, float depth) :
-            base(position, size, depth, texture)
+        public Player(Vector2 position, Vector2 size, int age, Texture2D texture, float baseDepth) :
+            base(position, size, texture, baseDepth)
         {
             this.age = age;
             this.moveSpeed = 1;
@@ -98,6 +98,25 @@ namespace Tony
         {
             position = newPosition;
         }
+
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(
+                texture: texture,
+                position: position,
+                sourceRectangle: null,
+                color: Color.White,
+                rotation: rotation,
+                origin: rotationOrigin,
+                scale: 1f,
+                effects: SpriteEffects.None,
+                layerDepth: baseDepth);
+        }
+
+
+
+
 
     }
 }

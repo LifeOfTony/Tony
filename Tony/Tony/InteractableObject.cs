@@ -27,8 +27,8 @@ namespace Tony
         /// <param name="size"></param>
         /// <param name="requirement"></param>
         /// <param name="gives"></param>
-        public InteractableObject(Vector2 position, Vector2 size, float depth, Texture2D texture, string name, string requirement = null, string gives = null) :
-            base(position, size, depth, texture)
+        public InteractableObject(Vector2 position, Vector2 size, Texture2D texture, float baseDepth, string name, string requirement = null, string gives = null) :
+            base(position, size, texture, baseDepth)
         {
             this.name = name;
             ScriptReader.ReadScript(name);
