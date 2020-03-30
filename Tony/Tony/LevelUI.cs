@@ -14,27 +14,36 @@ namespace Tony
     class LevelUI : Entity
     {
         public Panel LowerUI { get; private set; }
-        public Panel TextBox { get; private set; }
+        public Image TextBox { get; private set; }
         public Paragraph text { get; private set; }
 
-        public LevelUI(Texture2D texture)
+        private List<Texture2D> Lanterns;
+
+        public LevelUI(Texture2D texture, List<Texture2D> lanterns)
         {
-            LowerUI = new Panel(new Vector2(675, 250), PanelSkin.Fancy, Anchor.BottomCenter, new Vector2(0, 125));
+
+            Lanterns = lanterns;
+
+
+            LowerUI = new Panel(new Vector2(700, 250), PanelSkin.Fancy, Anchor.BottomCenter, new Vector2(0, 125));
             LowerUI.Opacity = 70;
 
             Panel frame = new Panel(new Vector2(175, 250), PanelSkin.None, Anchor.BottomCenter, new Vector2(-250, -25));
             LowerUI.AddChild(frame);
 
-            TextBox = new Panel(new Vector2(500, 200), PanelSkin.Simple, Anchor.BottomCenter, new Vector2(65, 0));
-            TextBox.Opacity = 70;
+            Image img = new Image(Lanterns[0]);
+            frame.AddChild(img);
+
+
+            TextBox = new Image(texture, new Vector2(500, 200), ImageDrawMode.Stretch , Anchor.BottomCenter, new Vector2(frame.Size.X/2,0));
+
+            LowerUI.AddChild(TextBox);
 
             text = new Paragraph();
             TextBox.AddChild(text);
 
-            LowerUI.AddChild(TextBox);
 
-            Image img = new Image(texture);
-            frame.AddChild(img);
+            
 
 
             LowerUI.Visible = false;
