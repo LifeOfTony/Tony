@@ -19,6 +19,8 @@ namespace Tony
 
         private List<Texture2D> Lanterns;
 
+        private Image lantern;
+
         public LevelUI(Texture2D texture, List<Texture2D> lanterns)
         {
 
@@ -31,8 +33,8 @@ namespace Tony
             Panel frame = new Panel(new Vector2(175, 250), PanelSkin.None, Anchor.BottomCenter, new Vector2(-250, -25));
             LowerUI.AddChild(frame);
 
-            Image img = new Image(Lanterns[0]);
-            frame.AddChild(img);
+            lantern = new Image(Lanterns[0]);
+            frame.AddChild(lantern);
 
 
             TextBox = new Image(texture, new Vector2(500, 200), ImageDrawMode.Stretch , Anchor.BottomCenter, new Vector2(frame.Size.X/2,0));
@@ -50,5 +52,41 @@ namespace Tony
 
             UserInterface.Active.AddEntity(LowerUI);
         }
+
+
+        public void UpdateLantern(float mentalState)
+        {
+            if (100 >= mentalState && mentalState >= 85)
+            {
+
+                lantern = new Image(Lanterns[0]);
+            }
+            else if (85 > mentalState && mentalState >= 70)
+            {
+                lantern = new Image(Lanterns[1]);
+            }
+            else if (70 > mentalState && mentalState >= 55)
+            {
+                lantern = new Image(Lanterns[2]);
+            }
+            else if (55 > mentalState && mentalState >= 40)
+            {
+                lantern = new Image(Lanterns[3]);
+            }
+            else if (40 > mentalState && mentalState >= 25)
+            {
+                lantern = new Image(Lanterns[4]);
+            }
+            else if (25 > mentalState && mentalState > 0)
+            {
+                lantern = new Image(Lanterns[5]);
+            }
+            else
+            {
+                lantern = new Image(Lanterns[6]);
+            }
+
+        }
+
     }
 }

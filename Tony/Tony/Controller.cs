@@ -139,7 +139,7 @@ namespace Tony
             ProcessButtons();
             SwitchState();
             // GeonBit.UIL update UI manager
-            UserInterface.Active.Update(gameTime);
+            View.Update(gameTime);
         }
 
         public static void Draw(SpriteBatch spriteBatch)

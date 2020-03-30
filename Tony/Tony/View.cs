@@ -52,8 +52,9 @@ namespace Tony
         }
 
 
-        static void Update(GameTime gameTime)
+        public static void Update(GameTime gameTime)
         {
+            levelUI.UpdateLantern(ObjectManager.mentalState);
             UserInterface.Active.Update(gameTime);
         }
 
