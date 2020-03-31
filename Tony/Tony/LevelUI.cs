@@ -16,6 +16,7 @@ namespace Tony
         public Panel LowerUI { get; private set; }
         public Image TextBox { get; private set; }
         public Paragraph text { get; private set; }
+        public Panel frame;
 
         private List<Texture2D> Lanterns;
 
@@ -30,7 +31,7 @@ namespace Tony
             LowerUI = new Panel(new Vector2(700, 250), PanelSkin.Fancy, Anchor.BottomCenter, new Vector2(0, 125));
             LowerUI.Opacity = 70;
 
-            Panel frame = new Panel(new Vector2(175, 250), PanelSkin.None, Anchor.BottomCenter, new Vector2(-250, -25));
+            frame = new Panel(new Vector2(175, 250), PanelSkin.None, Anchor.BottomCenter, new Vector2(-250, -25));
             LowerUI.AddChild(frame);
 
             lantern = new Image(Lanterns[0]);
@@ -56,34 +57,41 @@ namespace Tony
 
         public void UpdateLantern(float mentalState)
         {
-            if (100 >= mentalState && mentalState >= 85)
-            {
-
-                lantern = new Image(Lanterns[0]);
-            }
-            else if (85 > mentalState && mentalState >= 70)
+            if (85 > mentalState && mentalState >= 70)
             {
                 lantern = new Image(Lanterns[1]);
+                frame.ClearChildren();
+                frame.AddChild(lantern);
             }
             else if (70 > mentalState && mentalState >= 55)
             {
                 lantern = new Image(Lanterns[2]);
+                frame.ClearChildren();
+                frame.AddChild(lantern);
             }
             else if (55 > mentalState && mentalState >= 40)
             {
                 lantern = new Image(Lanterns[3]);
+                frame.ClearChildren();
+                frame.AddChild(lantern);
             }
             else if (40 > mentalState && mentalState >= 25)
             {
                 lantern = new Image(Lanterns[4]);
+                frame.ClearChildren();
+                frame.AddChild(lantern);
             }
             else if (25 > mentalState && mentalState > 0)
             {
                 lantern = new Image(Lanterns[5]);
+                frame.ClearChildren();
+                frame.AddChild(lantern);
             }
-            else
+            else if(mentalState == 0)
             {
                 lantern = new Image(Lanterns[6]);
+                frame.ClearChildren();
+                frame.AddChild(lantern);
             }
 
         }
