@@ -41,15 +41,11 @@ namespace Tony
         }
 
 
-        private void AssignType()
+        protected void AssignType()
         {
             if(requirement != null)
             {
                 InteractType = new InteractHandler(TakerInteract);
-            }
-            else if (gives != null)
-            {
-                InteractType = new InteractHandler(GiverInteract);
             }
             else
             {
@@ -65,7 +61,7 @@ namespace Tony
         }
 
 
-        public void TakerInteract()
+        public virtual void TakerInteract()
         {
             // checks to see if the player has got the required item to trigger the interaction.
             foreach (Item currentItem in ObjectManager.Items)
@@ -75,20 +71,21 @@ namespace Tony
                 {
                     if (currentItem.IsCollected())
                     {
+                        Controller.DisplayText(complex);
                         GiverInteract();
                     }
                     else
                     {
-                        BasicInteract();
+                        Controller.DisplayText(basic);
                     }
-                }
-                
+                } 
             }
         }
 
         public virtual void BasicInteract()
         {
             Controller.DisplayText(basic);
+            if (gives != null) GiverInteract(); 
         }
 
         public virtual void GiverInteract()
@@ -100,7 +97,6 @@ namespace Tony
                 if (currentItem.GetName().Equals(gives))
                 {
                     currentItem.Collect();
-                    Controller.DisplayText(complex);
                 }
             }
         }

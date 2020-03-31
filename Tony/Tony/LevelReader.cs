@@ -192,7 +192,6 @@ namespace Tony
                     if (property.Attribute("name").Value == "Requires") requires = property.Attribute("value").Value;
                     if (property.Attribute("name").Value == "Gives") gives = property.Attribute("value").Value;
                     if (property.Attribute("name").Value == "Basic") basic = property.Attribute("value").Value;
-                    if (property.Attribute("name").Value == "BasicMove") basicMove = bool.Parse(property.Attribute("value").Value);
                     if (property.Attribute("name").Value == "Route")
                     {
                         route = property.Attribute("value").Value;
@@ -226,7 +225,7 @@ namespace Tony
             if(objectData.Attribute("type").Value == "Actor")
             {
                 Npc currentObject = new Npc(position, size, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1], baseDepth, route,
-                    objectData.Attribute("name").Value, true, basicMove, requires, gives);
+                    objectData.Attribute("name").Value, true, requires, gives);
                 levelRead.AddObject(currentObject);
             }
 

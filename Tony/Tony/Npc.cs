@@ -1,10 +1,8 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace Tony
 {
@@ -14,8 +12,9 @@ namespace Tony
         private bool move;
         private Vector2 destination;
         private Queue<Vector2> path;
-        private bool basicMove;
+
         private bool actor;
+        private string[] routes;
 
         /// <summary>
         /// An Npc is a moving interactable object.
@@ -25,29 +24,33 @@ namespace Tony
         /// <param name="collidable"></param>
         /// <param name="requirement"></param>
         /// <param name="gives"></param>
-        public Npc(Vector2 position, Vector2 size, Texture2D texture, float baseDepth, string route, string name, bool actor,
-            bool basicMove = false, string requirement = "", string gives = "") :
+        public Npc(Vector2 position, Vector2 size, Texture2D texture, float baseDepth, string routes, string name, bool actor,
+            string requirement = "", string gives = "") :
             base(position, size, texture, baseDepth, name, requirement, gives)
         {
-            this.route = route;
+            SplitRoutes(routes);
+            this.route = this.routes[0];
             FindDestination(route);
             move = false;
             this.actor = actor;
-            this.basicMove = basicMove;
+
         }
 
         public Npc(Vector2 position, Vector2 size, Texture2D texture, float baseDepth, string route, string name,
-            bool basicMove = false, string requirement = "", string gives = "")
-            : this(position, size, texture, baseDepth, route, name, false, basicMove, requirement, gives)
+            string requirement = "", string gives = "")
+            : this(position, size, texture, baseDepth, route, name, false, requirement, gives)
         {
 
         }
-
-
 
 
         #region RouteStuff
 
+        public void SplitRoutes(string allRoutes)
+        {
+            routes = allRoutes.Split(':');
+        }
+       
         public void FindDestination(string route)
         {
             string[] coordinates = route.Split(',');
@@ -77,6 +80,9 @@ namespace Tony
 
 
 
+
+
+
         public override void Interact()
         {
             base.Interact();
@@ -84,13 +90,36 @@ namespace Tony
 
 
 
+
+        public override void TakerInteract()
+        {
+            // checks to see if the player has got the required item to trigger the interaction.
+            foreach (Item currentItem in ObjectManager.Items)
+            {
+                // if an item is used, text feedback is given.
+                if (currentItem.GetName().Equals(requirement))
+                {
+                    if (currentItem.IsCollected())
+                    {
+                        move = true;
+                        Controller.DisplayText(complex);
+                        GiverInteract();
+                    }
+                    else
+                    {
+                        Controller.DisplayText(basic);
+                    }
+                }
+            }
+        }
+
+
         public override void BasicInteract()
         {
-            if (basicMove == true)
-            {
-                move = true;
-            }
+
+            move = true;
             Controller.DisplayText(basic);
+            if (gives != null) GiverInteract();
         }
 
         public override void GiverInteract()
@@ -102,8 +131,6 @@ namespace Tony
                 if (currentItem.GetName().Equals(gives))
                 {
                     currentItem.Collect();
-                    move = true;
-                    Controller.DisplayText(complex);
                 }
             }
         }
