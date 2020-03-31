@@ -8,13 +8,14 @@ namespace Tony
 {
     public class Npc : InteractableObject
     {
-        private string route;
         private bool move;
-        private Vector2 destination;
-        private Queue<Vector2> path;
-
         private bool actor;
-        private string[] routes;
+
+
+        private Queue<Vector2> destinations = new Queue<Vector2>();
+        private Queue<Queue<Vector2>> paths = new Queue<Queue<Vector2>>();
+
+        private Queue<Vector2> currentPath;
 
         /// <summary>
         /// An Npc is a moving interactable object.
@@ -28,13 +29,34 @@ namespace Tony
             string requirement = "", string gives = "") :
             base(position, size, texture, baseDepth, name, requirement, gives)
         {
-            SplitRoutes(routes);
-            this.route = this.routes[0];
-            FindDestination(route);
-            move = false;
+            if(routes.Contains(':'))
+            {
+                Queue<string> endPoints = SplitRoutes(routes);
+                while (endPoints.Any())
+                {
+                    string route = endPoints.Dequeue();
+                    Vector2 currentRoute = FindDestination(route);
+                    this.destinations.Enqueue(currentRoute);
+
+                    /*
+                    Queue<Vector2> currentPath = setPath(currentRoute);
+                    paths.Enqueue(currentPath);
+                    */
+
+                }
+                move = true;
+            }  
+            else
+            {
+                Vector2 route = FindDestination(routes);
+                this.destinations.Enqueue(route);
+                move = false;
+            }
+
             this.actor = actor;
 
         }
+
 
         public Npc(Vector2 position, Vector2 size, Texture2D texture, float baseDepth, string route, string name,
             string requirement = "", string gives = "")
@@ -46,32 +68,59 @@ namespace Tony
 
         #region RouteStuff
 
-        public void SplitRoutes(string allRoutes)
+        public Queue<string> SplitRoutes(string allRoutes)
         {
-            routes = allRoutes.Split(':');
+            Queue<string> routes = new Queue<string>(allRoutes.Split(':'));
+            return routes;
         }
        
-        public void FindDestination(string route)
+
+        public Vector2 FindDestination(string route)
         {
             string[] coordinates = route.Split(',');
-            destination = new Vector2(Int32.Parse(coordinates[0]), Int32.Parse(coordinates[1]));
+            Vector2 destination = new Vector2(Int32.Parse(coordinates[0]), Int32.Parse(coordinates[1]));
+            return destination;
         }
+
 
         public void setPath()
         {
-            path = Pathfinder.FindPath(this.position, destination);
+
+            while(destinations.Any())
+            {
+                Queue<Vector2> path = Pathfinder.FindPath(position, destinations.Dequeue());
+                paths.Enqueue(path);
+            }
+            
         }
+
+        /*
+         * Setpaths currently always sets from the current position of the npc
+         * 
+         * The Npc is currently not actually looping.
+         * 
+         * */
+
+
 
         public void Move()
         {
             if (move == true)
             {
-                
-                if (path.Any())
+
+                if (currentPath != null && currentPath.Any())
                 {
-                    this.position = path.Dequeue();
+                    this.position = currentPath.Dequeue();
                 }
-                else move = false;
+                else
+                {
+                    currentPath = paths.Dequeue();
+                    if (paths.Any())
+                    {
+                        paths.Enqueue(currentPath);
+                    }
+                    else move = false;
+                }
                 
             }
         }
@@ -81,7 +130,7 @@ namespace Tony
 
 
 
-
+        #region Interactions
 
         public override void Interact()
         {
@@ -135,6 +184,7 @@ namespace Tony
             }
         }
 
+        #endregion
 
         public bool getActor()
         {

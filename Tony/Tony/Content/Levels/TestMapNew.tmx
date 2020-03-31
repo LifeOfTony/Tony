@@ -131,6 +131,11 @@
     <property name="Route" value="1056,224"/>
    </properties>
   </object>
+  <object id="177" name="NPC4" type="NPC" gid="35" x="576" y="448" width="32" height="32">
+    <properties>
+      <property name="Route" value="672,416:672,512"/>
+    </properties>
+  </object>
   <object id="176" name="End" type="EndObject" gid="2" x="425.821" y="530.903" width="13" height="6">
    <properties>
     <property name="Requires" value="snacks"/>
