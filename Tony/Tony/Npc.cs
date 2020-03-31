@@ -10,8 +10,6 @@ namespace Tony
 {
     public class Npc : InteractableObject
     {
-
-
         private string route;
         private bool move;
         private Vector2 destination;
@@ -27,9 +25,9 @@ namespace Tony
         /// <param name="collidable"></param>
         /// <param name="requirement"></param>
         /// <param name="gives"></param>
-        public Npc(Vector2 position, Vector2 size, float depth, Texture2D texture, string route, bool actor,
+        public Npc(Vector2 position, Vector2 size, Texture2D texture, float baseDepth, string route, string name, bool actor,
             bool basicMove = false, string requirement = "", string gives = "") :
-            base(position, size, depth, texture, requirement, gives)
+            base(position, size, texture, baseDepth, name, requirement, gives)
         {
             this.route = route;
             FindDestination(route);
@@ -38,9 +36,9 @@ namespace Tony
             this.basicMove = basicMove;
         }
 
-        public Npc(Vector2 position, Vector2 size, float depth, Texture2D texture, string route,
+        public Npc(Vector2 position, Vector2 size, Texture2D texture, float baseDepth, string route, string name,
             bool basicMove = false, string requirement = "", string gives = "")
-            : this(position, size, depth, texture, route, false, basicMove, requirement, gives)
+            : this(position, size, texture, baseDepth, route, name, false, basicMove, requirement, gives)
         {
 
         }
@@ -92,22 +90,20 @@ namespace Tony
             {
                 move = true;
             }
-            GameManager.textOutput = "";
-            GameManager.textOutput += "Basic Interact \n\r";
+            Controller.DisplayText(basic);
         }
 
         public override void GiverInteract()
         {
             // finds the correct item and sets it to collected.
-            foreach (Item currentItem in ObjectManager.Instance.Items)
+            foreach (Item currentItem in ObjectManager.Items)
             {
                 // text feedback is given when the item is gained.
                 if (currentItem.GetName().Equals(gives))
                 {
                     currentItem.Collect();
                     move = true;
-                    GameManager.textOutput = "";
-                    GameManager.textOutput += "gained " + gives + "\n\r";
+                    Controller.DisplayText(complex);
                 }
             }
         }

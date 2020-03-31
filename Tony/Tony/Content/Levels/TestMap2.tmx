@@ -100,39 +100,39 @@
   <object id="51" gid="16" x="1136.74" y="212.627" width="6" height="11"/>
  </objectgroup>
  <objectgroup id="7" name="Interactable Layer">
-  <object id="52" type="Interactable" gid="29" x="634.365" y="99.7312" width="19" height="17"/>
-  <object id="53" type="Interactable" gid="30" x="686.899" y="115.55" width="31" height="45">
+  <object id="52" name="TV" type="Interactable" gid="29" x="634.365" y="99.7312" width="19" height="17"/>
+  <object id="53" name="Vending" type="Interactable" gid="30" x="686.899" y="115.55" width="31" height="45">
    <properties>
     <property name="Gives" value="snacks"/>
     <property name="Requires" value="money"/>
    </properties>
   </object>
-  <object id="54" type="Interactable" gid="13" x="562.662" y="97.8136" width="10" height="12">
+  <object id="54" name="Coffee" type="Interactable" gid="13" x="562.662" y="97.8136" width="10" height="12">
    <properties>
     <property name="Gives" value="coffee"/>
    </properties>
   </object>
-  <object id="110" type="NPC" gid="35" x="800" y="256" width="32" height="32">
+  <object id="110" name="NPC1" type="NPC" gid="35" x="800" y="256" width="32" height="32">
    <properties>
     <property name="Gives" value="money"/>
     <property name="Route" value="704,160"/>
    </properties>
   </object>
-  <object id="112" type="NPC" gid="35" x="480" y="160" width="32" height="32">
+  <object id="112" name="NPC2" type="NPC" gid="35" x="480" y="160" width="32" height="32">
    <properties>
     <property name="Gives" value="thing"/>
     <property name="Requires" value="snacks"/>
     <property name="Route" value="928,256"/>
    </properties>
   </object>
-  <object id="113" type="NPC" gid="35" x="416" y="160" width="32" height="32">
+  <object id="113" name="NPC3" type="NPC" gid="35" x="416" y="160" width="32" height="32">
    <properties>
     <property name="BasicMove" type="bool" value="true"/>
     <property name="Route" value="1056,256"/>
    </properties>
   </object>
-  <object id="176" type="EndObject" gid="2" x="425.821" y="530.903" width="13" height="6"/>
-  <object id="177" type="Actor" gid="35" x="576" y="448" width="32" height="32">
+  <object id="176" name="End" type="EndObject" gid="2" x="425.821" y="530.903" width="13" height="6"/>
+  <object id="177" name="Actor1" type="Actor" gid="35" x="576" y="448" width="32" height="32">
    <properties>
     <property name="BasicMove" type="bool" value="true"/>
     <property name="Route" value="672,416"/>

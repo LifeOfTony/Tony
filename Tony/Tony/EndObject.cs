@@ -11,8 +11,8 @@ namespace Tony
     public class EndObject : InteractableObject
     {
 
-        public EndObject(Vector2 position, Vector2 size, float depth, Texture2D texture, string requirement, string gives)
-            : base(position, size, depth, texture, requirement, gives)
+        public EndObject(Vector2 position, Vector2 size, Texture2D texture, float baseDepth, string requirement, string gives)
+            : base(position, size, texture, baseDepth, "End", requirement, gives)
         {
 
         }
@@ -20,17 +20,18 @@ namespace Tony
         
         public override void Interact()
         {
-            foreach (Item i in ObjectManager .Instance .Items)
+            foreach (Item i in ObjectManager.Items)
             {
                 if (i.IsCollected() == true && i.GetName().Equals (requirement))
                 {
-                    if(ObjectManager .Instance .CurrentLevel.level < ObjectManager.Instance.LevelSize() )
+                    if(ObjectManager.currentLevel.level < ObjectManager.levels.Count() )
                     {
-                        ObjectManager.Instance.CurrentLevel = ObjectManager.Instance.Levels.Find
-                            (x => x.level == (ObjectManager.Instance.CurrentLevel.level + 1));
+                        Controller.DisplayText(basic);
+                        ObjectManager.currentLevel = ObjectManager.levels.Find
+                            (x => x.level == (ObjectManager.currentLevel.level + 1));
 
-                        Pathfinder.CreateGrid(ObjectManager.Instance.CurrentLevel);
-                        ObjectManager.Instance.CurrentLevel.setPaths();
+                        Pathfinder.CreateGrid(ObjectManager.currentLevel);
+                        ObjectManager.currentLevel.setPaths();
                     }
                 }
             }

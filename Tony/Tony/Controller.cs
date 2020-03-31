@@ -16,11 +16,13 @@ namespace Tony
        public enum GameState { mainmenu, playing, paused, gameOver, quit}
        public static GameState gameState;
        public static bool exit = false;
+       private static ContentManager Content;
 
 
         public static void Initialize(ContentManager content)
         {
-            View.Initialize(content);
+            Content = content;
+            View.Initialize(Content);
             gameState = GameState.mainmenu;
         }
 
@@ -66,7 +68,7 @@ namespace Tony
         {
             View.mainMenu.MainToGame.OnClick = (Entity button) =>
             {
-                ObjectManager.Instance.ResetLevel();
+                ObjectManager.SetLevels(Content);
                 gameState = GameState.playing;
             };
 
@@ -74,8 +76,8 @@ namespace Tony
             {
                 SaveNLoad loadGame = new SaveNLoad ();
                 loadGame.read();
-                Pathfinder.CreateGrid(ObjectManager.Instance.CurrentLevel);
-                ObjectManager.Instance.CurrentLevel.setPaths();
+                Pathfinder.CreateGrid(ObjectManager.currentLevel);
+                ObjectManager.currentLevel.setPaths();
                 gameState = GameState.playing;
             };
 
@@ -90,21 +92,21 @@ namespace Tony
 
             View.mainMenu.LevelSetOne.OnClick = (Entity button) =>
             {
-                Level selectedLevel = ObjectManager.Instance.Levels.Find(x => x.level == 0);
+                Level selectedLevel = ObjectManager.levels.Find(x => x.level == 0);
                 Pathfinder.CreateGrid(selectedLevel);
                 selectedLevel.setPaths();
-                ObjectManager.Instance.CurrentLevel = selectedLevel;
-                ObjectManager.Instance.ResetMentalState();
+                ObjectManager.currentLevel = selectedLevel;
+                ObjectManager.ResetMentalState();
                 gameState = GameState.playing;
             };
 
             View.mainMenu.LevelSetTwo.OnClick = (Entity button) =>
             {
-                Level selectedLevel = ObjectManager.Instance.Levels.Find(x => x.level == 1);
+                Level selectedLevel = ObjectManager.levels.Find(x => x.level == 1);
                 Pathfinder.CreateGrid(selectedLevel);
                 selectedLevel.setPaths();
-                ObjectManager.Instance.CurrentLevel = selectedLevel;
-                ObjectManager.Instance.ResetMentalState();
+                ObjectManager.currentLevel = selectedLevel;
+                ObjectManager.ResetMentalState();
                 gameState = GameState.playing;
             };
 
@@ -121,12 +123,23 @@ namespace Tony
         }
 
 
+        public static void DisplayText(string text)
+        {
+            View.levelUI.text.Text = text;
+        }
+
+        public static void ClearText()
+        {
+            View.levelUI.text.Text = "";
+        }
+
+
         public static void Update(GameTime gameTime)
         {
             ProcessButtons();
             SwitchState();
             // GeonBit.UIL update UI manager
-            UserInterface.Active.Update(gameTime);
+            View.Update(gameTime);
         }
 
         public static void Draw(SpriteBatch spriteBatch)

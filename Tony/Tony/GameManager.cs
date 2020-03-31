@@ -106,35 +106,14 @@ namespace Tony
             Controller.Initialize(Content);
 
 
-            //Get all Levels from the directory and store in the array.
-            string[] filePaths = Directory.GetFiles(@"Content\Levels\", "*.tmx");
-
-
-            //Adding Level to the ObjectManager.Instance.levels
-            for (int i = 0; i< filePaths .Length; i++)
-            {
-                LevelReader iLevel = new LevelReader(@filePaths[i], Content);
-                Level iNewLevel = iLevel.GetLevel();
-                ObjectManager.Instance.AddLevel(iNewLevel);
-                /*
-                if (iNewLevel.level == 0)
-                {
-                    ObjectManager.Instance.CurrentLevel = iNewLevel;
-                }
-                */
-                Console.WriteLine(ObjectManager.Instance.LevelSize());
-                
-            }
-
-
-
+            
 
             lightsTarget = new RenderTarget2D(
             GraphicsDevice,graphics.PreferredBackBufferWidth,graphics.PreferredBackBufferHeight);
             mainTarget = new RenderTarget2D(
             GraphicsDevice,graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
 
-            ObjectManager.Instance.ResetLevel();
+            ObjectManager.SetLevels(Content);
 
         }
 
@@ -185,7 +164,7 @@ namespace Tony
             // Poll for current keyboard state
             KeyboardState state = Keyboard.GetState();
 
-            Player player = ObjectManager.Instance.CurrentLevel.Player;
+            Player player = ObjectManager.currentLevel.Player;
             //update camera
             camera.follow(player);
             Input.CheckInputs();
@@ -194,15 +173,15 @@ namespace Tony
             if (state.IsKeyDown(Keys.L)) saveI.save();
             if (state.IsKeyDown(Keys.P)) saveI.read();
 
-            ObjectManager.Instance.MentalDecay(gameTime);
+            ObjectManager.MentalDecay(gameTime);
 
-            foreach (Event currentEvent in ObjectManager.Instance.CurrentLevel.Events)
+            foreach (Event currentEvent in ObjectManager.currentLevel.Events)
             {
                 if (Input.InteractDetection(currentEvent, 0)) currentEvent.Interact();
             }
 
 
-            foreach (Npc npc in ObjectManager.Instance.CurrentLevel.Npcs)
+            foreach (Npc npc in ObjectManager.currentLevel.Npcs)
             {
                 npc.Move();
             }
@@ -226,14 +205,14 @@ namespace Tony
             //Create lightsTarget RenderTarget.
             {
 
-                float scale = 0.04f * ObjectManager.Instance.MentalState;
+                float scale = 0.04f * ObjectManager.mentalState;
                 if (scale < 1)
                 {
                     scale = 1f;
                 }
 
                 float maskRadius = lightMask.Width / 2 * scale;
-                Vector2 playerLocation = ObjectManager.Instance.CurrentLevel.Player.getPosition();
+                Vector2 playerLocation = ObjectManager.currentLevel.Player.getPosition();
 
                 lightPosition = new Vector2(playerLocation.X - maskRadius, playerLocation.Y - maskRadius);
 
@@ -252,7 +231,7 @@ namespace Tony
 
                 
                 // Draws all Drawable objects.
-                foreach (Drawable drawable in ObjectManager.Instance.CurrentLevel.Drawables)
+                foreach (Drawable drawable in ObjectManager.currentLevel.Drawables)
                     drawable.Draw(spriteBatch);
 
                 // Ends the spriteBatch.
@@ -278,7 +257,7 @@ namespace Tony
 
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive);
             // Draws some text based on the textOutput variable.
-            string text = "" + ObjectManager.Instance.MentalState;
+            string text = "" + ObjectManager.mentalState;
             spriteBatch.DrawString(font, text , new Vector2(200, 200), Color.White);
 
             // Draws some text based on the textOutput variable.

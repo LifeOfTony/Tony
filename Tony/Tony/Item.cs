@@ -53,12 +53,12 @@ namespace Tony
         /// </summary>
         public void Collect()
         {
-            Console.WriteLine(ObjectManager.Instance.MentalState);
 
-            ObjectManager.Instance.ModifyMentalState(this);
+
+            ObjectManager.ModifyMentalState(this);
             this.collected = true;
 
-            Console.WriteLine(ObjectManager.Instance.MentalState);
+
         }
 
         public int GetModifier()
