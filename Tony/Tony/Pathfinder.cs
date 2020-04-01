@@ -34,7 +34,7 @@ namespace Tony
             FindConnections();
             AStarSearch();
             var shortestpath = new List<GridNode>();
-            shortestpath.Add(endNode);
+            //shortestpath.Add(endNode);
             BuildShortestPath(shortestpath, endNode);
             shortestpath.Reverse();
             return convertToPoints(shortestpath);

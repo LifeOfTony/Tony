@@ -12,7 +12,7 @@ namespace Tony
         private bool actor;
 
 
-        private Queue<Vector2> destinations = new Queue<Vector2>();
+        private Vector2[] destinations;
         private Queue<Queue<Vector2>> paths = new Queue<Queue<Vector2>>();
 
         private Queue<Vector2> currentPath;
@@ -31,17 +31,13 @@ namespace Tony
         {
             if(routes.Contains(':'))
             {
-                Queue<string> endPoints = SplitRoutes(routes);
-                while (endPoints.Any())
+                string[] endPoints = SplitRoutes(routes);
+                destinations = new Vector2[endPoints.Count()];
+                for(int i = 0; i < endPoints.Length; i++)
                 {
-                    string route = endPoints.Dequeue();
+                    string route = endPoints[i];
                     Vector2 currentRoute = FindDestination(route);
-                    this.destinations.Enqueue(currentRoute);
-
-                    /*
-                    Queue<Vector2> currentPath = setPath(currentRoute);
-                    paths.Enqueue(currentPath);
-                    */
+                    this.destinations[i] = (currentRoute);
 
                 }
                 move = true;
@@ -49,7 +45,8 @@ namespace Tony
             else
             {
                 Vector2 route = FindDestination(routes);
-                this.destinations.Enqueue(route);
+                this.destinations = new Vector2[1];
+                this.destinations[0] = route;
                 move = false;
             }
 
@@ -68,9 +65,9 @@ namespace Tony
 
         #region RouteStuff
 
-        public Queue<string> SplitRoutes(string allRoutes)
+        public string[] SplitRoutes(string allRoutes)
         {
-            Queue<string> routes = new Queue<string>(allRoutes.Split(':'));
+            string[] routes = allRoutes.Split(':');
             return routes;
         }
        
@@ -86,42 +83,47 @@ namespace Tony
         public void setPath()
         {
 
-            while(destinations.Any())
+            for(int i = 0; i < destinations.Length; i++)
             {
-                Queue<Vector2> path = Pathfinder.FindPath(position, destinations.Dequeue());
+                Vector2 start;
+                Vector2 end;
+                if (i == 0)
+                {
+                    start = position;
+                    end = destinations[i];
+                }
+                else
+                {
+                    start = destinations[i - 1];
+                    end = destinations[i];
+                }
+                Queue<Vector2> path = Pathfinder.FindPath(start, end);
                 paths.Enqueue(path);
             }
-            
+           
         }
-
-        /*
-         * Setpaths currently always sets from the current position of the npc
-         * 
-         * The Npc is currently not actually looping.
-         * 
-         * */
-
 
 
         public void Move()
         {
             if (move == true)
             {
-
                 if (currentPath != null && currentPath.Any())
                 {
                     this.position = currentPath.Dequeue();
                 }
-                else
+                else if (paths.Any())
                 {
                     currentPath = paths.Dequeue();
                     if (paths.Any())
                     {
-                        paths.Enqueue(currentPath);
+                        Queue<Vector2> resetPath = new Queue<Vector2>(currentPath);
+                        paths.Enqueue(resetPath);
                     }
-                    else move = false;
+                    this.position = currentPath.Dequeue();
                 }
-                
+                else move = false;
+
             }
         }
 
@@ -165,7 +167,6 @@ namespace Tony
 
         public override void BasicInteract()
         {
-
             move = true;
             Controller.DisplayText(basic);
             if (gives != null) GiverInteract();

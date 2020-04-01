@@ -170,28 +170,9 @@ namespace Tony
             Input.CheckInputs();
 
             SaveNLoad saveI = new SaveNLoad();
-            if (state.IsKeyDown(Keys.L)) saveI.save();
-            if (state.IsKeyDown(Keys.P)) saveI.read();
 
-            ObjectManager.MentalDecay(gameTime);
+            ObjectManager.Update(gameTime);
 
-            foreach (Event currentEvent in ObjectManager.currentLevel.Events)
-            {
-                if (Input.InteractDetection(currentEvent, 0)) currentEvent.Interact();
-            }
-
-
-            foreach (Npc npc in ObjectManager.currentLevel.Npcs)
-            {
-                npc.Move();
-            }
-
-            /*
-            if (level < ObjectManager.Instance.CurrentLevel.getLevel)
-            {
-                Console.WriteLine("It is working");
-            
-            }*/
 
             base.Update(gameTime);
         }

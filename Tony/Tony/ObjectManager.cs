@@ -24,7 +24,7 @@ namespace Tony
 
         public static float mentalState { get; private set; }
 
-        private static float countDuration = 2f;
+        private static float countDuration = 1f;
 
         private static float currentTime  = 0f;
 
@@ -35,7 +35,37 @@ namespace Tony
 
 
 
+        public static void Update(GameTime gameTime)
+        {
+            if (Controller.gameState == Controller.GameState.playing)
+            {
+                if (mentalState > 0)
+                {
+                    currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds; //Time passed since last Update() 
 
+                    if (currentTime >= countDuration)
+                    {
+                        currentTime -= countDuration;
+                        mentalState--;
+                        foreach (Npc npc in currentLevel.Npcs)
+                        {
+                            npc.Move();
+                        }
+                    }
+
+                    foreach (Event currentEvent in currentLevel.Events)
+                    {
+                        if (Input.InteractDetection(currentEvent, 0)) currentEvent.Interact();
+                    }
+
+
+                }
+                else
+                {
+                    Controller.gameState = Controller.GameState.gameOver;
+                }
+            }
+        }
 
 
 
@@ -94,17 +124,6 @@ namespace Tony
         {
             mentalState = 100;
         }
-
-
-
-
-
- 
-
-    
-
-
-
 
         public static float ModifyMentalState(Item item)
         {
