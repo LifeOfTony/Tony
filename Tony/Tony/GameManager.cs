@@ -113,6 +113,8 @@ namespace Tony
             mainTarget = new RenderTarget2D(
             GraphicsDevice,graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
 
+            TextureManager.LoadTextures(Content);
+
             ObjectManager.SetLevels(Content);
 
         }

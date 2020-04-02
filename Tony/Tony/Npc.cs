@@ -10,7 +10,7 @@ namespace Tony
     {
         private bool move;
         private bool actor;
-
+        private string texturePath;
 
         private Vector2[] destinations;
         private Queue<Queue<Vector2>> paths = new Queue<Queue<Vector2>>();
@@ -25,7 +25,7 @@ namespace Tony
         /// <param name="collidable"></param>
         /// <param name="requirement"></param>
         /// <param name="gives"></param>
-        public Npc(Vector2 position, Vector2 size, Texture2D texture, float baseDepth, string routes, string name, bool actor,
+        public Npc(Vector2 position, Vector2 size, Texture2D texture, float baseDepth, string routes, string name, string filePath, bool actor,
             string requirement = "", string gives = "") :
             base(position, size, texture, baseDepth, name, requirement, gives)
         {
@@ -50,14 +50,15 @@ namespace Tony
                 move = false;
             }
 
+            texturePath = filePath;
             this.actor = actor;
 
         }
 
 
-        public Npc(Vector2 position, Vector2 size, Texture2D texture, float baseDepth, string route, string name,
+        public Npc(Vector2 position, Vector2 size, Texture2D texture, float baseDepth, string route, string name, string filePath,
             string requirement = "", string gives = "")
-            : this(position, size, texture, baseDepth, route, name, false, requirement, gives)
+            : this(position, size, texture, baseDepth, route, name, filePath, false, requirement, gives)
         {
 
         }

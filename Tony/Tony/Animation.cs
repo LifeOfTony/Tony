@@ -11,40 +11,35 @@ namespace Tony
     public static class Animation
     {
 
-        private static Microsoft.Xna.Framework.Content.ContentManager Content;
-
-
-        public static void setContent(Microsoft.Xna.Framework.Content.ContentManager content)
-        {
-            Content = content;
-        }
-
-        public static Texture2D AnimatePlayer(Vector2 currentPosition, Vector2 newPosition, int textureNum)
+        public static Texture2D Animate(Vector2 currentPosition, Vector2 newPosition, bool num, string texturePath)
         {
             Texture2D newTexture;
+            int textureNum;
+
+            if (num == true) textureNum = 1;
+            else textureNum = 2;
+
 
             if(currentPosition.X < newPosition.X)
             {
-                
+                newTexture = TextureManager.GetTextureByName(texturePath, "Horizontal" + textureNum); // Right
             }
             else if(currentPosition.X > newPosition.X)
             {
-                //newTexture = Left
+                newTexture = TextureManager.GetTextureByName(texturePath, "Horizontal" + textureNum); //Left
             }
             else if(currentPosition.Y < newPosition.Y)
             {
-                //newTexture = Up
+                newTexture = TextureManager.GetTextureByName(texturePath, "Up" + textureNum);
             }
             else if(currentPosition.Y > newPosition.Y)
             {
-                //newTexture = Down
+                newTexture = TextureManager.GetTextureByName(texturePath, "Down" + textureNum);
             }
             else
             {
-                //newTexture = Idle
+                newTexture = TextureManager.GetTextureByName(texturePath, "Idle" + textureNum);
             }
-
-
 
             return newTexture;
         }

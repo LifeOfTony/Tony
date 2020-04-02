@@ -14,6 +14,8 @@ namespace Tony
         private int age;
         private int moveSpeed;
         private Vector2 velocity;
+        private bool textureNum;
+        private string texturePath;
 
         /// <summary>
         /// The Player object represents the character Tony.
@@ -24,13 +26,14 @@ namespace Tony
         /// <param name="age"></param>
         /// <param name="depth"></param>
         /// <param name="texture"></param>
-        public Player(Vector2 position, Vector2 size, int age, Texture2D texture, float baseDepth) :
+        public Player(Vector2 position, Vector2 size, int age, string filePath, Texture2D texture, float baseDepth) :
             base(position, size, texture, baseDepth)
         {
             this.age = age;
             this.moveSpeed = 1;
             velocity = Vector2.Zero;
-
+            textureNum = true;
+            texturePath = filePath;
         }
 
 
@@ -64,7 +67,9 @@ namespace Tony
             }
 
             // updates the player position based on velocity and resets velocity.
-
+            Vector2 newPosition = this.position + velocity;
+            this.texture = Animation.Animate(this.position, newPosition, textureNum, texturePath);
+            textureNum = !textureNum;
             this.position += velocity;
             velocity = Vector2.Zero;
             
