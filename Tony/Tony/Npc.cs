@@ -134,8 +134,12 @@ namespace Tony
                 else move = false;
 
             }
-            this.texture = Animation.AnimateIdle(textureNum, texturePath);
-            textureNum = !textureNum;
+            else
+            {
+                this.texture = Animation.AnimateIdle(textureNum, texturePath);
+                textureNum = !textureNum;
+            }
+            
         }
 
         #endregion

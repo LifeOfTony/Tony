@@ -217,6 +217,21 @@ namespace Tony
                 foreach (Drawable drawable in ObjectManager.currentLevel.Drawables)
                     drawable.Draw(spriteBatch);
 
+
+                foreach(GameObject i in ObjectManager.currentLevel.Objects)
+                {
+                    if (i is Interactable)
+                    {
+                        if (Detector.isTouching(i.getPosition(), i.getSize(), ObjectManager.currentLevel.Player.getPosition(), ObjectManager.currentLevel.Player.getSize(), 1))
+                        {
+                            Sprite speechSprite = new Sprite(new Vector2(i.getPosition().X + i.getSize().X, i.getPosition().Y - i.getSize().Y), new Vector2(16, 16), TextureManager.speechBubble, 0.4f);
+                            speechSprite.Draw(spriteBatch);
+                        }
+                    }
+                   
+                }
+
+
                 // Ends the spriteBatch.
                 spriteBatch.End();
             }

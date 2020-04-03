@@ -16,6 +16,8 @@ namespace Tony
 
         private static Dictionary<string, List<TextureData>> TileSets = new Dictionary<string, List<TextureData>>();
 
+        public static Texture2D speechBubble { get; private set; }
+
         public static void LoadTextures(Microsoft.Xna.Framework.Content.ContentManager content)
         {
             List<string> filenames = Directory.EnumerateFiles("Content/TileSets").Select(Path.GetFileName).ToList<string>();
@@ -41,6 +43,10 @@ namespace Tony
                 TileSets.Add(tileSetPath, currentTileSet);
 
             }
+
+            speechBubble = content.Load<Texture2D>(@"UI/Speech3");
+
+
         }
 
 

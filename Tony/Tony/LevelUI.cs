@@ -13,8 +13,8 @@ namespace Tony
 {
     class LevelUI : Entity
     {
-        public Panel LowerUI { get; private set; }
-        public Image TextBox { get; private set; }
+        public Image LowerUI { get; private set; }
+        public Panel TextBox { get; private set; }
         public Paragraph text { get; private set; }
         public Panel frame;
 
@@ -27,8 +27,12 @@ namespace Tony
 
             Lanterns = lanterns;
 
-
+            /*
             LowerUI = new Panel(new Vector2(700, 250), PanelSkin.Fancy, Anchor.BottomCenter, new Vector2(0, 125));
+            LowerUI.Opacity = 70;
+            */
+
+            LowerUI = new Image(texture, new Vector2(700, 250), ImageDrawMode.Stretch, Anchor.BottomCenter, new Vector2(0, 125));
             LowerUI.Opacity = 70;
 
             frame = new Panel(new Vector2(175, 250), PanelSkin.None, Anchor.BottomCenter, new Vector2(-250, -25));
@@ -38,7 +42,7 @@ namespace Tony
             frame.AddChild(lantern);
 
 
-            TextBox = new Image(texture, new Vector2(500, 200), ImageDrawMode.Stretch , Anchor.BottomCenter, new Vector2(frame.Size.X/2,0));
+            TextBox = new Panel(new Vector2(500, 200), PanelSkin.None , Anchor.BottomCenter, new Vector2(frame.Size.X/2,0));
 
             LowerUI.AddChild(TextBox);
 

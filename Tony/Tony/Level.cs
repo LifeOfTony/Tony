@@ -15,6 +15,8 @@ namespace Tony
         //static list of all drawable objects.
         public List<Drawable> Drawables { get; private set; }
 
+
+
         //static list of collidable objects.
         public List<GameObject> Collidables { get; private set; }
 
@@ -66,6 +68,8 @@ namespace Tony
                 Drawables.Add(drawable);
             }
 
+
+
             // Adds to Collidables if collidable.
             if (newObject is Collider)
             {
@@ -81,8 +85,6 @@ namespace Tony
             {
                 Npcs.Add((Npc)newObject);
             }
-
-
 
             if (newObject is EndObject)
             {

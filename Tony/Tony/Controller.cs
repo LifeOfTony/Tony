@@ -18,6 +18,10 @@ namespace Tony
        public static bool exit = false;
        private static ContentManager Content;
 
+       private static float countDuration = 3f;
+
+       private static float currentTime = 0f;
+
 
         public static void Initialize(ContentManager content)
         {
@@ -115,8 +119,23 @@ namespace Tony
         {
             ProcessButtons();
             SwitchState();
-            // GeonBit.UIL update UI manager
-            View.Update(gameTime);
+
+            if(View.levelUI.text.Text != "")
+            {
+                currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds; //Time passed since last Update() 
+            }
+            
+
+            if (currentTime >= countDuration)
+            {
+                ClearText();
+                currentTime -= countDuration;
+            }
+           
+
+
+                // GeonBit.UIL update UI manager
+                View.Update(gameTime);
         }
 
         public static void Draw(SpriteBatch spriteBatch)

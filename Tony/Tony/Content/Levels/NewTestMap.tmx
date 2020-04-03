@@ -112,7 +112,7 @@
   <object id="61" gid="37" x="297.501" y="696.459" width="8" height="8"/>
  </objectgroup>
  <objectgroup id="4" name="Interactable Layer">
-  <object id="62" name="NPC1" type="NPC" gid="86" x="864" y="512" width="20" height="30">
+  <object id="62" name="NPC2" type="NPC" gid="86" x="864" y="512" width="20" height="30">
    <properties>
     <property name="Gives" value="thing"/>
     <property name="Route" value="864,640:608,640:608,480"/>

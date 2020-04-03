@@ -17,6 +17,7 @@ namespace Tony
         protected string gives;
         public string name { get; private set; }
         public InteractHandler InteractType = null;
+        protected bool interacted;
 
         /// <summary>
         /// InteractableObjects are any object that can be interacted with by the player.
@@ -36,6 +37,7 @@ namespace Tony
             this.complex = ScriptReader.complex;
             this.requirement = requirement;
             this.gives = gives;
+            interacted = false;
             AssignType();
 
         }
@@ -57,7 +59,16 @@ namespace Tony
      
         public virtual void Interact()
         {
-            InteractType(); 
+
+            if(interacted == false)
+            {
+                InteractType();
+                interacted = true;
+            }
+            
+
+            InteractType();
+
         }
 
 

@@ -35,7 +35,7 @@ namespace Tony
             Menu.AddChild(MainToLoad);
 
 
-            MainToQuit = new Button("Quit", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(0, 110));
+            MainToQuit = new Button("Quit", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(0, 185));
             Menu.AddChild(MainToQuit);
 
 

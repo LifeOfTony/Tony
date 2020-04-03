@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tony
 {
-    interface Interactable
+    public interface Interactable
     {
         void Interact();
     }
