@@ -34,6 +34,10 @@ namespace Tony
                         Pathfinder.CreateGrid(ObjectManager.currentLevel);
                         ObjectManager.currentLevel.setPaths();
                     }
+                    else
+                    {
+                        Controller.gameState = Controller.GameState.gameOver;
+                    }
                 }
                 else
                 {
