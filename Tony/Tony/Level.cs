@@ -10,124 +10,48 @@ namespace Tony
     public class Level
     {
         //static list of all objects in the current game.
-        private List<GameObject> _Objects;
+        public List<GameObject> Objects { get; private set; }
 
         //static list of all drawable objects.
-        private List<Drawable> _Drawables;
+        public List<Drawable> Drawables { get; private set; }
+
+
 
         //static list of collidable objects.
-        private List<GameObject> _Collidables;
+        public List<GameObject> Collidables { get; private set; }
 
 
-        private List<GameObject> _Npcs;
+        public List<Npc> Npcs { get; private set; }
 
-        private int level;
+        public List<Event> Events { get; private set; }
 
-        private int mapHeight;
-        private int mapWidth;
 
-        private Player _player;
+        public int level { get; private set; }
 
-        private EndObject _end;
+        public int mapHeight { get; private set; }
+        public int mapWidth { get; private set; }
+        public int tileHeight { get; private set; }
+        public int tileWidth { get; private set; }
 
-        public Level(int level, int mapWidth, int mapHeight)
+        public Player Player { get; private set; }
+
+        public EndObject End { get; private set; }
+
+        public Level(int level, int mapWidth, int mapHeight, int tileWidth, int tileHeight)
         {
             this.mapWidth = mapWidth;
             this.mapHeight = mapHeight;
+            this.tileWidth = tileWidth;
+            this.tileHeight = tileHeight;
             this.level = level;
-            _Objects = new List<GameObject>();
-            _Drawables = new List<Drawable>();
-            _Collidables = new List<GameObject>();
-            _Npcs = new List<GameObject>();
+            Objects = new List<GameObject>();
+            Drawables = new List<Drawable>();
+            Collidables = new List<GameObject>();
+            Npcs = new List<Npc>();
+            Events = new List<Event>();
         }
 
 
-        public int getLevel
-        {
-            get
-            {
-                return level;
-            }
-            
-        }
-
-
-        public List<GameObject> Npcs
-        {
-            get
-            {
-                return _Npcs;
-            }
-        }
-
-
-
-        public List<GameObject> Objects
-        {
-            get
-            {
-                return _Objects;
-            }
-        }
-
-        public List<Drawable> Drawables
-        {
-            get
-            {
-                return _Drawables;
-            }
-        }
-
-        public List<GameObject> Collidables
-        {
-            get
-            {
-                return _Collidables;
-            }
-        }
-
-        
-
-        public Player Player
-        {
-            get
-            {
-                return _player;
-            }
-        }
-
-        public EndObject End
-        {
-            get
-            {
-                return _end;
-            }
-        }
-
-        public int MapWidth
-        {
-            get
-            {
-                return mapWidth;
-            }
-            set
-            {
-                mapWidth = value;
-            }
-
-        }
-
-        public int MapHeight
-        {
-            get
-            {
-                return mapHeight;
-            }
-            set
-            {
-                mapHeight = value;
-            }
-        }
 
         /// <summary>
         /// AddObject is called to add a new GameObject to the Objects list.
@@ -141,28 +65,35 @@ namespace Tony
             // Adds to Drawables if drawable.
             if (newObject is Drawable drawable)
             {
-                _Drawables.Add(drawable);
+                Drawables.Add(drawable);
             }
+
+
 
             // Adds to Collidables if collidable.
             if (newObject is Collider)
             {
-                _Collidables.Add(newObject);
+                Collidables.Add(newObject);
             }
 
             if (newObject is Player)
             {
-                _player = (Player)newObject;
+                Player = (Player)newObject;
             }
 
             if (newObject is Npc)
             {
-                _Npcs.Add(newObject);
+                Npcs.Add((Npc)newObject);
             }
 
             if (newObject is EndObject)
             {
-                _end = (EndObject)newObject;
+                End = (EndObject)newObject;
+            }
+
+            if (newObject is Event)
+            {
+                Events.Add((Event)newObject);
             }
         }
 
@@ -188,22 +119,23 @@ namespace Tony
 
             if (oldObject is Player)
             {
-                _player = null; ;
+                Player = null; ;
             }
 
             if (oldObject is Npc)
             {
-                Npcs.Remove(oldObject);
+                Npcs.Remove((Npc)oldObject);
             }
         }
 
         public void setPaths()
         {
-            foreach (Npc currentNpc in _Npcs)
+            foreach (Npc currentNpc in Npcs)
             {
                 currentNpc.setPath();
             }
         }
+
 
     }
 }

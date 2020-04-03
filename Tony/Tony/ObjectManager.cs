@@ -4,121 +4,126 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using System.IO;
 
 namespace Tony
 {
-    public sealed class ObjectManager
+    public static class ObjectManager
     {
 
 
 
-        private static ObjectManager ObjectManagerinstance = null;
+   
 
-        private static List<Level> levels = new List<Level>();
+        public static List<Level> levels { get; private set; } = new List<Level>();
 
-        private static Level currentLevel;
+        public static Level currentLevel;
 
-        private static float mentalState = 100;
-        private static float countDuration = 2f;
-        private static float currentTime = 0f;
+        public static float mentalState { get; private set; }
+
+        private static float countDuration = 1f;
+
+        private static float currentTime  = 0f;
 
         //static list of all Items in the current game.
-        private List<Item> _Items = new List<Item>();
+        public static List<Item> Items { get; private set; } = new List<Item>();
 
 
-        private ObjectManager()
+
+
+
+        public static void Update(GameTime gameTime)
         {
-        }
-
-        public static ObjectManager Instance
-        {
-            get
+            if (Controller.gameState == Controller.GameState.playing)
             {
-                if (ObjectManagerinstance == null)
+                if (mentalState > 0)
                 {
-                    ObjectManagerinstance = new ObjectManager();
+                    currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds; //Time passed since last Update() 
+                    
+                    if (currentTime >= countDuration)
+                    {
+                        currentTime -= countDuration;
+                        if(currentLevel.level != 0) mentalState--;
+                        foreach (Npc npc in currentLevel.Npcs)
+                        {
+                            npc.Move();
+                        }
+                        
+                    }
+                   
+
+                    foreach (Event currentEvent in currentLevel.Events)
+                    {
+                        if (Input.InteractDetection(currentEvent, 0)) currentEvent.Interact();
+                    }
+
+
                 }
-                return ObjectManagerinstance;
-            }
-        }
-
-
-        public void AddLevel(Level newLevel)
-        {
-            levels.Add(newLevel);
-        }
-
-
-
-        public Level CurrentLevel
-        {
-            get
-            {
-                return currentLevel;
-            }
-            set
-            {
-                currentLevel = value;
-            }
-            
-        }
-
-        
-
-        public float MentalState
-        {
-            get
-            {
-                return mentalState;
-            }
-        }
-
-        public List<Item> Items
-        {
-            get
-            {
-                return _Items;
-            }
-        }
-
-
-
-
-        public void MentalDecay(GameTime gameTime)
-        {
-            if( mentalState > 0)
-            {
-                currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds; //Time passed since last Update() 
-
-                if (currentTime >= countDuration)
+                else
                 {
-                    currentTime -= countDuration;
-                    mentalState--;
+                    Controller.gameState = Controller.GameState.gameOver;
                 }
             }
-
-           
         }
 
 
-        
-
-        /// <summary>
-        /// AddItem is called to add a new Item to the Items list.
-        /// </summary>
-        public void AddItem(Item newItem)
+        public static void SetLevels(ContentManager Content)
         {
-            Items.Add(newItem);
+            levels.Clear();
+
+
+            //Get all Levels from the directory and store in the array.
+            string[] filePaths = Directory.GetFiles(@"Content\Levels\", "*.tmx");
+            //Adding Level to the ObjectManager.Instance.levels
+            for (int i = 0; i < filePaths.Length; i++)
+            {
+                LevelReader iLevel = new LevelReader(@filePaths[i], Content);
+                Level iNewLevel = iLevel.GetLevel();
+                levels.Add(iNewLevel);
+                if (iNewLevel.level == 0)
+                {
+                    currentLevel = iNewLevel;
+                    Pathfinder.CreateGrid(currentLevel);
+                    currentLevel.setPaths();
+                    
+                }
+            }
+            ResetMentalState();
         }
 
-        /// <summary>
-        /// RemoveItem is called to remove an Item from the Items list.
-        /// </summary>
-        public void RemoveItem(Item oldItem)
+        public static void ResetMentalState()
         {
-            Items.Remove(oldItem);
+            mentalState = 100;
         }
 
+        public static float ModifyMentalState(Item item)
+        {
+            mentalState += item.GetModifier();
+            return mentalState;
+        }
 
+        public static void setMentalState(float newMentalStalte)
+            {
+                    mentalState = newMentalStalte;
+            }
+
+        public static void setPosition (Vector2 position)
+        {
+            currentLevel.Player.setPosition(position);
+        }
+
+        public static void setCorrectedItem(Item correctedItem)
+        {
+            foreach(Item i in Items)
+            {
+                if (i.Equals(correctedItem))
+                {
+                    i.loadCollect ();
+                }
+            }
+        }
     }
 }

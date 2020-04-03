@@ -10,27 +10,43 @@ namespace Tony
 {
     public class EndObject : InteractableObject
     {
-        public EndObject(Vector2 position, Vector2 size, float depth, Texture2D texture, string requirement, string gives)
-            : base(position, size, depth, texture, requirement, gives)
+
+        public EndObject(Vector2 position, Vector2 size, Texture2D texture, float baseDepth, string requirement)
+            : base(position, size, texture, baseDepth, "End", requirement)
         {
 
         }
 
-        /*
-        public override void ComplexInteract()
+        
+        public override void Interact()
         {
-            // finds the correct item and sets it to collected.
-            foreach (Item currentItem in ObjectManager.Instance.Items)
+            foreach (Item i in ObjectManager.Items)
             {
-                // text feedback is given when the item is gained.
-                if (currentItem.GetName().Equals(gives))
+                if (i.IsCollected() == true && i.GetName().Equals (requirement))
                 {
-                    currentItem.Collect();
-                    GameManager.textOutput += "gained " + gives + "\n\r";
-                    //GameManager.setMainMenuState();
+
+                    if(ObjectManager.currentLevel.level < ObjectManager.levels.Count() - 1 )
+                    {
+                        Controller.DisplayText(complex);
+                        ObjectManager.currentLevel = ObjectManager.levels.Find
+                            (x => x.level == (ObjectManager.currentLevel.level + 1));
+
+                        Pathfinder.CreateGrid(ObjectManager.currentLevel);
+                        ObjectManager.currentLevel.setPaths();
+                    }
+                    else
+                    {
+                        Controller.gameState = Controller.GameState.gameOver;
+                    }
+                }
+                else
+                {
+                    Controller.DisplayText(basic);
                 }
             }
+
+
         }
-        */
+        
     }
 }

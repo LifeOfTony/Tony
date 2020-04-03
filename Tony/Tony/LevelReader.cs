@@ -20,26 +20,27 @@ namespace Tony
         public int tileWidth;
         public int tileHeight;
 
-        Level levelRead;
-        private int levelNo;
+        private Level levelRead;
         private XDocument reader;
         //tileNumbers, tileset and objectElements store the information taken from the Xml file.
-        public List<Texture2D> tileset;
         public List<XElement> interactors;
         public List<XElement> colliders;
         private XElement map;
         private Microsoft.Xna.Framework.Content.ContentManager Content;
+
+
+        private Dictionary<int, string> activeTileSets = new Dictionary<int, string>();
 
         /// <summary>
         /// the LevelReader takes a file path string as a parameter.
         /// It then reads the xml file found and sets the instance variables to the value of certain information in the file.
         /// </summary>
         /// <param name="filePath"></param>
-        public LevelReader(string filePath, Microsoft.Xna.Framework.Content.ContentManager content, int level)
+        public LevelReader(string filePath, Microsoft.Xna.Framework.Content.ContentManager content)
         {
             reader = XDocument.Load(filePath);
             Content = content;
-            levelNo = level;
+
             LoadFile();
         }
 
@@ -65,16 +66,22 @@ namespace Tony
 
 
 
+
+
+
+
+
         public void LoadFile()
         {
             this.map = reader.Element("map");
             this.interactors = new List<XElement>();
             this.colliders = new List<XElement>();
-            this.tileset = new List<Texture2D>();
             if (map.Attribute("orientation").Value != "orthogonal")
             {
                 //return exception level file invalid.
             }
+
+            int levelNo = Int32.Parse(map.Element("properties").Element("property").Attribute("value").Value);
 
             //sets the basic map information.
             this.width = Int32.Parse(map.Attribute("width").Value);
@@ -82,13 +89,24 @@ namespace Tony
             this.tileWidth = Int32.Parse(map.Attribute("tilewidth").Value);
             this.tileHeight = Int32.Parse(map.Attribute("tileheight").Value);
 
-            levelRead = new Level(levelNo, width, height);
+            levelRead = new Level(levelNo, width, height, tileWidth, tileHeight);
 
+            ScriptReader.currentLevel = levelNo;
 
-            CreateTileSet();
+            foreach (XElement tilesetNode in map.Elements("tileset"))
+            {
+                int startNum = Int32.Parse(tilesetNode.Attribute("firstgid").Value);
+                string setPath = tilesetNode.Attribute("source").Value;
+                activeTileSets.Add(startNum, setPath);
+            }
             FetchTileData();
             FetchObjectData();
         }
+
+
+
+
+
 
 
         private void FetchTileData()
@@ -96,13 +114,17 @@ namespace Tony
             IEnumerable<XElement> tileLayers = map.Elements("layer");
             foreach (XElement currentLayer in tileLayers)
             {
-                int depth = Int32.Parse(currentLayer.Attribute("name").Value);
                 string tileData = currentLayer.Element("data").Value;
-                CreateTiles(tileData, depth);
+                CreateTiles(tileData);
             }
         }
 
-        private void CreateTiles(string tileData, int depth)
+
+
+
+
+
+        private void CreateTiles(string tileData)
         {
            
             List<string[]> currentLayer = tileSplitter(tileData);
@@ -117,7 +139,7 @@ namespace Tony
                     {
                         Vector2 position = new Vector2(x * tileWidth, y * tileHeight);
                         Vector2 size = new Vector2(tileWidth, tileHeight);
-                        Sprite currentTile = new Sprite(position, size, depth, tileset[textureNumber - 1]);
+                        Sprite currentTile = new Sprite(position, size, getTexture(textureNumber).Item1, 0); 
                         levelRead.AddObject(currentTile);
                     }
 
@@ -127,15 +149,23 @@ namespace Tony
             
         }
 
-        private void CreateProps(XElement objectData, int depth)
+
+
+
+
+
+        private void CreateProps(XElement objectData, float baseDepth)
         {
             // Data taken from the object element.
             Vector2 size = new Vector2(float.Parse(objectData.Attribute("width").Value), float.Parse(objectData.Attribute("height").Value));
             Vector2 position = new Vector2(float.Parse(objectData.Attribute("x").Value), float.Parse(objectData.Attribute("y").Value) - size.Y);
             // creates a new collider.
-            Sprite currentProp = new Sprite(position, size, depth, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1]);
+            Sprite currentProp = new Sprite(position, size, getTexture(Int32.Parse(objectData.Attribute("gid").Value)).Item1, baseDepth);
             levelRead.AddObject(currentProp);
         }
+
+
+
 
 
         private void FetchObjectData()
@@ -162,13 +192,16 @@ namespace Tony
                         break;
 
                     case "Prop Layer":
-                        int depth = Int32.Parse(objectLayer.Element("properties").Element("property").Attribute("value").Value);
-                        foreach (XElement objectData in objects) CreateProps(objectData, depth);
+                        float baseDepth = float.Parse(objectLayer.Element("properties").Element("property").Attribute("value").Value)/10;
+                        foreach (XElement objectData in objects) CreateProps(objectData, baseDepth);
                         break;
 
                 }
             }
         }
+
+
+
 
         private void CreateInteractors(XElement objectData)
         {
@@ -177,9 +210,11 @@ namespace Tony
             Vector2 position = new Vector2(float.Parse(objectData.Attribute("x").Value), float.Parse(objectData.Attribute("y").Value) - size.Y);
             string requires = null;
             string gives = null;
-            string basic = null;
             string route = null;
-            bool basicMove = false;
+            string subType = null;
+
+            string actors = "";
+            float baseDepth = 0.4f;
 
             #region object property navigation
             if (objectData.Element("properties") != null)
@@ -189,11 +224,14 @@ namespace Tony
                 {
                     if (property.Attribute("name").Value == "Requires") requires = property.Attribute("value").Value;
                     if (property.Attribute("name").Value == "Gives") gives = property.Attribute("value").Value;
-                    if (property.Attribute("name").Value == "Basic") basic = property.Attribute("value").Value;
-                    if (property.Attribute("name").Value == "BasicMove") basicMove = bool.Parse(property.Attribute("value").Value);
+                    if (property.Attribute("name").Value == "SubType") subType = property.Attribute("value").Value;
                     if (property.Attribute("name").Value == "Route")
                     {
                         route = property.Attribute("value").Value;
+                    }
+                    if (property.Attribute("name").Value == "Actors")
+                    {
+                        actors = property.Attribute("value").Value;
                     }
 
                 }
@@ -206,21 +244,51 @@ namespace Tony
             if (objectData.Attribute("type").Value == "Interactable")
             {
 
-                InteractableObject currentObject = new InteractableObject(position, size, 4, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1], requires, gives);
+                InteractableObject currentObject = new InteractableObject(position, size, getTexture(Int32.Parse(objectData.Attribute("gid").Value)).Item1, baseDepth,
+                    objectData.Attribute("name").Value, requires, gives);
                 levelRead.AddObject(currentObject);
             }
             if (objectData.Attribute("type").Value == "NPC")
             {
-                Npc currentObject = new Npc(position, size, 4, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1], route, basicMove, requires, gives);
+                Tuple<Texture2D, string> textureData = getTexture(Int32.Parse(objectData.Attribute("gid").Value));
+                Npc currentObject = new Npc(position, size, textureData.Item1 , baseDepth, route,
+                    objectData.Attribute("name").Value, textureData.Item2, requires, gives);
                 levelRead.AddObject(currentObject);
             }
-            if (objectData.Attribute("type").Value == "End")
+
+            if(objectData.Attribute("type").Value == "Actor")
             {
-                EndObject currentObject = new EndObject(position, size, 4, tileset[Int32.Parse(objectData.Attribute("gid").Value) - 1], requires, gives);
+                Tuple<Texture2D, string> textureData = getTexture(Int32.Parse(objectData.Attribute("gid").Value));
+
+                if(subType.Equals("NPC"))
+                {
+                    Npc currentObject = new Npc(position, size, textureData.Item1, baseDepth, route,
+                    objectData.Attribute("name").Value, textureData.Item2, true, requires, gives);
+                    levelRead.AddObject(currentObject);
+                }
+                else
+                {
+                    InteractableObject currentObject = new InteractableObject(position, size, getTexture(Int32.Parse(objectData.Attribute("gid").Value)).Item1, baseDepth,
+                    objectData.Attribute("name").Value, requires, gives);
+                    levelRead.AddObject(currentObject);
+                }
+            }
+
+            if(objectData.Attribute("type").Value == "Event")
+            {
+                Event currentObject = new Event(position, size, actors);
+                levelRead.AddObject(currentObject);
+            }
+            if (objectData.Attribute("type").Value == "EndObject")
+            {
+                EndObject currentObject = new EndObject(position, size, getTexture(Int32.Parse(objectData.Attribute("gid").Value)).Item1, baseDepth, requires);
                 levelRead.AddObject(currentObject);
             }
             #endregion
         }
+
+
+
 
         private void CreateColliders(XElement objectData)
         {
@@ -233,37 +301,70 @@ namespace Tony
             levelRead.AddObject(currentCollider);
         }
 
+
+
+
+
         private void CreatePlayer(XElement playerData)
         {
             Vector2 size = new Vector2(float.Parse(playerData.Attribute("width").Value), float.Parse(playerData.Attribute("height").Value));
             Vector2 position = new Vector2(float.Parse(playerData.Attribute("x").Value), float.Parse(playerData.Attribute("y").Value) - size.Y);
+            float playerDepth = 0.2f;
 
-
-            Player player = new Player(position, size, 1, tileset[Int32.Parse(playerData.Attribute("gid").Value) - 1], 4);
+            Tuple<Texture2D, string> textureData = getTexture(Int32.Parse(playerData.Attribute("gid").Value));
+            Player player = new Player(position, size, 1, textureData.Item2 , textureData.Item1, playerDepth);
             levelRead.AddObject(player);
         }
 
-        private void CreateTileSet()
-        {
 
-            foreach (XElement tilesetNode in map.Elements("tileset"))
+
+
+        
+
+
+
+        public Tuple<Texture2D, string> getTexture(int textureNum)
+        {
+          
+            Texture2D texture = null;
+            string currentPath = null;
+            List<int> startNums = new List<int>(activeTileSets.Keys);
+            startNums.Reverse();
+       
+            foreach(int i in startNums)
             {
-                //finds the element called tileset from the map file and uses it to create a new xmlreader for the tileset file.
-                XmlReader tileReader = XmlReader.Create(tilesetNode.Attribute("source").Value);
-                while (tileReader.Read())
+               
+                if (textureNum >= i)
                 {
-                    //for each tile in the tileset file, add its file location to the tileset list.
-                    if ((tileReader.NodeType == XmlNodeType.Element) && (tileReader.Name == "image"))
-                    {
-                        tileset.Add(Content.Load<Texture2D>(tileReader.GetAttribute("source")));
-                    }
-                    tileReader.Read();
+                    currentPath = activeTileSets[i];
+                    int trueTextureNum = textureNum - i;
+                    
+                    texture = TextureManager.GetTextureByNum(currentPath, trueTextureNum);
+                    break;
                 }
             }
 
-
-            
+            if(texture != null)
+            {
+                Tuple<Texture2D, string> data = new Tuple<Texture2D, string>(texture, currentPath);
+                return data;
+            }
+            else
+            {
+                Console.WriteLine("texture doesnt exist");
+                return null;
+            }
+           
         }
+
+
+
+
+
+
+
+
+
 
         public Level GetLevel()
         {

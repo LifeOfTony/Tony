@@ -20,24 +20,25 @@ namespace Tony
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        public float screenWidth;
+        public float screenHeight;
+        private Camera camera;
 
         public static Texture2D lightMask;
         public static Effect effect1;
         RenderTarget2D lightsTarget;
         RenderTarget2D mainTarget;
 
+        bool changeScreen;
+
         Vector2 lightPosition;
 
         //A list holding the tileset textures.
         private List<Texture2D> tileset;
 
-        //A SpriteFont for displaying text.
-        private SpriteFont font;
 
-        //The current level number.
-        private int level;
 
-        private int levels;
+
 
         private float countDuration = 2f;
         private float currentTime = 0f;
@@ -51,9 +52,8 @@ namespace Tony
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             tileset = new List<Texture2D>();
-            textOutput = "";
-            level = 0;
-            levels = 2;
+            changeScreen = false;
+
             
 
         }
@@ -75,6 +75,8 @@ namespace Tony
             //These four lines set up the screen to fit the users monitor.
             graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
             graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
+            screenWidth = graphics.PreferredBackBufferWidth;
+            screenHeight = graphics.PreferredBackBufferHeight;
             graphics.IsFullScreen = false;
             graphics.ApplyChanges();
             base.Initialize();
@@ -87,45 +89,31 @@ namespace Tony
         protected override void LoadContent()
         {
 
-
+            //Create a Camera Object (ScreenWidth, ScreenHeight, Zoom Level)
+            camera = new Camera(screenWidth, screenHeight, 1.5f);
 
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            
-
             lightMask = Content.Load<Texture2D>("lightMask");
             effect1 = Content.Load<Effect>("lighteffect");
-
-
-            // Loads the SpriteFont 'textFont' from Content.
-            font = Content.Load<SpriteFont>("textFont");
-
-
 
             // Creates a new ItemReader for the Items.xml file.
             ItemReader itemList = new ItemReader(@"Content\Items.xml");
 
             Controller.Initialize(Content);
 
-            // Creates a new LevelReader for the testmap.xml file. 
-            LevelReader currentLevel = new LevelReader(@"Content\Levels\TestMapNew.tmx", Content, level);
 
-            int mapWidth = currentLevel.width;
-            int mapHeight = currentLevel.height;
-            int tileWidth = currentLevel.tileWidth;
-            int tileHeight = currentLevel.tileHeight;
-            lightsTarget = new RenderTarget2D(
-            GraphicsDevice, mapWidth * tileWidth, mapHeight * tileHeight);
-            mainTarget = new RenderTarget2D(
-            GraphicsDevice, mapWidth * tileWidth, mapHeight * tileHeight);
-
-            Level newLevel = currentLevel.GetLevel();
             
-            ObjectManager.Instance.CurrentLevel = newLevel;
-            ObjectManager.Instance.AddLevel(newLevel);
-            Pathfinder.CreateGrid(mapWidth, mapHeight, tileWidth, tileHeight);
-            newLevel.setPaths();
+
+            lightsTarget = new RenderTarget2D(
+            GraphicsDevice,graphics.PreferredBackBufferWidth,graphics.PreferredBackBufferHeight);
+            mainTarget = new RenderTarget2D(
+            GraphicsDevice,graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
+
+            TextureManager.LoadTextures(Content);
+
+            ObjectManager.SetLevels(Content);
 
         }
 
@@ -165,7 +153,7 @@ namespace Tony
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape) || Controller.exit == true)
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Controller.exit == true)
                 Exit();
 
             ClearText(gameTime);
@@ -176,21 +164,23 @@ namespace Tony
             // Poll for current keyboard state
             KeyboardState state = Keyboard.GetState();
 
-            // Calls any Player methods based on the Keyboard state.
-            Player player = ObjectManager.Instance.CurrentLevel.Player;
-            if (state.IsKeyDown(Keys.A)) player.move("A");
-            if (state.IsKeyDown(Keys.W)) player.move("W");
-            if (state.IsKeyDown(Keys.S)) player.move("S");
-            if (state.IsKeyDown(Keys.D)) player.move("D");
-            if (state.IsKeyDown(Keys.E)) player.interact();
+            Player player = ObjectManager.currentLevel.Player;
+            //update camera
+            camera.follow(player);
+            Input.CheckInputs();
 
-            ObjectManager.Instance.MentalDecay(gameTime);
-
-            foreach(Npc npc in ObjectManager.Instance.CurrentLevel.Npcs)
+            if(Input.isFullScreen != graphics.IsFullScreen)
             {
-                npc.Move();
+                graphics.ToggleFullScreen();
+                graphics.ApplyChanges();
             }
-            
+
+
+
+            SaveNLoad saveI = new SaveNLoad();
+
+            ObjectManager.Update(gameTime);
+
 
             base.Update(gameTime);
         }
@@ -204,14 +194,14 @@ namespace Tony
             //Create lightsTarget RenderTarget.
             {
 
-                float scale = 0.04f * ObjectManager.Instance.MentalState;
+                float scale = 0.04f * ObjectManager.mentalState;
                 if (scale < 1)
                 {
                     scale = 1f;
                 }
 
                 float maskRadius = lightMask.Width / 2 * scale;
-                Vector2 playerLocation = ObjectManager.Instance.CurrentLevel.Player.getPosition();
+                Vector2 playerLocation = ObjectManager.currentLevel.Player.getPosition();
 
                 lightPosition = new Vector2(playerLocation.X - maskRadius, playerLocation.Y - maskRadius);
 
@@ -230,8 +220,23 @@ namespace Tony
 
                 
                 // Draws all Drawable objects.
-                foreach (Drawable drawable in ObjectManager.Instance.CurrentLevel.Drawables)
+                foreach (Drawable drawable in ObjectManager.currentLevel.Drawables)
                     drawable.Draw(spriteBatch);
+
+
+                foreach(GameObject i in ObjectManager.currentLevel.Objects)
+                {
+                    if (i is Interactable && !(i is Event))
+                    {
+                        if (Detector.isTouching(i.getPosition(), i.getSize(), ObjectManager.currentLevel.Player.getPosition(), ObjectManager.currentLevel.Player.getSize(), 1))
+                        {
+                            Sprite speechSprite = new Sprite(new Vector2(i.getPosition().X + i.getSize().X, i.getPosition().Y - i.getSize().Y), new Vector2(16, 16), TextureManager.speechBubble, 0.4f);
+                            speechSprite.Draw(spriteBatch);
+                        }
+                    }
+                   
+                }
+
 
                 // Ends the spriteBatch.
                 spriteBatch.End();
@@ -244,7 +249,7 @@ namespace Tony
                 GraphicsDevice.SetRenderTarget(null);
                 GraphicsDevice.Clear(Color.Black);
 
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: camera.Transform);
 
                 effect1.Parameters["lightMask"].SetValue(lightsTarget);
                 effect1.CurrentTechnique.Passes[0].Apply();
@@ -254,17 +259,6 @@ namespace Tony
                 spriteBatch.End();
             }
 
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive);
-            // Draws some text based on the textOutput variable.
-            string text = "" + ObjectManager.Instance.MentalState;
-            spriteBatch.DrawString(font, text , new Vector2(200, 200), Color.White);
-
-            // Draws some text based on the textOutput variable.
-            spriteBatch.DrawString(font, textOutput, new Vector2(750, 300), Color.White);
-
-            spriteBatch.End();
-
-            
             Controller.Draw(spriteBatch);
 
             base.Draw(gameTime);

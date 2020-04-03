@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <items>
- <item name = "money" modifier="10"/>
- <item name = "rock" modifier="10"/>
- <item name = "large-rock" modifier="10"/>
- <item name = "big-ol-rock" modifier="10"/>
- <item name = "thing" modifier="10"/>
+ <item name = "refreshment" modifier="0"/>
+ <item name = "a job well done" modifier="10"/>
+ <item name = "screw" modifier="10"/>
+ <item name = "cake" modifier="10"/>
+ <item name = "wet feet" modifier="-10"/>
  <item name = "coffee" modifier="10"/>
- <item name = "keytotherock" modifier="10"/>
+ <item name = "grump" modifier="-10"/>
   <item name = "snacks" modifier="10"/>
-  <item name = "THE_PAPERS" modifier="10"/>
-  <item name = "workPapers" modifier="10"/>
-  <item name = "helpful_personality" modifier="10"/>
+  <item name = "anothergrump" modifier="-10"/>
   
 </items>

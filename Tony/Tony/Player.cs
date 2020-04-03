@@ -13,8 +13,10 @@ namespace Tony
     {
         private int age;
         private int moveSpeed;
-        private int range;
         private Vector2 velocity;
+        private bool textureNum;
+        private string texturePath;
+        private int moveCount;
 
         /// <summary>
         /// The Player object represents the character Tony.
@@ -25,14 +27,15 @@ namespace Tony
         /// <param name="age"></param>
         /// <param name="depth"></param>
         /// <param name="texture"></param>
-        public Player(Vector2 position, Vector2 size, int age, Texture2D texture, float depth) :
-            base(position, size, depth, texture)
+        public Player(Vector2 position, Vector2 size, int age, string filePath, Texture2D texture, float baseDepth) :
+            base(position, size, texture, baseDepth)
         {
             this.age = age;
             this.moveSpeed = 1;
-            this.range = 1;
             velocity = Vector2.Zero;
-
+            textureNum = true;
+            texturePath = filePath;
+            moveCount = 0;
         }
 
 
@@ -43,34 +46,68 @@ namespace Tony
         /// <param name="key"></param>
         public void move(string key)
         {
-            // setVelocity sets the values of velocity based on the key given.
-            setVelocity(key);
-
-
-            // Compares the player position to all collidable objects.
-            foreach(GameObject currentObject in ObjectManager.Instance.CurrentLevel.Collidables)
+            if(key != null)
             {
-                if (currentObject == this)
-                    continue;
+                // setVelocity sets the values of velocity based on the key given.
+                setVelocity(key);
 
-                // conditions for horizontal movement.
-                //if not met, the horezontal velocity is set to 0.
 
-                if ((velocity.X > 0 && Detector.IsTouchingLeft(currentObject.getPosition(), currentObject.getSize(), this.position, this.size, this.moveSpeed)) 
-                    || (velocity.X < 0 && Detector.IsTouchingRight(currentObject.getPosition(), currentObject.getSize(), this.position, this.size, this.moveSpeed))) velocity.X = 0;
+                // Compares the player position to all collidable objects.
+                foreach (GameObject currentObject in ObjectManager.currentLevel.Collidables)
+                {
+                    if (currentObject == this)
+                        continue;
 
-                // conditions for vertical movement.
-                //if not met, the vertical velocity is set to 0.
-                if ((velocity.Y > 0 && Detector.IsTouchingTop(currentObject.getPosition(), currentObject.getSize(), this.position, this.size, this.moveSpeed))
-                    || (velocity.Y < 0 && Detector.IsTouchingBottom(currentObject.getPosition(), currentObject.getSize(), this.position, this.size, this.moveSpeed))) velocity.Y = 0;
+                    // conditions for horizontal movement.
+                    //if not met, the horezontal velocity is set to 0.
+
+                    if ((velocity.X > 0 && Detector.IsTouchingLeft(currentObject.getPosition(), currentObject.getSize(), this.position, this.size, this.moveSpeed))
+                        || (velocity.X < 0 && Detector.IsTouchingRight(currentObject.getPosition(), currentObject.getSize(), this.position, this.size, this.moveSpeed))) velocity.X = 0;
+
+                    // conditions for vertical movement.
+                    //if not met, the vertical velocity is set to 0.
+                    if ((velocity.Y > 0 && Detector.IsTouchingTop(currentObject.getPosition(), currentObject.getSize(), this.position, this.size, this.moveSpeed))
+                        || (velocity.Y < 0 && Detector.IsTouchingBottom(currentObject.getPosition(), currentObject.getSize(), this.position, this.size, this.moveSpeed))) velocity.Y = 0;
+                }
+
+                // updates the player position based on velocity and resets velocity.
+                Vector2 newPosition = this.position + velocity;
+                this.texture = Animation.AnimateMoving(this.position, newPosition, textureNum, texturePath);
+
+                if (moveCount < 15) moveCount++;
+                else
+                {
+                    moveCount = 0;
+                    textureNum = !textureNum;
+                }
+
+
+
+
+                this.position += velocity;
+                velocity = Vector2.Zero;
+
+
+            }
+            else
+            {
+                this.texture = Animation.AnimateIdle(textureNum, texturePath);
+
+                if (moveCount < 15) moveCount++;
+                else
+                {
+                    moveCount = 0;
+                    textureNum = !textureNum;
+                }
             }
 
-            // updates the player position based on velocity and resets velocity.
+        }
 
-            this.position += velocity;
-            velocity = Vector2.Zero;
-            
-            
+
+
+        public void switchTextureNum()
+        {
+            textureNum = !textureNum;
         }
 
         /// <summary>
@@ -96,31 +133,29 @@ namespace Tony
             }
         }
 
-        /// <summary>
-        /// triggered by the action key (E).
-        /// runs through all InteractableObjects and finds out if they are within range of the player.
-        /// 
-        /// </summary>
-        public void interact()
+        public void setPosition(Vector2 newPosition)
         {
-            foreach(GameObject i in ObjectManager.Instance.CurrentLevel.Objects)
-            {
-                if (i is InteractableObject)
-                {
-                    InteractableObject currentObject = (InteractableObject)i;
-
-                    //conditions of interaction.
-                    //if met and interaction is triggered.
-                    if(Detector.IsTouchingBottom(currentObject.getPosition(), currentObject.getSize(), this.position, this.size, this.range) 
-                        || Detector.IsTouchingTop(currentObject.getPosition(), currentObject.getSize(), this.position, this.size, this.range) 
-                        || Detector.IsTouchingLeft(currentObject.getPosition(), currentObject.getSize(), this.position, this.size, this.range) 
-                        || Detector.IsTouchingRight(currentObject.getPosition(), currentObject.getSize(), this.position, this.size, this.range))
-                    {
-                        currentObject.Interact();
-                    }
-                }
-            }
+            position = newPosition;
         }
+
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(
+                texture: texture,
+                position: position,
+                sourceRectangle: null,
+                color: Color.White,
+                rotation: rotation,
+                origin: rotationOrigin,
+                scale: 1f,
+                effects: SpriteEffects.None,
+                layerDepth: baseDepth);
+        }
+
+
+
+
 
     }
 }
