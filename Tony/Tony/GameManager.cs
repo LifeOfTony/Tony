@@ -171,6 +171,10 @@ namespace Tony
             camera.follow(player);
             Input.CheckInputs();
 
+
+            graphics.IsFullScreen = Input.isFullScreen;
+            graphics.ApplyChanges();
+
             SaveNLoad saveI = new SaveNLoad();
 
             ObjectManager.Update(gameTime);

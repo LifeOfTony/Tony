@@ -210,8 +210,8 @@ namespace Tony
             Vector2 position = new Vector2(float.Parse(objectData.Attribute("x").Value), float.Parse(objectData.Attribute("y").Value) - tileHeight);
             string requires = null;
             string gives = null;
-            string basic = null;
             string route = null;
+            string subType = null;
 
             string actors = "";
             float baseDepth = 0.4f;
@@ -224,7 +224,7 @@ namespace Tony
                 {
                     if (property.Attribute("name").Value == "Requires") requires = property.Attribute("value").Value;
                     if (property.Attribute("name").Value == "Gives") gives = property.Attribute("value").Value;
-                    if (property.Attribute("name").Value == "Basic") basic = property.Attribute("value").Value;
+                    if (property.Attribute("name").Value == "SubType") subType = property.Attribute("value").Value;
                     if (property.Attribute("name").Value == "Route")
                     {
                         route = property.Attribute("value").Value;
@@ -259,9 +259,19 @@ namespace Tony
             if(objectData.Attribute("type").Value == "Actor")
             {
                 Tuple<Texture2D, string> textureData = getTexture(Int32.Parse(objectData.Attribute("gid").Value));
-                Npc currentObject = new Npc(position, size, textureData.Item1, baseDepth, route,
+
+                if(subType.Equals("NPC"))
+                {
+                    Npc currentObject = new Npc(position, size, textureData.Item1, baseDepth, route,
                     objectData.Attribute("name").Value, textureData.Item2, true, requires, gives);
-                levelRead.AddObject(currentObject);
+                    levelRead.AddObject(currentObject);
+                }
+                else
+                {
+                    InteractableObject currentObject = new InteractableObject(position, size, getTexture(Int32.Parse(objectData.Attribute("gid").Value)).Item1, baseDepth,
+                    objectData.Attribute("name").Value, requires, gives);
+                    levelRead.AddObject(currentObject);
+                }
             }
 
             if(objectData.Attribute("type").Value == "Event")

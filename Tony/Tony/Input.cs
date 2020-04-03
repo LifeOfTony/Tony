@@ -11,6 +11,8 @@ namespace Tony
 {
     public static class Input
     {
+        public static bool isFullScreen = false;
+
 
         private static bool interactDown = false;
 
@@ -51,6 +53,11 @@ namespace Tony
                     Controller.gameState = Controller.GameState.paused;
                 }
                 
+            }
+
+            if(Keyboard.GetState().IsKeyDown(Keys.F11))
+            {
+                isFullScreen = !isFullScreen;
             }
 
 
