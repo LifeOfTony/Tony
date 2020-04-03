@@ -83,7 +83,7 @@ namespace Tony
                     {
                         interacted = true;
                         Controller.DisplayText(complex);
-                        GiverInteract();
+                        if (gives != null) GiverInteract();
                     }
                     else
                     {

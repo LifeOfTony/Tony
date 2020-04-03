@@ -169,7 +169,7 @@ namespace Tony
                     {
                         move = true;
                         Controller.DisplayText(complex);
-                        GiverInteract();
+                        if (gives != null) GiverInteract();
                     }
                     else
                     {

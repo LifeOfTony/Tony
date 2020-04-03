@@ -11,8 +11,8 @@ namespace Tony
     public class EndObject : InteractableObject
     {
 
-        public EndObject(Vector2 position, Vector2 size, Texture2D texture, float baseDepth, string requirement, string gives)
-            : base(position, size, texture, baseDepth, "End", requirement, gives)
+        public EndObject(Vector2 position, Vector2 size, Texture2D texture, float baseDepth, string requirement)
+            : base(position, size, texture, baseDepth, "End", requirement)
         {
 
         }
@@ -24,9 +24,10 @@ namespace Tony
             {
                 if (i.IsCollected() == true && i.GetName().Equals (requirement))
                 {
+
                     if(ObjectManager.currentLevel.level < ObjectManager.levels.Count() )
                     {
-                        Controller.DisplayText(basic);
+                        Controller.DisplayText(complex);
                         ObjectManager.currentLevel = ObjectManager.levels.Find
                             (x => x.level == (ObjectManager.currentLevel.level + 1));
 
@@ -34,10 +35,13 @@ namespace Tony
                         ObjectManager.currentLevel.setPaths();
                     }
                 }
+                else
+                {
+                    Controller.DisplayText(basic);
+                }
             }
-            
 
-            
+
         }
         
     }

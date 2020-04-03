@@ -281,7 +281,7 @@ namespace Tony
             }
             if (objectData.Attribute("type").Value == "EndObject")
             {
-                EndObject currentObject = new EndObject(position, size, getTexture(Int32.Parse(objectData.Attribute("gid").Value)).Item1, baseDepth, requires, gives);
+                EndObject currentObject = new EndObject(position, size, getTexture(Int32.Parse(objectData.Attribute("gid").Value)).Item1, baseDepth, requires);
                 levelRead.AddObject(currentObject);
             }
             #endregion
