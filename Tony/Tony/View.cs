@@ -63,18 +63,6 @@ namespace Tony
             UserInterface.Active.Draw(spriteBatch);
         }
 
-        public static void ShowLevels()
-        {
-            mainMenu.LevelSetOne.Visible = true;
-            mainMenu.LevelSetTwo.Visible = true;
-        }
-
-        public static void HideLevels()
-        {
-            mainMenu.LevelSetOne.Visible = false;
-            mainMenu.LevelSetTwo.Visible = false;
-        }
-
         public static void HideMainMenu()
         {
             mainMenu.Menu.Visible = false;

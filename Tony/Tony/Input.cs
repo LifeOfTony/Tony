@@ -16,22 +16,34 @@ namespace Tony
 
         public static void CheckInputs()
         {
-            if( Keyboard.GetState().IsKeyDown(Keys.A))
+            if(Keyboard.GetState().IsKeyDown(Keys.A) || Keyboard.GetState().IsKeyDown(Keys.W) 
+                || Keyboard.GetState().IsKeyDown(Keys.S) || Keyboard.GetState().IsKeyDown(Keys.D))
             {
-                ObjectManager.currentLevel.Player.move("A");
+                if (Keyboard.GetState().IsKeyDown(Keys.A))
+                {
+                    ObjectManager.currentLevel.Player.move("A");
+                }
+                if (Keyboard.GetState().IsKeyDown(Keys.W))
+                {
+                    ObjectManager.currentLevel.Player.move("W");
+                }
+                if (Keyboard.GetState().IsKeyDown(Keys.S))
+                {
+                    ObjectManager.currentLevel.Player.move("S");
+                }
+                if (Keyboard.GetState().IsKeyDown(Keys.D))
+                {
+                    ObjectManager.currentLevel.Player.move("D");
+                }
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.W))
+            else
             {
-                ObjectManager.currentLevel.Player.move("W");
+                ObjectManager.currentLevel.Player.move(null);
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.S))
-            {
-                ObjectManager.currentLevel.Player.move("S");
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.D))
-            {
-                ObjectManager.currentLevel.Player.move("D");
-            }
+
+
+
+            
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
                 if (Controller.gameState == Controller.GameState.playing)

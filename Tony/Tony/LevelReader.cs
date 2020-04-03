@@ -207,12 +207,12 @@ namespace Tony
         {
             // Data taken from the object element.
             Vector2 size = new Vector2(float.Parse(objectData.Attribute("width").Value), float.Parse(objectData.Attribute("height").Value));
-            Vector2 position = new Vector2(float.Parse(objectData.Attribute("x").Value), float.Parse(objectData.Attribute("y").Value) - size.Y);
+            Vector2 position = new Vector2(float.Parse(objectData.Attribute("x").Value), float.Parse(objectData.Attribute("y").Value) - tileHeight);
             string requires = null;
             string gives = null;
             string basic = null;
             string route = null;
-            bool basicMove = false;
+
             string actors = "";
             float baseDepth = 0.4f;
 
@@ -252,7 +252,7 @@ namespace Tony
             {
                 Tuple<Texture2D, string> textureData = getTexture(Int32.Parse(objectData.Attribute("gid").Value));
                 Npc currentObject = new Npc(position, size, textureData.Item1 , baseDepth, route,
-                    objectData.Attribute("name").Value, textureData.Item2, basicMove, requires, gives);
+                    objectData.Attribute("name").Value, textureData.Item2, requires, gives);
                 levelRead.AddObject(currentObject);
             }
 

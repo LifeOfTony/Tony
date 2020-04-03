@@ -11,6 +11,7 @@ namespace Tony
         private bool move;
         private bool actor;
         private string texturePath;
+        private bool textureNum;
 
         private Vector2[] destinations;
         private Queue<Queue<Vector2>> paths = new Queue<Queue<Vector2>>();
@@ -52,6 +53,7 @@ namespace Tony
 
             texturePath = filePath;
             this.actor = actor;
+            textureNum = true;
 
         }
 
@@ -111,7 +113,10 @@ namespace Tony
             {
                 if (currentPath != null && currentPath.Any())
                 {
+                    Vector2 OldPosition = this.position;
                     this.position = currentPath.Dequeue();
+                    this.texture = Animation.AnimateMoving(OldPosition, this.position, textureNum, texturePath);
+                    textureNum = !textureNum;
                 }
                 else if (paths.Any())
                 {
@@ -121,11 +126,16 @@ namespace Tony
                         Queue<Vector2> resetPath = new Queue<Vector2>(currentPath);
                         paths.Enqueue(resetPath);
                     }
+                    Vector2 OldPosition = this.position;
                     this.position = currentPath.Dequeue();
+                    this.texture = Animation.AnimateMoving(OldPosition, this.position, textureNum, texturePath);
+                    textureNum = !textureNum;
                 }
                 else move = false;
 
             }
+            this.texture = Animation.AnimateIdle(textureNum, texturePath);
+            textureNum = !textureNum;
         }
 
         #endregion

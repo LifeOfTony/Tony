@@ -42,7 +42,7 @@ namespace Tony
                 if (mentalState > 0)
                 {
                     currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds; //Time passed since last Update() 
-
+                    
                     if (currentTime >= countDuration)
                     {
                         currentTime -= countDuration;
@@ -51,7 +51,9 @@ namespace Tony
                         {
                             npc.Move();
                         }
+                        
                     }
+                   
 
                     foreach (Event currentEvent in currentLevel.Events)
                     {
@@ -65,34 +67,6 @@ namespace Tony
                     Controller.gameState = Controller.GameState.gameOver;
                 }
             }
-        }
-
-
-
-
-
-        public static void MentalDecay(GameTime gameTime)
-        {
-            if (Controller.gameState == Controller.GameState.playing)
-            {
-                if (mentalState > 0)
-                {
-                    currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds; //Time passed since last Update() 
-
-                    if (currentTime >= countDuration)
-                    {
-                        currentTime -= countDuration;
-                        mentalState--;
-                    }
-                }
-                else
-                {
-                    Controller.gameState = Controller.GameState.gameOver;
-                }
-            }
-
-
-
         }
 
 

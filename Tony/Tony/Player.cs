@@ -16,6 +16,7 @@ namespace Tony
         private Vector2 velocity;
         private bool textureNum;
         private string texturePath;
+        private int moveCount;
 
         /// <summary>
         /// The Player object represents the character Tony.
@@ -34,6 +35,7 @@ namespace Tony
             velocity = Vector2.Zero;
             textureNum = true;
             texturePath = filePath;
+            moveCount = 0;
         }
 
 
@@ -44,36 +46,68 @@ namespace Tony
         /// <param name="key"></param>
         public void move(string key)
         {
-            // setVelocity sets the values of velocity based on the key given.
-            setVelocity(key);
-
-
-            // Compares the player position to all collidable objects.
-            foreach(GameObject currentObject in ObjectManager.currentLevel.Collidables)
+            if(key != null)
             {
-                if (currentObject == this)
-                    continue;
+                // setVelocity sets the values of velocity based on the key given.
+                setVelocity(key);
 
-                // conditions for horizontal movement.
-                //if not met, the horezontal velocity is set to 0.
 
-                if ((velocity.X > 0 && Detector.IsTouchingLeft(currentObject.getPosition(), currentObject.getSize(), this.position, this.size, this.moveSpeed)) 
-                    || (velocity.X < 0 && Detector.IsTouchingRight(currentObject.getPosition(), currentObject.getSize(), this.position, this.size, this.moveSpeed))) velocity.X = 0;
+                // Compares the player position to all collidable objects.
+                foreach (GameObject currentObject in ObjectManager.currentLevel.Collidables)
+                {
+                    if (currentObject == this)
+                        continue;
 
-                // conditions for vertical movement.
-                //if not met, the vertical velocity is set to 0.
-                if ((velocity.Y > 0 && Detector.IsTouchingTop(currentObject.getPosition(), currentObject.getSize(), this.position, this.size, this.moveSpeed))
-                    || (velocity.Y < 0 && Detector.IsTouchingBottom(currentObject.getPosition(), currentObject.getSize(), this.position, this.size, this.moveSpeed))) velocity.Y = 0;
+                    // conditions for horizontal movement.
+                    //if not met, the horezontal velocity is set to 0.
+
+                    if ((velocity.X > 0 && Detector.IsTouchingLeft(currentObject.getPosition(), currentObject.getSize(), this.position, this.size, this.moveSpeed))
+                        || (velocity.X < 0 && Detector.IsTouchingRight(currentObject.getPosition(), currentObject.getSize(), this.position, this.size, this.moveSpeed))) velocity.X = 0;
+
+                    // conditions for vertical movement.
+                    //if not met, the vertical velocity is set to 0.
+                    if ((velocity.Y > 0 && Detector.IsTouchingTop(currentObject.getPosition(), currentObject.getSize(), this.position, this.size, this.moveSpeed))
+                        || (velocity.Y < 0 && Detector.IsTouchingBottom(currentObject.getPosition(), currentObject.getSize(), this.position, this.size, this.moveSpeed))) velocity.Y = 0;
+                }
+
+                // updates the player position based on velocity and resets velocity.
+                Vector2 newPosition = this.position + velocity;
+                this.texture = Animation.AnimateMoving(this.position, newPosition, textureNum, texturePath);
+
+                if (moveCount < 15) moveCount++;
+                else
+                {
+                    moveCount = 0;
+                    textureNum = !textureNum;
+                }
+
+
+
+
+                this.position += velocity;
+                velocity = Vector2.Zero;
+
+
+            }
+            else
+            {
+                this.texture = Animation.AnimateIdle(textureNum, texturePath);
+
+                if (moveCount < 15) moveCount++;
+                else
+                {
+                    moveCount = 0;
+                    textureNum = !textureNum;
+                }
             }
 
-            // updates the player position based on velocity and resets velocity.
-            Vector2 newPosition = this.position + velocity;
-            this.texture = Animation.Animate(this.position, newPosition, textureNum, texturePath);
+        }
+
+
+
+        public void switchTextureNum()
+        {
             textureNum = !textureNum;
-            this.position += velocity;
-            velocity = Vector2.Zero;
-            
-            
         }
 
         /// <summary>

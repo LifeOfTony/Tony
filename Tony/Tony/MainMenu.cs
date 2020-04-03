@@ -15,10 +15,7 @@ namespace Tony
     {
         public Panel Menu { get; private set; }
         public Button MainToGame { get; private set; }
-        public Button MainToLevels { get; private set; }
         public Button MainToQuit { get; private set; }
-        public Button LevelSetOne { get; private set; }
-        public Button LevelSetTwo { get; private set; }
         public Button MainToLoad { get; private set; }
 
         public MainMenu(Texture2D texture)
@@ -37,20 +34,10 @@ namespace Tony
             MainToLoad = new Button("Continue", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(0, 260));
             Menu.AddChild(MainToLoad);
 
-            MainToLevels = new Button("Levels", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(0, 185));
-            Menu.AddChild(MainToLevels);
 
             MainToQuit = new Button("Quit", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(0, 110));
             Menu.AddChild(MainToQuit);
 
-            LevelSetOne = new Button("Tutorial", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(400, 260));
-            Menu.AddChild(LevelSetOne);
-
-            LevelSetTwo = new Button("Level One", ButtonSkin.Default, Anchor.BottomCenter, new Vector2(300, 50), new Vector2(400, 185));
-            Menu.AddChild(LevelSetTwo);
-
-            LevelSetOne.Visible = false;
-            LevelSetTwo.Visible = false;
 
             UserInterface.Active.AddEntity(Menu);
         }

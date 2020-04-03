@@ -81,34 +81,11 @@ namespace Tony
                 gameState = GameState.playing;
             };
 
-            View.mainMenu.MainToLevels.OnClick = (Entity button) => { View.ShowLevels(); };
-
             View.mainMenu.MainToQuit.OnClick = (Entity button) => exit = true;
 
             View.gameOver.OverToMain.OnClick = (Entity button) => gameState = GameState.mainmenu;
 
             View.gameOver.OverToExit.OnClick = (Entity button) => exit = true;
-
-
-            View.mainMenu.LevelSetOne.OnClick = (Entity button) =>
-            {
-                Level selectedLevel = ObjectManager.levels.Find(x => x.level == 0);
-                Pathfinder.CreateGrid(selectedLevel);
-                selectedLevel.setPaths();
-                ObjectManager.currentLevel = selectedLevel;
-                ObjectManager.ResetMentalState();
-                gameState = GameState.playing;
-            };
-
-            View.mainMenu.LevelSetTwo.OnClick = (Entity button) =>
-            {
-                Level selectedLevel = ObjectManager.levels.Find(x => x.level == 1);
-                Pathfinder.CreateGrid(selectedLevel);
-                selectedLevel.setPaths();
-                ObjectManager.currentLevel = selectedLevel;
-                ObjectManager.ResetMentalState();
-                gameState = GameState.playing;
-            };
 
             View.pauseMenu.PausetoGame.OnClick = (Entity button) => gameState = GameState.playing;
 
