@@ -25,7 +25,7 @@ namespace Tony
                 if (i.IsCollected() == true && i.GetName().Equals (requirement))
                 {
 
-                    if(ObjectManager.currentLevel.level < ObjectManager.levels.Count() )
+                    if(ObjectManager.currentLevel.level < ObjectManager.levels.Count() - 1 )
                     {
                         Controller.DisplayText(complex);
                         ObjectManager.currentLevel = ObjectManager.levels.Find

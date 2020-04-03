@@ -46,7 +46,7 @@ namespace Tony
                     if (currentTime >= countDuration)
                     {
                         currentTime -= countDuration;
-                        mentalState--;
+                        if(currentLevel.level != 0) mentalState--;
                         foreach (Npc npc in currentLevel.Npcs)
                         {
                             npc.Move();

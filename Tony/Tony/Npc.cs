@@ -167,6 +167,7 @@ namespace Tony
                 {
                     if (currentItem.IsCollected())
                     {
+                        interacted = true;
                         move = true;
                         Controller.DisplayText(complex);
                         if (gives != null) GiverInteract();
@@ -182,6 +183,7 @@ namespace Tony
 
         public override void BasicInteract()
         {
+            interacted = true;
             move = true;
             Controller.DisplayText(basic);
             if (gives != null) GiverInteract();

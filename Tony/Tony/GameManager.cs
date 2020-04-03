@@ -224,7 +224,7 @@ namespace Tony
 
                 foreach(GameObject i in ObjectManager.currentLevel.Objects)
                 {
-                    if (i is Interactable)
+                    if (i is Interactable && !(i is Event))
                     {
                         if (Detector.isTouching(i.getPosition(), i.getSize(), ObjectManager.currentLevel.Player.getPosition(), ObjectManager.currentLevel.Player.getSize(), 1))
                         {
@@ -257,17 +257,6 @@ namespace Tony
                 spriteBatch.End();
             }
 
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive);
-            // Draws some text based on the textOutput variable.
-            string text = "" + ObjectManager.mentalState;
-            spriteBatch.DrawString(font, text , new Vector2(200, 200), Color.White);
-
-            // Draws some text based on the textOutput variable.
-            spriteBatch.DrawString(font, textOutput, new Vector2(750, 300), Color.White);
-
-            spriteBatch.End();
-
-            
             Controller.Draw(spriteBatch);
 
             base.Draw(gameTime);

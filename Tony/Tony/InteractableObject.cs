@@ -64,10 +64,6 @@ namespace Tony
             {
                 InteractType();
             }
-            
-
-            InteractType();
-
         }
 
 

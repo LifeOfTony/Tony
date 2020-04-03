@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="-1" width="12" height="10" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="74">
+ <properties>
+  <property name="Level" type="int" value="0"/>
+ </properties>
+ <tileset firstgid="1" source="Content/TileSets/Terrain.tsx"/>
+ <tileset firstgid="91" source="Content/TileSets/NPCOld.tsx"/>
+ <tileset firstgid="94" source="Content/TileSets/NPCKid.tsx"/>
+ <tileset firstgid="104" source="Content/TileSets/Tony.tsx"/>
+ <layer id="1" name="Tile Layer 1" width="12" height="10">
+  <data encoding="csv">
+55,55,55,55,55,55,55,55,55,55,55,55,
+53,53,53,53,53,53,53,53,53,53,53,53,
+51,51,51,51,51,51,51,51,51,51,51,51,
+51,51,51,51,51,51,51,51,51,51,51,51,
+51,51,51,51,51,51,51,51,51,51,51,51,
+55,55,55,55,55,55,51,51,51,51,51,51,
+53,53,53,53,53,53,51,51,51,51,51,51,
+51,51,51,51,51,51,51,51,51,51,51,51,
+51,51,51,51,51,51,51,51,51,51,51,51,
+51,51,51,51,51,51,51,51,51,51,51,51
+</data>
+ </layer>
+ <objectgroup id="2" name="Prop Layer">
+  <properties>
+   <property name="Layer" type="int" value="3"/>
+  </properties>
+  <object id="9" gid="24" x="279.667" y="140" width="54" height="17"/>
+  <object id="10" gid="71" x="284.667" y="75.6667" width="45" height="19"/>
+  <object id="11" gid="72" x="353.333" y="137.667" width="28" height="19"/>
+  <object id="13" gid="70" x="0.666667" y="224.333" width="97" height="26"/>
+  <object id="16" gid="73" x="98" y="224.333" width="20" height="26"/>
+  <object id="18" gid="39" x="117.667" y="224.333" width="22" height="26"/>
+  <object id="26" gid="39" x="161.667" y="224.333" width="22" height="26"/>
+  <object id="38" gid="67" x="351.667" y="49.3333" width="19" height="5"/>
+  <object id="39" gid="62" x="372.333" y="70" width="10" height="20"/>
+  <object id="40" gid="89" x="268" y="43.6667" width="20" height="19"/>
+  <object id="41" gid="89" x="201.333" y="43.6667" width="20" height="19"/>
+  <object id="42" gid="59" x="25" y="35.3333" width="30" height="13"/>
+  <object id="46" gid="31" x="13.6667" y="296.667" width="63" height="32"/>
+  <object id="50" gid="28" x="350" y="319.667" width="33" height="19"/>
+ </objectgroup>
+ <objectgroup id="3" name="Prop Layer">
+  <properties>
+   <property name="Layer" type="int" value="4"/>
+  </properties>
+  <object id="30" gid="40" x="167.667" y="255.333" width="22" height="56"/>
+  <object id="31" gid="43" x="35" y="210.667" width="10" height="12"/>
+  <object id="32" gid="38" x="51.3333" y="208.667" width="8" height="8"/>
+  <object id="33" gid="33" x="288.667" y="127" width="32" height="11"/>
+  <object id="34" gid="69" x="189.667" y="256" width="3" height="32"/>
+  <object id="35" gid="69" x="189.667" y="224" width="3" height="32"/>
+  <object id="36" gid="69" x="189.667" y="192" width="3" height="32"/>
+  <object id="45" gid="42" x="296.667" y="131.333" width="8" height="9"/>
+  <object id="47" gid="30" x="322" y="129.333" width="8" height="5"/>
+  <object id="48" gid="8" x="352.333" y="45" width="15" height="6"/>
+  <object id="51" gid="84" x="361.667" y="304" width="19" height="17"/>
+ </objectgroup>
+ <objectgroup id="4" name="Interactable Layer">
+  <object id="52" name="End " type="EndObject" gid="92" x="356.667" y="137.667" width="20" height="30">
+   <properties>
+    <property name="Requires" value="refreshment"/>
+   </properties>
+  </object>
+  <object id="53" name="D" type="Interactable" gid="36" x="128.667" y="63.6667" width="20" height="34"/>
+  <object id="54" name="K" type="Actor" gid="94" x="192" y="224" width="32" height="32">
+   <properties>
+    <property name="Route" value="320,256"/>
+    <property name="SubType" value="NPC"/>
+   </properties>
+  </object>
+  <object id="55" name="F" type="Interactable" gid="34" x="138.667" y="224" width="24" height="41">
+   <properties>
+    <property name="Gives" value="refreshment"/>
+   </properties>
+  </object>
+  <object id="58" name="E" type="Event" x="256.667" y="192.667" width="97.3333" height="65.3333">
+   <properties>
+    <property name="Actors" value="K"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="5" name="Collision Layer">
+  <object id="59" x="0.666667" y="160.667" width="191.333" height="49.3333"/>
+  <object id="60" x="168" y="210.667" width="22.6667" height="44.6667"/>
+  <object id="65" x="286.667" y="48" width="42" height="3.33333"/>
+  <object id="66" x="330" y="24" width="53.3333" height="24"/>
+  <object id="67" x="150" y="23.3333" width="136" height="24"/>
+  <object id="68" x="1.33333" y="25.3333" width="148" height="20.6667"/>
+  <object id="69" x="0.666667" y="0" width="4" height="318.667"/>
+  <object id="71" x="2" y="318.667" width="382" height="1.33333"/>
+  <object id="72" x="383.333" y="0.666667" width="0.666667" height="316.667"/>
+ </objectgroup>
+ <objectgroup id="6" name="Player">
+  <object id="73" name="Tony" type="Player" gid="107" x="128" y="128" width="32" height="32"/>
+ </objectgroup>
+</map>
