@@ -39,7 +39,8 @@ namespace Tony
             float depth = baseDepth;
             if (baseDepth > 0)
             {
-                    if (ObjectManager.currentLevel.Player.position.Y + (ObjectManager.currentLevel.Player.size.Y / 2) > position.Y + (size.Y / 2))
+                if (ObjectManager.currentLevel.Player.position.Y + (ObjectManager.currentLevel.Player.size.Y / 2) > position.Y + (size.Y / 2) &&
+                Detector.isTouching(position, size, ObjectManager.currentLevel.Player.position, ObjectManager.currentLevel.Player.size, 10))
                         depth = baseDepth - 0.2f;
             }
 

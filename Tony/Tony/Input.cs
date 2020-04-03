@@ -12,7 +12,7 @@ namespace Tony
     public static class Input
     {
         public static bool isFullScreen = false;
-
+        public static bool fullScreenPressed = false;
 
         private static bool interactDown = false;
 
@@ -59,6 +59,8 @@ namespace Tony
             {
                 isFullScreen = !isFullScreen;
             }
+
+
 
 
 

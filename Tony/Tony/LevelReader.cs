@@ -207,7 +207,7 @@ namespace Tony
         {
             // Data taken from the object element.
             Vector2 size = new Vector2(float.Parse(objectData.Attribute("width").Value), float.Parse(objectData.Attribute("height").Value));
-            Vector2 position = new Vector2(float.Parse(objectData.Attribute("x").Value), float.Parse(objectData.Attribute("y").Value) - tileHeight);
+            Vector2 position = new Vector2(float.Parse(objectData.Attribute("x").Value), float.Parse(objectData.Attribute("y").Value) - size.Y);
             string requires = null;
             string gives = null;
             string route = null;

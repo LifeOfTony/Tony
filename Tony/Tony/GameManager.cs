@@ -29,13 +29,14 @@ namespace Tony
         RenderTarget2D lightsTarget;
         RenderTarget2D mainTarget;
 
+        bool changeScreen;
+
         Vector2 lightPosition;
 
         //A list holding the tileset textures.
         private List<Texture2D> tileset;
 
-        //A SpriteFont for displaying text.
-        private SpriteFont font;
+
 
 
 
@@ -51,7 +52,7 @@ namespace Tony
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             tileset = new List<Texture2D>();
-            textOutput = "";
+            changeScreen = false;
 
             
 
@@ -96,9 +97,6 @@ namespace Tony
 
             lightMask = Content.Load<Texture2D>("lightMask");
             effect1 = Content.Load<Effect>("lighteffect");
-
-            // Loads the SpriteFont 'textFont' from Content.
-            font = Content.Load<SpriteFont>("textFont");
 
             // Creates a new ItemReader for the Items.xml file.
             ItemReader itemList = new ItemReader(@"Content\Items.xml");
@@ -171,9 +169,13 @@ namespace Tony
             camera.follow(player);
             Input.CheckInputs();
 
+            if(Input.isFullScreen != graphics.IsFullScreen)
+            {
+                graphics.ToggleFullScreen();
+                graphics.ApplyChanges();
+            }
 
-            graphics.IsFullScreen = Input.isFullScreen;
-            graphics.ApplyChanges();
+
 
             SaveNLoad saveI = new SaveNLoad();
 
