@@ -63,7 +63,6 @@ namespace Tony
             if(interacted == false)
             {
                 InteractType();
-                interacted = true;
             }
             
 
@@ -82,6 +81,7 @@ namespace Tony
                 {
                     if (currentItem.IsCollected())
                     {
+                        interacted = true;
                         Controller.DisplayText(complex);
                         GiverInteract();
                     }
@@ -95,6 +95,7 @@ namespace Tony
 
         public virtual void BasicInteract()
         {
+            interacted = true;
             Controller.DisplayText(basic);
             if (gives != null) GiverInteract(); 
         }
